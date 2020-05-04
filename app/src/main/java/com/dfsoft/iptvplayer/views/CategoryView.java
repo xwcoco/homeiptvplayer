@@ -203,8 +203,14 @@ public class CategoryView extends FrameLayout {
             if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
                 hide();
                 ChannelAdapter adapter = (ChannelAdapter) mChannelList.getAdapter();
-                if (adapter != null)
-                    config.iptvMessage.sendMessage(IPTVMessage.IPTV_CHANNEL_PLAY,adapter.getChannel());
+                if (adapter != null) {
+                    IPTVChannel playingChanel = config.getPlayingChannal();
+                    IPTVChannel channel = adapter.getChannel();
+                    if (channel != playingChanel)
+                        config.iptvMessage.sendMessage(IPTVMessage.IPTV_CHANNEL_PLAY,channel);
+                }
+
+//
                 return true;
             }
             if (keyCode == KeyEvent.KEYCODE_ESCAPE || keyCode == KeyEvent.KEYCODE_DEL) {

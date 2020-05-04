@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -22,6 +23,8 @@ import com.dfsoft.iptvplayer.utils.AutoHideView;
 import com.dfsoft.iptvplayer.views.CategoryView;
 import com.dfsoft.iptvplayer.views.InformationView;
 import com.dfsoft.iptvplayer.views.PlayerHUDView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEventLister {
 
@@ -75,20 +78,77 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     }
 
     public boolean dealWithKeyDown(int keyCode) {
+        if (keyCode >= KeyEvent.KEYCODE_0 && keyCode <= KeyEvent.KEYCODE_9) {
+            ArrayList<String> numList = new ArrayList<>();
+            for (int i = 0; i <= 9; i++) {
+                numList.add(String.valueOf(i));
+            }
+            if (isSearchChannelMode) {
+                this.searchChannel = this.searchChannel + numList.get(keyCode - KeyEvent.KEYCODE_0);
+            } else {
+                this.isSearchChannelMode = true;
+                this.searchChannel = numList.get(keyCode - KeyEvent.KEYCODE_0);
+            }
+            mInfoView.updateChannelNum(this.searchChannel);
+            mInfoHide.show();
+            return true;
+        }
+
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
+
+            if (isSearchChannelMode && !TextUtils.isEmpty(this.searchChannel)) {
+                IPTVChannel channel = config.findChannelByNum(Integer.parseInt(searchChannel));
+                if (channel != null) {
+                    playChannal(channel);
+                } else {
+                    mInfoView.updateInfo(searchChannel+" 频道号不存在!");
+                    mInfoHide.show();
+                }
+                isSearchChannelMode = false;
+                searchChannel = "";
+                return true;
+            }
+
             mHudHide.toggle();
 //            consoleHide.toggle();
             return true;
         }
+        isSearchChannelMode = false;
+        searchChannel = "";
+
         if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_LEFT) {
             mCategoryView.toggle();
             return true;
         }
+
+        if (keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_UP) {
+            playLastChannel();
+            return true;
+        }
+
+        if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_DOWN) {
+            playNextChannel();
+        }
+
+        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_DEL) {
+            this.backToLastPlayChannel();
+            return true;
+        }
+
+        if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_RIGHT) {
+            this.playNextSource();
+            return true;
+        }
+
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             return true;
         }
+
         return false;
     }
+
+    private boolean isSearchChannelMode = false;
+    private String searchChannel = "";
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -128,8 +188,8 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                     break;
                 case IPTVMessage.IPTV_CHANNEL_PLAY:
                     channel = (IPTVChannel) msg.obj;
-                    mVideoView.requestFocus();
-                    mIPTVManager.play(channel);
+                    playChannal(channel);
+
                     break;
                 case IPTVMessage.IPTV_FULLSCREEN:
 //                    consoleHide.hide();
@@ -138,6 +198,9 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                     mHudView.updateHUD((IPTVPlayer_HUD) msg.obj);
                     break;
                 case IPTVMessage.IPTV_BUFFERING:
+
+                    if (isSearchChannelMode)
+                        return;
 
                     int tmp = Math.round((float) msg.obj);
                     String info = "loading " + String.valueOf(tmp) + " %";
@@ -152,6 +215,17 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         }
     };
 
+    public void playChannal(IPTVChannel channel) {
+        playChannal(channel,0);
+    }
+
+    public void playChannal(IPTVChannel channel,int index) {
+        mVideoView.requestFocus();
+//        config.setPlayingChannal(channel);
+        mIPTVManager.play(channel,index);
+        mHudHide.show();
+    }
+
     @Override
     public void onInitData(Boolean isOk) {
 
@@ -160,5 +234,40 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     @Override
     public void onPlayChannel() {
         mHudView.updateHud();
+    }
+
+    public void playLastChannel() {
+        IPTVChannel channel = config.getCategoryPirorChannel();
+        if (channel != null) {
+            this.playChannal(channel);
+        }
+    }
+
+    public void playNextChannel() {
+        IPTVChannel channel = config.getCategoryNextChannel();
+        if (channel != null) {
+            this.playChannal(channel);
+        }
+    }
+
+    public void backToLastPlayChannel() {
+        IPTVChannel channel = config.getLastPlayingChannel();
+        if (channel != null)
+            playChannal(channel);
+    }
+
+    public void playNextSource() {
+        IPTVChannel channel = config.getPlayingChannal();
+        if (channel == null) return;
+
+        if (channel.source.size() == 1) return;
+        int index = this.mIPTVManager.getCurrentSourceIndex();
+        if (index == channel.source.size() - 1)
+            index = 0;
+        else
+            index = index + 1;
+
+        this.playChannal(channel,index);
+
     }
 }

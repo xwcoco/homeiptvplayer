@@ -2,6 +2,8 @@ package com.dfsoft.iptvplayer.manager;
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -50,10 +52,48 @@ public class IPTVConfig {
         return playingChannal;
     }
 
+
+    private IPTVChannel mLastPlayChannel = null;
+
+    public IPTVChannel getLastPlayingChannel() {
+        return mLastPlayChannel;
+    }
+
     public void setPlayingChannal(IPTVChannel playingChannal) {
+        if (this.playingChannal != null)
+            mLastPlayChannel = this.playingChannal;
+
         this.playingChannal = playingChannal;
         if (this.dataEventLister != null)
             this.dataEventLister.onPlayChannel();
+
+//        iptvMessage.sendMessage(IPTVMessage.IPTV_CHANNEL_PLAY,playingChannal);
+    }
+
+    public IPTVChannel getCategoryPirorChannel() {
+        if (this.playingChannal == null) return  null;
+        IPTVCategory cate = this.getCategoryByChannel(this.playingChannal);
+        if (cate == null) return null;
+        int index = cate.data.indexOf(this.playingChannal);
+        if (index > 0)
+            index = index - 1;
+        else
+            index = cate.data.size() - 1;
+
+        return cate.data.get(index);
+    }
+
+    public IPTVChannel getCategoryNextChannel() {
+        if (this.playingChannal == null) return  null;
+        IPTVCategory cate = this.getCategoryByChannel(this.playingChannal);
+        if (cate == null) return null;
+        int index = cate.data.indexOf(this.playingChannal);
+        if (index == cate.data.size() - 1)
+            index = 0;
+        else
+            index = index + 1;
+
+        return cate.data.get(index);
     }
 
     public DataEventLister dataEventLister = null;
@@ -200,6 +240,18 @@ public class IPTVConfig {
             IPTVCategory cate = category.get(i);
             if (cate.data.indexOf(channel) != -1)
                 return cate;
+        }
+        return null;
+    }
+
+    public IPTVChannel findChannelByNum(int num) {
+        for (int i = 0; i < this.category.size(); i++) {
+            IPTVCategory cate = category.get(i);
+            for (int j = 0; j < cate.data.size(); j++) {
+                IPTVChannel channel = cate.data.get(j);
+                if (channel.num == num)
+                    return channel;
+            }
         }
         return null;
     }

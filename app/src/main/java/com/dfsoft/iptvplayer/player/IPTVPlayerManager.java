@@ -16,6 +16,12 @@ public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
 
     public IPTVPlayer_HUD hud = new IPTVPlayer_HUD();
 
+    private int mSourceIndex = 0;
+
+    public int getCurrentSourceIndex() {
+        return mSourceIndex;
+    }
+
     public IPTVPlayerManager(Activity main) {
         this.main = main;
         this.createPlayer();
@@ -40,6 +46,8 @@ public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
         if (index < 0 || channel.source.size() == 0 || index >= channel.source.size()) return;
 
         this.hud = new IPTVPlayer_HUD();
+
+        mSourceIndex = index;
 
         mPlayer.play(channel.source.get(index));
 
