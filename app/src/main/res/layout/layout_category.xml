@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:id="@+id/category_layout"
+    >
+
+
+    <com.dfsoft.iptvplayer.views.FocusListView
+        android:layout_width="120dp"
+        android:dividerHeight="1sp"
+        android:padding="3dip"
+        android:id="@+id/categorylistView"
+        android:divider="@null"
+        android:listSelector="@drawable/item_bg_selector_left"
+        android:background="@color/black_overlay"
+        android:layout_height="match_parent" />
+    <LinearLayout
+        android:layout_width="1.0dip"
+        android:layout_height="match_parent"
+        android:background="#ff333333" />
+    <com.dfsoft.iptvplayer.views.FocusListView
+        android:padding="3dp"
+        android:layout_width="140dp"
+        android:layout_height="match_parent"
+        android:id="@+id/category_channel_list"
+        android:listSelector="@drawable/item_bg_selector_right"
+        android:background="@color/black_overlay"
+        android:dividerHeight="10dp"
+        />
+    <LinearLayout
+        android:layout_width="1.0dip"
+        android:layout_height="match_parent"
+        android:background="#ff333333" />
+    <com.dfsoft.iptvplayer.views.FocusListView
+        android:layout_width="200dp"
+        android:padding="3dp"
+        android:layout_height="match_parent"
+        android:id="@+id/category_epg_list"
+        android:listSelector="@drawable/item_bg_selector_right"
+        android:background="@color/black_overlay"
+        android:dividerHeight="10dp"
+        />
+
+
+</LinearLayout>

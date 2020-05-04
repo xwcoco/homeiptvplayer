@@ -1,0 +1,2 @@
+rootProject.name='homeiptvplayer'
+include ':app', ':ijkplayer-java'
