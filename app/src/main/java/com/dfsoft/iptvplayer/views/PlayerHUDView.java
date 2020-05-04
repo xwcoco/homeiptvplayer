@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,8 @@ public class PlayerHUDView extends FrameLayout {
     private MarqueeTextView hud_current_program_name;
     private TextView hud_next_program_time;
     private MarqueeTextView hud_next_program_name;
+
+    private ImageView hud_video_type;
 
 
     private TextView hud_source_text;
@@ -68,6 +71,8 @@ public class PlayerHUDView extends FrameLayout {
         hud_next_program_name = findViewById(R.id.hud_next_program_name);
 
         hud_source_text = findViewById(R.id.hud_source_text);
+
+        hud_video_type = findViewById(R.id.hud_video_type);
     }
 
     private IPTVConfig config = IPTVConfig.getInstance();
@@ -107,9 +112,47 @@ public class PlayerHUDView extends FrameLayout {
 
         String tmp = String.valueOf(channel.playIndex+1) + " / " + String.valueOf(channel.source.size());
         hud_source_text.setText(tmp);
+
+        this.hideVideoHud();
+    }
+
+    private boolean mVisible = false;
+    public void show() {
+
+    }
+
+    public void hide() {
+
+    }
+
+    public void toggle() {
+
+    }
+
+    private void hideVideoHud() {
+        hud_video_type.setVisibility(View.GONE);
     }
 
     public void updateHUD(IPTVPlayer_HUD hud) {
+        this.hideVideoHud();
 
+        if (hud.width * hud.height != 0) {
+            int resid = -1;
+            if (hud.width == 1920 && hud.height == 1080) {
+                resid = R.mipmap.infobar_1080p;
+            } else if (hud.width == 1280 && hud.height == 720) {
+                resid = R.mipmap.infobar_720p;
+            } else if (hud.width == 3840 && hud.height == 2160) {
+                resid = R.mipmap.infobar_uhd;
+            } else if (hud.width == 720 && hud.height == 576) {
+                resid = R.mipmap.infobar_sd;
+            }
+
+
+            if (resid != -1) {
+                hud_video_type.setVisibility(VISIBLE);
+                hud_video_type.setImageResource(resid);
+            }
+        }
     }
 }

@@ -72,7 +72,7 @@ public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
 
     @Override
     public void onBuffering(float percent) {
-
+        config.iptvMessage.sendMessage(IPTVMessage.IPTV_BUFFERING,percent);
     }
 
     @Override

@@ -158,6 +158,16 @@
 
         app:layout_constraintTop_toTopOf="@id/hud_source_image" />
 
+    <ImageView
+        android:id="@+id/hud_video_type"
+        android:layout_width="34dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="40dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/infobar_1080p"
+        app:layout_constraintStart_toEndOf="@+id/hud_source_text"
+        app:layout_constraintTop_toTopOf="@+id/hud_source_image" />
+
     <!--        <TextView-->
     <!--            android:id="@+id/tv_source"-->
     <!--            android:layout_width="wrap_content"-->

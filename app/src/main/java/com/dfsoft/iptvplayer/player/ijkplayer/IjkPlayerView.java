@@ -91,7 +91,13 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
     private int mCurrentBufferPercentage;
     private IMediaPlayer.OnErrorListener mOnErrorListener;
     private IMediaPlayer.OnInfoListener mOnInfoListener;
+
     private IMediaPlayer.OnVideoSizeChangedListener mOnVideoSizeChangedListener;
+
+    public void setOnVideoSizeChangedListener(IMediaPlayer.OnVideoSizeChangedListener listener) {
+        this.mOnVideoSizeChangedListener = listener;
+    }
+
     private IjkMediaPlayer.OnNativeInvokeListener mOnNativeInvokeListener;
     private int mSeekWhenPrepared;  // recording the seek position while preparing
     private boolean mCanPause = true;
@@ -136,6 +142,7 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
     public static final String AVAPP_EVENT_HTTP_CODE = "http_code";
 
     private FrameLayout mBindView;
+
     public void bindView(FrameLayout view) {
         if (view == null) return;
         mBindView = view;
@@ -435,8 +442,8 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
             mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "http-detect-range-support", 0);
             mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_CODEC, "skip_loop_filter", 48);
             mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_CODEC, "skip_loop_filter", 8);
-            mMediaPlayer.setOption(1, "analyzemaxduration", 100L);
-            mMediaPlayer.setOption(1, "probesize", 10240L);
+//            mMediaPlayer.setOption(1, "analyzemaxduration", 100L);
+//            mMediaPlayer.setOption(1, "probesize", 10240L);
             mMediaPlayer.setOption(1, "flush_packets", 1L);
             mMediaPlayer.setOption(4, "packet-buffering", 0L);
             mMediaPlayer.setOption(4, "framedrop", 1L);

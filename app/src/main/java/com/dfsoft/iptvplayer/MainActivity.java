@@ -17,7 +17,10 @@ import com.dfsoft.iptvplayer.manager.IPTVChannel;
 import com.dfsoft.iptvplayer.manager.IPTVConfig;
 import com.dfsoft.iptvplayer.manager.IPTVMessage;
 import com.dfsoft.iptvplayer.player.IPTVPlayerManager;
+import com.dfsoft.iptvplayer.player.IPTVPlayer_HUD;
+import com.dfsoft.iptvplayer.utils.AutoHideView;
 import com.dfsoft.iptvplayer.views.CategoryView;
+import com.dfsoft.iptvplayer.views.InformationView;
 import com.dfsoft.iptvplayer.views.PlayerHUDView;
 
 public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEventLister {
@@ -30,6 +33,11 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     private PlayerHUDView mHudView;
 
     private IPTVConfig config = IPTVConfig.getInstance();
+
+    private AutoHideView mHudHide = null;
+
+    private AutoHideView mInfoHide = null;
+    private InformationView mInfoView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +58,12 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         config.setDataEventLister(this);
         config.iptvMessage.addMessageListener(this.mHandler);
 
+        mHudHide = new AutoHideView(mHudView, mVideoView);
+
+        mInfoView = findViewById(R.id.main_information);
+
+        mInfoHide = new AutoHideView(mInfoView,mVideoView);
+
         mIPTVManager = new IPTVPlayerManager(this);
 
         if (config.getPlayingChannal() == null) {
@@ -62,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
 
     public boolean dealWithKeyDown(int keyCode) {
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
+            mHudHide.toggle();
 //            consoleHide.toggle();
             return true;
         }
@@ -118,6 +133,20 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                     break;
                 case IPTVMessage.IPTV_FULLSCREEN:
 //                    consoleHide.hide();
+                    break;
+                case IPTVMessage.IPTV_HUD_CHANGED:
+                    mHudView.updateHUD((IPTVPlayer_HUD) msg.obj);
+                    break;
+                case IPTVMessage.IPTV_BUFFERING:
+
+                    int tmp = Math.round((float) msg.obj);
+                    String info = "loading " + String.valueOf(tmp) + " %";
+                    mInfoView.updateInfo(info);
+
+                    if (tmp >= 99)
+                        mInfoHide.hide();
+                    else
+                        mInfoHide.show();
                     break;
             }
         }

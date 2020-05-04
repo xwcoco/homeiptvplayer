@@ -106,7 +106,10 @@ public class CategoryView extends FrameLayout {
         }
         mChannelList.setAdapter(cate.channelAdapter);
         mCategoryAdapter.notifyDataSetChanged();
-
+        int cIndex = cate.channelAdapter.getCurrentItem();
+//        this.activeChannel(cIndex);
+        int h = mChannelList.getMeasuredHeight() / 2;
+        mChannelList.setSelectionFromTop(cIndex,h);
     }
 
     public void activeChannel(int index) {

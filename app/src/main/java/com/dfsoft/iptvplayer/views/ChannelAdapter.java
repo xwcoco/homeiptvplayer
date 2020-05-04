@@ -34,6 +34,10 @@ public class ChannelAdapter extends BaseAdapter {
         this.currentItem = currentItem;
     }
 
+    public int getCurrentItem() {
+        return this.currentItem;
+    }
+
     @Override
     public int getCount() {
         return mCategory.get(cateIndex).data.size();
