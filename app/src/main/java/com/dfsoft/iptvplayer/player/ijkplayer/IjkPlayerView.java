@@ -98,6 +98,8 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
         this.mOnVideoSizeChangedListener = listener;
     }
 
+
+
     private IjkMediaPlayer.OnNativeInvokeListener mOnNativeInvokeListener;
     private int mSeekWhenPrepared;  // recording the seek position while preparing
     private boolean mCanPause = true;
@@ -218,7 +220,7 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
         mRenderView.setVideoRotation(mVideoRotationDegree);
     }
 
-    IRenderView.IRenderCallback mSHCallback = new IRenderView.IRenderCallback() {
+    private IRenderView.IRenderCallback mSHCallback = new IRenderView.IRenderCallback() {
         @Override
         public void onSurfaceChanged(@NonNull IRenderView.ISurfaceHolder holder, int format, int w, int h) {
             if (holder.getRenderView() != mRenderView) {
@@ -334,7 +336,8 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
             return (int) mMediaPlayer.getDuration();
         }
 
-        return -1;    }
+        return -1;
+    }
 
     @Override
     public int getCurrentPosition() {
@@ -442,12 +445,15 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
             mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "http-detect-range-support", 0);
             mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_CODEC, "skip_loop_filter", 48);
             mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_CODEC, "skip_loop_filter", 8);
-//            mMediaPlayer.setOption(1, "analyzemaxduration", 100L);
+            mMediaPlayer.setOption(1, "analyzemaxduration", 100L);
 //            mMediaPlayer.setOption(1, "probesize", 10240L);
-            mMediaPlayer.setOption(1, "flush_packets", 1L);
-            mMediaPlayer.setOption(4, "packet-buffering", 0L);
+            mMediaPlayer.setOption(1, "flush_packets", 0L);
+            mMediaPlayer.setOption(4, "packet-buffering", 1L);
             mMediaPlayer.setOption(4, "framedrop", 1L);
+
+
             mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1);
+            mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec-hevc", 1);
 
 
 
@@ -528,7 +534,7 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
             am.abandonAudioFocus(null);
         }
     }
-    IMediaPlayer.OnPreparedListener mPreparedListener = new IMediaPlayer.OnPreparedListener() {
+    private IMediaPlayer.OnPreparedListener mPreparedListener = new IMediaPlayer.OnPreparedListener() {
         public void onPrepared(IMediaPlayer mp) {
             mPrepareEndTime = System.currentTimeMillis();
 //            if (mHudViewHolder != null) {
@@ -737,10 +743,18 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
                 }
             };
 
+    private IMediaPlayer.OnBufferingUpdateListener mPlayerBufferingUpdateListener = null;
+
+    public void setPlayerBufferingUpdateListener(IMediaPlayer.OnBufferingUpdateListener listener) {
+        mPlayerBufferingUpdateListener = listener;
+    }
+
     private IMediaPlayer.OnBufferingUpdateListener mBufferingUpdateListener =
             new IMediaPlayer.OnBufferingUpdateListener() {
                 public void onBufferingUpdate(IMediaPlayer mp, int percent) {
                     mCurrentBufferPercentage = percent;
+                    if (mPlayerBufferingUpdateListener != null)
+                        mPlayerBufferingUpdateListener.onBufferingUpdate(mp,percent);
                 }
             };
 
@@ -800,5 +814,24 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
         mBindView.requestLayout();
         mBindView.invalidate();
     }
+
+    public void stop() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.stop();
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+            mCurrentState = STATE_IDLE;
+            mTargetState = STATE_IDLE;
+            AudioManager am = (AudioManager) mAppContext.getSystemService(Context.AUDIO_SERVICE);
+            am.abandonAudioFocus(null);
+        }
+    }
+
+    public void setAspectRatio(int aspectRatio) {
+        mCurrentAspectRatio = aspectRatio;
+        if (mRenderView != null)
+            mRenderView.setAspectRatio(mCurrentAspectRatio);
+    }
+
 
 }

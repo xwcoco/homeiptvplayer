@@ -14,12 +14,15 @@ public class IPTVMessage {
     public final static int IPTV_EPG_LOADED = 1;
 
     public final static int IPTV_CHANNEL_PLAY = 10;
+    public final static int IPTV_CHANNEL_PLAY_INDEX = 11;
 
     public final static int IPTV_FULLSCREEN = 20;
 
     public final static int IPTV_HUD_CHANGED = 30;
 
     public final static int IPTV_BUFFERING = 31;
+
+    public final static int IPTV_CONFIG_CHANGED = 32;
 
     public void addMessageListener(Handler handler) {
         this.mHandlerList.add(handler);

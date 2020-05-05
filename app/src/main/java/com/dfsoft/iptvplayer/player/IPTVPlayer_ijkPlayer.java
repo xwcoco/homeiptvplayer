@@ -2,12 +2,13 @@ package com.dfsoft.iptvplayer.player;
 
 import android.app.Activity;
 
+import com.dfsoft.iptvplayer.player.ijkplayer.IRenderView;
 import com.dfsoft.iptvplayer.player.ijkplayer.IjkPlayerView;
 import com.dfsoft.iptvplayer.utils.LogUtils;
 
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 
-public class IPTVPlayer_ijkPlayer extends IPTVPlayer_Base implements IMediaPlayer.OnVideoSizeChangedListener {
+public class IPTVPlayer_ijkPlayer extends IPTVPlayer_Base implements IMediaPlayer.OnVideoSizeChangedListener,IMediaPlayer.OnBufferingUpdateListener {
     private final String TAG = "IPTVPlayer_ijkPlayer";
     public IPTVPlayer_ijkPlayer(Activity main) {
         super(main);
@@ -18,6 +19,7 @@ public class IPTVPlayer_ijkPlayer extends IPTVPlayer_Base implements IMediaPlaye
     @Override
     public void bindView() {
         mPlayerView.setOnVideoSizeChangedListener(this);
+        mPlayerView.setPlayerBufferingUpdateListener(this);
         mPlayerView.bindView(this.mVideoLayout);
     }
 
@@ -25,6 +27,11 @@ public class IPTVPlayer_ijkPlayer extends IPTVPlayer_Base implements IMediaPlaye
     public void play(String path) {
         mPlayerView.setVideoPath(path);
         mPlayerView.start();
+    }
+
+    @Override
+    public void stop() {
+        mPlayerView.stop();
     }
 
     private int last_video_width = -1;
@@ -46,4 +53,41 @@ public class IPTVPlayer_ijkPlayer extends IPTVPlayer_Base implements IMediaPlaye
         }
         LogUtils.i(TAG,"video width = "+w+" height = "+h);
     }
+
+    @Override
+    public void onBufferingUpdate(IMediaPlayer mp, int percent) {
+        LogUtils.i(TAG,"buffer ... "+percent);
+    }
+
+    @Override
+    public void close() {
+        mPlayerView.release(true);
+        super.close();
+    }
+
+    @Override
+    public void setDisplayMode(int mode) {
+        int tmode = mode;
+        switch (mode) {
+            case 0:
+                tmode = IRenderView.AR_ASPECT_FIT_PARENT;
+                break;
+            case 1:
+                tmode = IRenderView.AR_MATCH_PARENT;
+                break;
+            case 2:
+                tmode = IRenderView.AR_ASPECT_FILL_PARENT;
+                break;
+            case 3:
+                tmode = IRenderView.AR_16_9_FIT_PARENT;
+                break;
+            case 4:
+                tmode = IRenderView.AR_4_3_FIT_PARENT;
+                break;
+            default:
+                tmode = IRenderView.AR_ASPECT_WRAP_CONTENT;
+        }
+        mPlayerView.setAspectRatio(tmode);
+    }
+
 }

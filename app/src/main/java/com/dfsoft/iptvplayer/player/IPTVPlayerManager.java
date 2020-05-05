@@ -5,40 +5,41 @@ import android.app.Activity;
 import com.dfsoft.iptvplayer.manager.IPTVChannel;
 import com.dfsoft.iptvplayer.manager.IPTVConfig;
 import com.dfsoft.iptvplayer.manager.IPTVMessage;
+import com.dfsoft.iptvplayer.manager.settings.IptvSettingItem;
+import com.dfsoft.iptvplayer.manager.settings.IptvSettings;
 
 public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
     private Activity main = null;
 
-    private int playerid = 1;
+    private int playerid = 0;
 
     private IPTVPlayer_Base mPlayer = null;
     private IPTVConfig config = IPTVConfig.getInstance();
 
     public IPTVPlayer_HUD hud = new IPTVPlayer_HUD();
 
-    private int mSourceIndex = 0;
-
-    public int getCurrentSourceIndex() {
-        return mSourceIndex;
-    }
-
     public IPTVPlayerManager(Activity main) {
         this.main = main;
+        IptvSettingItem item = config.settings.getItemByTag(IptvSettings.IPTV_SETTING_TAG_PLAYER);
+        if (item != null) {
+            playerid = item.getValue();
+        }
         this.createPlayer();
     }
 
     private void createPlayer() {
         switch (playerid) {
             case 0:
-                mPlayer = new IPTVPlayer_ijkPlayer(main);
+                mPlayer = new IPTVPlayer_VLCPlayer(main);
                 break;
             case 1:
-                mPlayer = new IPTVPlayer_VLCPlayer(main);
+                mPlayer = new IPTVPlayer_ijkPlayer(main);
                 break;
         }
         if (mPlayer == null) return;
         mPlayer.setHudInterface(this);
         mPlayer.initPlayer();
+        setDisplayMode();
     }
 
     public void play(IPTVChannel channel,int index) {
@@ -47,7 +48,7 @@ public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
 
         this.hud = new IPTVPlayer_HUD();
 
-        mSourceIndex = index;
+        channel.playIndex = index;
 
         mPlayer.play(channel.source.get(index));
 
@@ -87,5 +88,25 @@ public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
     public void OnGetHud(IPTVPlayer_HUD hud) {
         this.hud = hud;
         config.iptvMessage.sendMessage(IPTVMessage.IPTV_HUD_CHANGED,hud);
+    }
+
+    public void changePlayer(int newIndex) {
+        if (playerid == newIndex) return;
+        playerid = newIndex;
+        mPlayer.stop();
+        mPlayer.close();
+        this.createPlayer();
+        if (mPlayer != null) {
+            IPTVChannel channel = config.getPlayingChannal();
+            if (channel != null)
+                play(channel,channel.playIndex);
+        }
+    }
+
+    public void setDisplayMode() {
+        IptvSettingItem item = config.settings.getItemByTag(IptvSettings.IPTV_SETTING_TAG_DISPLAY_MODE);
+        if (item == null) return;
+        int mode = item.getValue();
+        mPlayer.setDisplayMode(mode);
     }
 }

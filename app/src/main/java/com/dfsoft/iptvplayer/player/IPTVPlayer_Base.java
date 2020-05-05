@@ -55,6 +55,12 @@ public class IPTVPlayer_Base {
     }
 
     public void close() {
+        mVideoLayout.removeAllViews();
+    }
 
+    protected int scaleMode = 0;
+
+    public void setDisplayMode(int mode) {
+        scaleMode = mode;
     }
 }

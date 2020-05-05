@@ -13,18 +13,25 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.TextClock;
 
 import com.dfsoft.iptvplayer.manager.IPTVChannel;
 import com.dfsoft.iptvplayer.manager.IPTVConfig;
 import com.dfsoft.iptvplayer.manager.IPTVMessage;
+import com.dfsoft.iptvplayer.manager.settings.IptvSettingItem;
+import com.dfsoft.iptvplayer.manager.settings.IptvSettings;
 import com.dfsoft.iptvplayer.player.IPTVPlayerManager;
 import com.dfsoft.iptvplayer.player.IPTVPlayer_HUD;
 import com.dfsoft.iptvplayer.utils.AutoHideView;
+import com.dfsoft.iptvplayer.utils.LogUtils;
 import com.dfsoft.iptvplayer.views.CategoryView;
 import com.dfsoft.iptvplayer.views.InformationView;
 import com.dfsoft.iptvplayer.views.PlayerHUDView;
+import com.dfsoft.iptvplayer.views.SettingAdapter;
+import com.dfsoft.iptvplayer.views.SettingView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEventLister {
 
@@ -42,6 +49,10 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     private AutoHideView mInfoHide = null;
     private InformationView mInfoView = null;
 
+    private SettingView mSettingView = null;
+
+    private TextClock mClockView = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
 
         mHudView = findViewById(R.id.main_hud_view);
 
+        mClockView = findViewById(R.id.main_clock);
+
         config.setDataEventLister(this);
         config.iptvMessage.addMessageListener(this.mHandler);
 
@@ -65,12 +78,24 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
 
         mInfoView = findViewById(R.id.main_information);
 
-        mInfoHide = new AutoHideView(mInfoView,mVideoView);
+        mInfoHide = new AutoHideView(mInfoView, mVideoView);
+
+        mSettingView = findViewById(R.id.main_settings_view);
+
+        if (config.settings == null) {
+            config.settings = new IptvSettings(this);
+            config.settings.initAllSettings();
+            config.settings.load();
+        }
+
+        IptvSettingItem item = config.settings.getItemByTag(IptvSettings.IPTV_SETTING_TAG_SHOWTIME);
+        if (item != null && item.getValue() != 0)
+            mClockView.setVisibility(View.GONE);
 
         mIPTVManager = new IPTVPlayerManager(this);
 
         if (config.getPlayingChannal() == null) {
-            config.setPlayingChannal(config.getFirstCanPlayChannel());
+            config.setFirstRunPlayChannel();
         }
         if (config.getPlayingChannal() != null) {
             mIPTVManager.play(config.getPlayingChannal());
@@ -101,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                 if (channel != null) {
                     playChannal(channel);
                 } else {
-                    mInfoView.updateInfo(searchChannel+" 频道号不存在!");
+                    mInfoView.updateInfo(searchChannel + " 频道号不存在!");
                     mInfoHide.show();
                 }
                 isSearchChannelMode = false;
@@ -141,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         }
 
         if (keyCode == KeyEvent.KEYCODE_MENU) {
+            showSettings();
             return true;
         }
 
@@ -191,7 +217,15 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                     playChannal(channel);
 
                     break;
+                case IPTVMessage.IPTV_CHANNEL_PLAY_INDEX:
+                    HashMap hashMap = (HashMap) msg.obj;
+                    channel = (IPTVChannel) hashMap.get("channel");
+                    if (channel == null) return;
+                    int newIndex = (int) hashMap.get("index");
+                    playChannal(channel, newIndex);
+                    break;
                 case IPTVMessage.IPTV_FULLSCREEN:
+                    mVideoView.requestFocus();
 //                    consoleHide.hide();
                     break;
                 case IPTVMessage.IPTV_HUD_CHANGED:
@@ -211,24 +245,37 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                     else
                         mInfoHide.show();
                     break;
+                case IPTVMessage.IPTV_CONFIG_CHANGED:
+                    IptvSettingItem item = (IptvSettingItem) msg.obj;
+                    applySetting(item);
+                    break;
             }
         }
     };
 
     public void playChannal(IPTVChannel channel) {
-        playChannal(channel,0);
+        playChannal(channel, 0);
     }
 
-    public void playChannal(IPTVChannel channel,int index) {
+    public void playChannal(IPTVChannel channel, int index) {
         mVideoView.requestFocus();
 //        config.setPlayingChannal(channel);
-        mIPTVManager.play(channel,index);
+        mIPTVManager.play(channel, index);
         mHudHide.show();
     }
 
     @Override
     public void onInitData(Boolean isOk) {
-
+        if (isOk) {
+            mInfoView.updateInfo("本次更新："+config.getCategoryInfo());
+            mInfoHide.show();
+//            config.setFirstRunPlayChannel();
+//            if (config.getPlayingChannal() != null)
+//                this.mIPTVManager.play(config.getPlayingChannal());
+        } else {
+            mInfoView.updateInfo("本次更新失败！");
+            mInfoHide.show();
+        }
     }
 
     @Override
@@ -252,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
 
     public void backToLastPlayChannel() {
         IPTVChannel channel = config.getLastPlayingChannel();
-        if (channel != null)
+        if (channel != null && channel != config.getPlayingChannal())
             playChannal(channel);
     }
 
@@ -261,13 +308,57 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         if (channel == null) return;
 
         if (channel.source.size() == 1) return;
-        int index = this.mIPTVManager.getCurrentSourceIndex();
+        int index = channel.playIndex;
         if (index == channel.source.size() - 1)
             index = 0;
         else
             index = index + 1;
 
-        this.playChannal(channel,index);
+        this.playChannal(channel, index);
 
+    }
+
+
+    private void showSettings() {
+        config.settings.addPlayingChannelSetting();
+        mSettingView.show();
+    }
+
+    private void applySetting(IptvSettingItem item) {
+        if (item == null) return;
+        LogUtils.i(TAG, "change config " + item.tag + " -> " + item.getValue());
+        switch (item.tag) {
+            case IptvSettings.IPTV_SETTING_TAG_CHANNEL_SOUCE:
+                playChannal(config.getPlayingChannal(), item.getValue());
+                break;
+            case IptvSettings.IPTV_SETTING_TAG_PLAYER:
+                mIPTVManager.changePlayer(item.getValue());
+                mSettingView.hide();
+                break;
+            case IptvSettings.IPTV_SETTING_TAG_DISPLAY_MODE:
+                mIPTVManager.setDisplayMode();
+                break;
+            case IptvSettings.IPTV_SETTING_TAG_SHOWTIME:
+                int vi = item.getValue();
+                if (vi == 0)
+                    mClockView.setVisibility(View.VISIBLE);
+                else
+                    mClockView.setVisibility(View.GONE);
+                break;
+            case IptvSettings.IPTV_SETTING_TAG_UPDATEDATA:
+                config.initConfig();
+                mSettingView.hide();
+                break;
+        }
+        mSettingView.afterApplySetting();
+    }
+
+    @Override
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_ESCAPE) {
+            this.finish();
+            System.exit(0);
+        }
+        return super.onKeyLongPress(keyCode, event);
     }
 }

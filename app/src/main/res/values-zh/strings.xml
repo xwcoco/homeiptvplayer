@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IPTV直播</string>
+
+    <string name="loading">载入</string>
+    <string name="set_source">直播源</string>
+    <string name="vlcplayer">VLCPlayer</string>
+    <string name="ijkplayer">IJKPlayer</string>
+    <string name="setting_player">播放器</string>
+    <string name="setting_displaymode">显示模式</string>
+    <string name="setting_showtime">显示时间</string>
+    <string name="set_datamanager">数据管理</string>
+    <string name="set_updatedata">更新数据</string>
+    <string name="DM_BEST_FIT">最佳匹配</string>
+    <string name="DM_FIT_SCREEN">匹配屏幕</string>
+    <string name="DM_FILL">填充</string>
+    <string name="DM_16_9">16 ：9显示</string>
+    <string name="DM_4_3">4 ：3显示</string>
+    <string name="DM_ORIGINAL">原始数据</string>
+    <string name="boolean_yes">是</string>
+    <string name="boolean_no">否</string>
+</resources>

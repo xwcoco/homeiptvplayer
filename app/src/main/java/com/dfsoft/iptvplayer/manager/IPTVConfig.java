@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.dfsoft.iptvplayer.manager.settings.IptvSettings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,6 +39,8 @@ public class IPTVConfig {
 
     public IPTVMessage iptvMessage = new IPTVMessage();
 
+    public IptvSettings settings = null;
+
 
     private IPTVConfig() {
     }
@@ -64,6 +67,10 @@ public class IPTVConfig {
             mLastPlayChannel = this.playingChannal;
 
         this.playingChannal = playingChannal;
+
+        if (this.settings != null)
+            this.settings.saveLastPlayedChannel();
+
         if (this.dataEventLister != null)
             this.dataEventLister.onPlayChannel();
 
@@ -254,5 +261,27 @@ public class IPTVConfig {
             }
         }
         return null;
+    }
+
+    public void setFirstRunPlayChannel() {
+        int lastnum = this.settings.getLastPlayedChannel();
+        IPTVChannel channel = null;
+        if (lastnum != -1) {
+            channel = findChannelByNum(lastnum);
+        }
+        if (channel == null)
+            channel = getFirstCanPlayChannel();
+        if (channel != null)
+            setPlayingChannal(channel);
+    }
+
+    public String getCategoryInfo() {
+        int num = 0;
+        for (int i = 0; i < category.size(); i++) {
+            IPTVCategory cate = category.get(i);
+            num = num + cate.data.size();
+        }
+        String ret = String.valueOf(category.size())+" 个分类 " + String.valueOf(num)+" 个节目";
+        return  ret;
     }
 }

@@ -72,11 +72,25 @@ public class IPTVPlayer_VLCPlayer extends IPTVPlayer_Base implements MediaPlayer
     public void play(String path) {
         Media media = new Media(mLibVLC, Uri.parse(path));
         media.addOption(":network-caching=1000");
+//        media.addOption(":codec=mediacodec_ndk,mediacodec_jni,none");
         mMediaPlayer.setMedia(media);
-        mMediaPlayer.setVideoScale(MediaPlayer.ScaleType.SURFACE_BEST_FIT);
-//        media.release();
+        mMediaPlayer.setVideoScale(MediaPlayer.ScaleType.values()[scaleMode]);
+        media.release();
 
         mMediaPlayer.play();
+    }
+
+    @Override
+    public void stop() {
+        mMediaPlayer.stop();
+    }
+
+    @Override
+    public void setDisplayMode(int mode) {
+        super.setDisplayMode(mode);
+        MediaPlayer.ScaleType oldmode = mMediaPlayer.getVideoScale();
+        if (oldmode.ordinal() == mode) return;
+        mMediaPlayer.setVideoScale(MediaPlayer.ScaleType.values()[mode]);
     }
 
     @Override
@@ -87,6 +101,7 @@ public class IPTVPlayer_VLCPlayer extends IPTVPlayer_Base implements MediaPlayer
         if (mLibVLC != null) {
             mLibVLC.release();
         }
+        super.close();
     }
 
     @Override

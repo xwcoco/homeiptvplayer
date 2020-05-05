@@ -221,6 +221,7 @@ public class CategoryView extends FrameLayout {
         }
     };
 
+
     private OnFocusChangeListener mCateFocusChangeListener = new OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {

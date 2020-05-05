@@ -2,6 +2,23 @@
     <string name="app_name">homeiptvplayer</string>
 
     <string name="loading">loading</string>
+    <string name="set_source">Source</string>
+    <string name="vlcplayer">VLCPlayer</string>
+    <string name="ijkplayer">IJKPlayer</string>
+    <string name="setting_player">Player</string>
+    <string name="setting_displaymode">Display Mode</string>
+    <string name="setting_showtime">Show Time</string>
+    <string name="set_datamanager">Data Manager</string>
+    <string name="set_updatedata">Update Data</string>
+    <string name="DM_BEST_FIT">Best fit</string>
+    <string name="DM_FIT_SCREEN">Fit Screen</string>
+    <string name="DM_FILL">Fill</string>
+    <string name="DM_16_9">16_9</string>
+    <string name="DM_4_3">4_3</string>
+    <string name="DM_ORIGINAL">Original</string>
+    <string name="boolean_yes">Yes</string>
+    <string name="boolean_no">No</string>
+
 
     <string name="pref_key_enable_background_play">pref_key_enable_background_play</string>
     <string name="pref_key_player">pref_key_player</string>
@@ -23,5 +40,7 @@
     <string name="VideoView_player_AndroidMediaPlayer">VideoView_player_AndroidMediaPlayer</string>
     <string name="VideoView_player_IjkMediaPlayer">VideoView_player_IjkMediaPlayer</string>
     <string name="VideoView_player_IjkExoMediaPlayer">VideoView_player_IjkExoMediaPlayer</string>
+
+
 
 </resources>
