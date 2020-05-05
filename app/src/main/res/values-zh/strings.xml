@@ -19,4 +19,8 @@
     <string name="DM_ORIGINAL">原始数据</string>
     <string name="boolean_yes">是</string>
     <string name="boolean_no">否</string>
+
+    <string name="quit">确认要退出吗?</string>
+    <string name="quit_ok">退出</string>
+    <string name="Canel">取消</string>
 </resources>

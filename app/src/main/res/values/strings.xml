@@ -19,27 +19,34 @@
     <string name="boolean_yes">Yes</string>
     <string name="boolean_no">No</string>
 
+    <string name="quit">Are you want to Quit?</string>
+    <string name="quit_ok">Quit</string>
+    <string name="Canel">Cancel</string>
 
-    <string name="pref_key_enable_background_play">pref_key_enable_background_play</string>
-    <string name="pref_key_player">pref_key_player</string>
-    <string name="pref_key_using_media_codec">pref_key_using_media_codec</string>
-    <string name="pref_key_using_media_codec_auto_rotate">pref_key_using_media_codec_auto_rotate</string>
-    <string name="pref_key_media_codec_handle_resolution_change">pref_key_media_codec_handle_resolution_change</string>
-    <string name="pref_key_using_opensl_es">pref_key_using_opensl_es</string>
-    <string name="pref_key_pixel_format">pref_key_pixel_format</string>
-    <string name="pref_key_using_mediadatasource">pref_key_using_mediadatasource</string>
-    <string name="pref_key_enable_surface_view">pref_key_enable_surface_view</string>
-    <string name="pref_key_enable_texture_view">pref_key_enable_texture_view</string>
-    <string name="pref_key_enable_detached_surface_texture">pref_key_enable_detached_surface_texture</string>
-    <string name="pref_key_enable_no_view">pref_key_enable_no_view</string>
 
-    <string name="VideoView_render_none">VideoView_render_none</string>
-    <string name="VideoView_render_surface_view">VideoView_render_surface_view</string>
-    <string name="VideoView_render_texture_view">VideoView_render_texture_view</string>
-    <string name="N_A">NA</string>
-    <string name="VideoView_player_AndroidMediaPlayer">VideoView_player_AndroidMediaPlayer</string>
-    <string name="VideoView_player_IjkMediaPlayer">VideoView_player_IjkMediaPlayer</string>
-    <string name="VideoView_player_IjkExoMediaPlayer">VideoView_player_IjkExoMediaPlayer</string>
+
+
+
+<!--    <string name="pref_key_enable_background_play">pref_key_enable_background_play</string>-->
+<!--    <string name="pref_key_player">pref_key_player</string>-->
+<!--    <string name="pref_key_using_media_codec">pref_key_using_media_codec</string>-->
+<!--    <string name="pref_key_using_media_codec_auto_rotate">pref_key_using_media_codec_auto_rotate</string>-->
+<!--    <string name="pref_key_media_codec_handle_resolution_change">pref_key_media_codec_handle_resolution_change</string>-->
+<!--    <string name="pref_key_using_opensl_es">pref_key_using_opensl_es</string>-->
+<!--    <string name="pref_key_pixel_format">pref_key_pixel_format</string>-->
+<!--    <string name="pref_key_using_mediadatasource">pref_key_using_mediadatasource</string>-->
+<!--    <string name="pref_key_enable_surface_view">pref_key_enable_surface_view</string>-->
+<!--    <string name="pref_key_enable_texture_view">pref_key_enable_texture_view</string>-->
+<!--    <string name="pref_key_enable_detached_surface_texture">pref_key_enable_detached_surface_texture</string>-->
+<!--    <string name="pref_key_enable_no_view">pref_key_enable_no_view</string>-->
+
+<!--    <string name="VideoView_render_none">VideoView_render_none</string>-->
+<!--    <string name="VideoView_render_surface_view">VideoView_render_surface_view</string>-->
+<!--    <string name="VideoView_render_texture_view">VideoView_render_texture_view</string>-->
+<!--    <string name="N_A">NA</string>-->
+<!--    <string name="VideoView_player_AndroidMediaPlayer">VideoView_player_AndroidMediaPlayer</string>-->
+<!--    <string name="VideoView_player_IjkMediaPlayer">VideoView_player_IjkMediaPlayer</string>-->
+<!--    <string name="VideoView_player_IjkExoMediaPlayer">VideoView_player_IjkExoMediaPlayer</string>-->
 
 
 

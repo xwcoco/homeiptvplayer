@@ -39,7 +39,7 @@ public class SettingAdapter extends BaseAdapter {
         return position;
     }
 
-    private int currentItem = -1;
+    private int currentItem = 0;
 
     private int getResId(String resName) {
         Resources res = mContext.getResources();

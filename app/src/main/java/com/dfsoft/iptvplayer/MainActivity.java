@@ -1,7 +1,10 @@
 package com.dfsoft.iptvplayer;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,6 +13,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -27,6 +32,7 @@ import com.dfsoft.iptvplayer.utils.LogUtils;
 import com.dfsoft.iptvplayer.views.CategoryView;
 import com.dfsoft.iptvplayer.views.InformationView;
 import com.dfsoft.iptvplayer.views.PlayerHUDView;
+import com.dfsoft.iptvplayer.views.QuitView;
 import com.dfsoft.iptvplayer.views.SettingAdapter;
 import com.dfsoft.iptvplayer.views.SettingView;
 
@@ -52,6 +58,10 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     private SettingView mSettingView = null;
 
     private TextClock mClockView = null;
+
+    private AutoHideView mQuitHide = null;
+
+    private QuitView mQuitView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +91,9 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         mInfoHide = new AutoHideView(mInfoView, mVideoView);
 
         mSettingView = findViewById(R.id.main_settings_view);
+
+        mQuitView = findViewById(R.id.main_quit);
+        mQuitHide = new AutoHideView(mQuitView, mVideoView);
 
         if (config.settings == null) {
             config.settings = new IptvSettings(this);
@@ -119,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
             return true;
         }
 
-        if (keyCode == KeyEvent.KEYCODE_ENTER) {
+        if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
 
             if (isSearchChannelMode && !TextUtils.isEmpty(this.searchChannel)) {
                 IPTVChannel channel = config.findChannelByNum(Integer.parseInt(searchChannel));
@@ -156,7 +169,11 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         }
 
         if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_DEL) {
-            this.backToLastPlayChannel();
+//            if (mRunHandler.hasCallbacks(mPlayLastChannalRunnable)) {
+//
+//            }
+//            mRunHandler.postDelayed(mPlayLastChannalRunnable,1000);
+            askForQuit();
             return true;
         }
 
@@ -178,8 +195,12 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+//        mInfoView.updateInfo(" pressed : " + String.valueOf(keyCode));
+//        mInfoHide.show();
+
         View view = getCurrentFocus();
-        if (view != null && view.getId() != R.id.main_video_view) {
+        if (view != null && view.getId() != R.id.main_video_view && !ViewIsGone(view)) {
             return super.onKeyDown(keyCode, event);
         }
         Log.d(TAG, "onKeyDown: " + view);
@@ -225,7 +246,8 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                     playChannal(channel, newIndex);
                     break;
                 case IPTVMessage.IPTV_FULLSCREEN:
-                    mVideoView.requestFocus();
+                    mRunHandler.postDelayed(mFocusVideoRunnable, UI_ANIMATION_DELAY);
+//                    mVideoView.requestFocus();
 //                    consoleHide.hide();
                     break;
                 case IPTVMessage.IPTV_HUD_CHANGED:
@@ -249,6 +271,9 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                     IptvSettingItem item = (IptvSettingItem) msg.obj;
                     applySetting(item);
                     break;
+                case IPTVMessage.IPTV_QUIT:
+                    exit();
+                    break;
             }
         }
     };
@@ -267,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     @Override
     public void onInitData(Boolean isOk) {
         if (isOk) {
-            mInfoView.updateInfo("本次更新："+config.getCategoryInfo());
+            mInfoView.updateInfo("本次更新：" + config.getCategoryInfo());
             mInfoHide.show();
 //            config.setFirstRunPlayChannel();
 //            if (config.getPlayingChannal() != null)
@@ -353,12 +378,50 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         mSettingView.afterApplySetting();
     }
 
-    @Override
-    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_ESCAPE) {
-            this.finish();
-            System.exit(0);
+    private final Handler mRunHandler = new Handler();
+    private final int UI_ANIMATION_DELAY = 300;
+    private final Runnable mFocusVideoRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mVideoView.requestFocus();
         }
-        return super.onKeyLongPress(keyCode, event);
+    };
+
+    private void exit() {
+        this.finish();
+        System.exit(0);
     }
+
+    private final Runnable mPlayLastChannalRunnable = new Runnable() {
+        @Override
+        public void run() {
+            backToLastPlayChannel();
+        }
+    };
+
+    private void askForQuit() {
+        mQuitView.show();
+    }
+
+    private boolean ViewIsGone(View view) {
+        if (view.getVisibility() != View.VISIBLE) return true;
+
+        ViewParent parent =  view.getParent();
+        if (parent == null) return false;
+        if (parent instanceof View)
+            return ViewIsGone((View) parent);
+        return false;
+    }
+
+//    @Override
+//    public boolean dispatchKeyEvent(KeyEvent event) {
+//        View view = getCurrentFocus();
+//        if (view != null && view.getId() != R.id.main_video_view && !ViewIsGone(view)) {
+//            return super.dispatchKeyEvent(event);
+//        }
+//        boolean ret = dealWithKeyDown(event.getKeyCode());
+//        if (ret)
+//            return  true;
+//        return super.dispatchKeyEvent(event);
+//    }
 }

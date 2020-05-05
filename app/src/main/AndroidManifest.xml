@@ -29,7 +29,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|keyboard|screenSize"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/AppTheme.Main">
         </activity>
 <!--        <activity android:name=".MainActivity">-->

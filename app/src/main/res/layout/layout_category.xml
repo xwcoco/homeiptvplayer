@@ -12,7 +12,7 @@
 
     <com.dfsoft.iptvplayer.views.FocusListView
         android:layout_width="120dp"
-        android:dividerHeight="1sp"
+        android:dividerHeight="1dp"
         android:padding="3dip"
         android:id="@+id/categorylistView"
         android:divider="@null"
@@ -30,7 +30,7 @@
         android:id="@+id/category_channel_list"
         android:listSelector="@drawable/item_bg_selector_right"
         android:background="@color/black_overlay"
-        android:dividerHeight="10dp"
+        android:dividerHeight="1dp"
         />
     <LinearLayout
         android:layout_width="1.0dip"
@@ -43,7 +43,7 @@
         android:id="@+id/category_epg_list"
         android:listSelector="@drawable/item_bg_selector_right"
         android:background="@color/black_overlay"
-        android:dividerHeight="10dp"
+        android:dividerHeight="1dp"
         />
 
 

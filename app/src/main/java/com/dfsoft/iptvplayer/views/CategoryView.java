@@ -72,6 +72,18 @@ public class CategoryView extends FrameLayout {
             }
         });
 
+        mCateList.setOnKeyListener(new OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_MENU || keyCode == KeyEvent.KEYCODE_BACK) {
+                    hide();
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
         mChannelList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -95,6 +107,17 @@ public class CategoryView extends FrameLayout {
         mCateList.setOnFocusChangeListener(this.mCateFocusChangeListener);
 
         mChannelList.setOnKeyListener(mKeyListener);
+
+        mEpgList.setOnKeyListener(new OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_MENU || keyCode == KeyEvent.KEYCODE_BACK) {
+                    hide();
+                    return true;
+                }
+                return false;
+            }
+        });
 
     }
 
@@ -213,7 +236,7 @@ public class CategoryView extends FrameLayout {
 //
                 return true;
             }
-            if (keyCode == KeyEvent.KEYCODE_ESCAPE || keyCode == KeyEvent.KEYCODE_DEL) {
+            if (keyCode == KeyEvent.KEYCODE_ESCAPE || keyCode == KeyEvent.KEYCODE_DEL || keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU) {
                 hide();
                 return true;
             }

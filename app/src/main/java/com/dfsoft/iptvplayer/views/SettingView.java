@@ -67,7 +67,7 @@ public class SettingView extends FrameLayout {
         mSettingList.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ESCAPE || keyCode == KeyEvent.KEYCODE_DEL) {
+                if (keyCode == KeyEvent.KEYCODE_ESCAPE || keyCode == KeyEvent.KEYCODE_DEL  || keyCode == KeyEvent.KEYCODE_BACK ) {
                     hide();
                     return true;
                 }
@@ -93,9 +93,15 @@ public class SettingView extends FrameLayout {
 
 
     public void show() {
-        SettingAdapter adapter = new SettingAdapter(mContext,config.settings);
+        SettingAdapter adapter = (SettingAdapter) mSettingList.getAdapter();
+        if (adapter == null) {
+            adapter = new SettingAdapter(mContext,config.settings);
+            mSettingList.setAdapter(adapter);
+        } else
+            adapter.notifyDataSetChanged();
 
-        mSettingList.setAdapter(adapter);
+        mSettingList.setSelection(0);
+
 
 
         this.setVisibility(VISIBLE);
@@ -137,7 +143,7 @@ public class SettingView extends FrameLayout {
 //
                 return true;
             }
-            if (keyCode == KeyEvent.KEYCODE_ESCAPE || keyCode == KeyEvent.KEYCODE_DEL) {
+            if (keyCode == KeyEvent.KEYCODE_ESCAPE || keyCode == KeyEvent.KEYCODE_DEL || keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU) {
                 hide();
                 return true;
             }

@@ -8,7 +8,7 @@
     <com.dfsoft.iptvplayer.views.FocusListView
         android:layout_width="0dp"
         android:layout_weight="2"
-        android:dividerHeight="1sp"
+        android:dividerHeight="1dp"
         android:id="@+id/setting_list"
         android:divider="@null"
         android:listSelector="@drawable/item_bg_selector_left"
@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:id="@+id/setting_options"
         android:listSelector="@drawable/item_bg_selector_right"
-        android:dividerHeight="10dp"
+        android:dividerHeight="1dp"
         />
 
 </LinearLayout>
