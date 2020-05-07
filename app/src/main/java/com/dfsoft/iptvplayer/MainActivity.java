@@ -148,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                 return true;
             }
 
+            mHudView.updateHud();
             mHudHide.toggle();
 //            consoleHide.toggle();
             return true;

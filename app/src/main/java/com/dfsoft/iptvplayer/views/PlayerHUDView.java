@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ public class PlayerHUDView extends FrameLayout {
     private WeatherView mWeatherView;
 
     private ImageView hud_video_type;
+    private ProgressBar hud_current_program_percent;
 
 
     private TextView hud_source_text;
@@ -81,6 +83,8 @@ public class PlayerHUDView extends FrameLayout {
         hud_video_type = findViewById(R.id.hud_video_type);
 
         mWeatherView = findViewById(R.id.hud_weather_view);
+
+        hud_current_program_percent = findViewById(R.id.hud_current_program_percent);
     }
 
     private IPTVConfig config = IPTVConfig.getInstance();
@@ -109,6 +113,7 @@ public class PlayerHUDView extends FrameLayout {
         if (channel.epg.isEmpty()) {
             Log.d(TAG, "showPlayingChannelConsole: empty epg");
             channel.loadEPGData();
+            hud_current_program_percent.setProgress(0);
         } else {
             channel.epg.getCurrentTimer();
             if (channel.epg.curTime != -1) {
@@ -121,8 +126,9 @@ public class PlayerHUDView extends FrameLayout {
                     nextEPG = data.name;
                 }
             }
+            int percent = channel.epg.getCurrenPercent();
+            hud_current_program_percent.setProgress(percent);
         }
-
         hud_current_program_time.setText(curTime);
         hud_current_program_name.setText(curEPG);
         hud_next_program_time.setText(nextTime);

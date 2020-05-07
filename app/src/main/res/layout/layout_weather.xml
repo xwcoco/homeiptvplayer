@@ -32,7 +32,7 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:textColor="@color/white"
         android:textSize="@dimen/hud_weather_tq_textSize"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="@id/hud_weather_icon"
         app:layout_constraintEnd_toEndOf="parent"
