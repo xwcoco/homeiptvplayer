@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/hud_channel_view_left"
+        android:layout_marginTop="@dimen/hud_channel_number_top"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -27,11 +28,11 @@
             android:layout_width="@dimen/hud_channel_number_width"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/hud_channel_number_left"
-            android:layout_marginTop="@dimen/hud_channel_number_top"
             android:ellipsize="marquee"
             android:gravity="center"
             android:marqueeRepeatLimit="marquee_forever"
             android:shadowColor="#cc000000"
+            android:layout_marginTop="5dp"
             android:shadowDx="5.0"
             android:shadowRadius="5.0"
             android:singleLine="true"
@@ -99,6 +100,7 @@
             android:text="@string/currentProgram"
             android:textColor="@color/white"
             android:textSize="@dimen/hud_epg_textSize"
+            android:layout_marginTop="@dimen/hud_epg_top_sapce"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -135,6 +137,7 @@
             android:layout_height="@dimen/hud_current_program_percent_height"
             android:layout_marginStart="@dimen/hud_current_program_percent_space"
             android:layout_marginEnd="@dimen/hud_current_program_percent_space"
+            android:layout_marginTop="@dimen/hud_epg_space"
             android:max="100"
             android:progress="40"
             app:layout_constraintEnd_toEndOf="parent"
@@ -145,7 +148,7 @@
             android:id="@+id/hud_next_program"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/hud_channel_space"
+            android:layout_marginTop="@dimen/hud_epg_space"
             android:text="@string/nextProgram"
             android:textColor="@color/epg"
             android:textSize="@dimen/hud_epg_textSize"
@@ -180,6 +183,7 @@
             android:id="@+id/hud_channel_info_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="@dimen/hud_epg_space"
             android:layout_marginStart="@dimen/hud_channel_space"
             android:layout_marginEnd="@dimen/hud_channel_space"
             app:layout_constraintBottom_toBottomOf="parent"

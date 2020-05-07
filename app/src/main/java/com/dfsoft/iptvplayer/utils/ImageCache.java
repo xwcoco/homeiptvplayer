@@ -7,6 +7,9 @@ import android.os.Handler;
 import android.util.Log;
 import android.util.LruCache;
 
+import com.dfsoft.iptvplayer.manager.IPTVConfig;
+import com.dfsoft.iptvplayer.manager.IPTVMessage;
+
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -99,8 +102,9 @@ public class ImageCache {
                     byte[] bytes = response.body().bytes();
                     final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     if (bitmap != null) {
-                        Log.e(TAG, "保存图片成功");
                         put(putkey,bitmap);
+                        IPTVConfig config = IPTVConfig.getInstance();
+                        config.iptvMessage.sendMessage(IPTVMessage.IPTV_IMAGECACHE_UPDATE,putkey);
                     }
                 }
             });

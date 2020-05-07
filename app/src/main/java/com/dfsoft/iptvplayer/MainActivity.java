@@ -1,10 +1,7 @@
 package com.dfsoft.iptvplayer;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,7 +11,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowManager;
@@ -34,9 +30,7 @@ import com.dfsoft.iptvplayer.views.CategoryView;
 import com.dfsoft.iptvplayer.views.InformationView;
 import com.dfsoft.iptvplayer.views.PlayerHUDView;
 import com.dfsoft.iptvplayer.views.QuitView;
-import com.dfsoft.iptvplayer.views.SettingAdapter;
 import com.dfsoft.iptvplayer.views.SettingView;
-import com.dfsoft.iptvplayer.views.WeatherView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         config.iptvMessage.addMessageListener(this.mHandler);
 
         mHudHide = new AutoHideView(mHudView, mVideoView);
+        mHudHide.setAUTO_HIDE_DELAY_MILLIS(10000);
 
         mInfoView = findViewById(R.id.main_information);
 
@@ -108,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
             mClockView.setVisibility(View.GONE);
 
 
-        this.getDeviceInfo();
+//        this.getDeviceInfo();
 
 
         mIPTVManager = new IPTVPlayerManager(this);
@@ -166,24 +161,28 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         }
 
         if (keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_UP) {
-            playLastChannel();
+            playNextChannel();
             return true;
         }
 
         if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_DOWN) {
-            playNextChannel();
+            playLastChannel();
         }
 
         if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_DEL) {
-//            if (mRunHandler.hasCallbacks(mPlayLastChannalRunnable)) {
-//
-//            }
-//            mRunHandler.postDelayed(mPlayLastChannalRunnable,1000);
-            askForQuit();
+            if (isBackPressed) {
+                isBackPressed = false;
+                mRunHandler.removeCallbacks(mPlayLastChannalRunnable);
+                askForQuit();
+                return true;
+            }
+            isBackPressed = true;
+            mRunHandler.postDelayed(mPlayLastChannalRunnable,1000);
             return true;
         }
 
         if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_RIGHT) {
+//            this.getDeviceInfo();
             this.playNextSource();
             return true;
         }
@@ -257,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
 //                    consoleHide.hide();
                     break;
                 case IPTVMessage.IPTV_HUD_CHANGED:
-                    mHudView.updateHUD((IPTVPlayer_HUD) msg.obj);
+                    mHudView.updateVideoWidthAndHeight((IPTVPlayer_HUD) msg.obj);
                     break;
                 case IPTVMessage.IPTV_BUFFERING:
 
@@ -276,6 +275,9 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                 case IPTVMessage.IPTV_CONFIG_CHANGED:
                     IptvSettingItem item = (IptvSettingItem) msg.obj;
                     applySetting(item);
+                    break;
+                case IPTVMessage.IPTV_IMAGECACHE_UPDATE:
+                    mHudView.updateHud();
                     break;
                 case IPTVMessage.IPTV_QUIT:
                     exit();
@@ -399,10 +401,12 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         System.exit(0);
     }
 
+    private Boolean isBackPressed = false;
     private final Runnable mPlayLastChannalRunnable = new Runnable() {
         @Override
         public void run() {
             backToLastPlayChannel();
+            isBackPressed = false;
         }
     };
 
@@ -418,6 +422,11 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         if (parent instanceof View)
             return ViewIsGone((View) parent);
         return false;
+    }
+
+    public void showInfo(String info) {
+        this.mInfoView.updateInfo(info);
+        this.mInfoHide.show();
     }
 
 //    @Override
@@ -442,6 +451,8 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         String info = "机顶盒型号: " + android.os.Build.MODEL + ",\nSDK版本:"
                 + android.os.Build.VERSION.SDK + ",\n系统版本:"
                 + android.os.Build.VERSION.RELEASE + "\n屏幕宽度（像素）: " + width + "\n屏幕高度（像素）: " + height + "\n屏幕密度:  " + density + "\n屏幕密度DPI: " + densityDpi;
+
+        showInfo(info);
         Log.d(TAG, info);
     }
 

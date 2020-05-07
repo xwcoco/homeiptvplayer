@@ -153,7 +153,7 @@ public class PlayerHUDView extends FrameLayout {
         hud_video_type.setVisibility(View.GONE);
     }
 
-    public void updateHUD(IPTVPlayer_HUD hud) {
+    public void updateVideoWidthAndHeight(IPTVPlayer_HUD hud) {
         this.hideVideoHud();
 
         if (hud.width * hud.height != 0) {

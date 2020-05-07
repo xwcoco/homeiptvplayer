@@ -24,6 +24,8 @@ public class IPTVMessage {
 
     public final static int IPTV_CONFIG_CHANGED = 32;
 
+    public final static int IPTV_IMAGECACHE_UPDATE = 33;
+
     public final static int IPTV_QUIT = 50;
 
     public void addMessageListener(Handler handler) {

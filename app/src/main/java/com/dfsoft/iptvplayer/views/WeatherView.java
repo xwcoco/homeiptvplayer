@@ -64,12 +64,12 @@ public class WeatherView extends FrameLayout {
             } else
                 hud_weather_icon.setImageDrawable(null);
         }
-        String tmpStr = config.weather.getWeatherType() + " " + config.weather.data.wendu;
+        String tmpStr = config.weather.getWeatherType() + " " + config.weather.data.wendu+"℃";
         hud_weather_tq.setText(tmpStr);
-        tmpStr = config.weather.data.low + " - " + config.weather.data.high;
+        tmpStr = config.weather.data.low + " - " + config.weather.data.high + "   "+config.weather.data.fengxiang+"  "+config.weather.data.fengli;
         hud_weather_highlow.setText(tmpStr);
 
-        tmpStr = "AQI :" + config.weather.data.aqi + " " + config.weather.data.qlty + " PM2.5: "+ config.weather.data.pm25 + " PM10 : " + config.weather.data.pm10;
+        tmpStr = "AQI :" + config.weather.data.aqi + "     " + config.weather.data.qlty + "      PM2.5: "+ config.weather.data.pm25 + "      PM10 : " + config.weather.data.pm10;
         hud_weather_aqi.setText(tmpStr);
     }
 }

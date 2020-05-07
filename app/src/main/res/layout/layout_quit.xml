@@ -8,8 +8,8 @@
 
     <View
         android:id="@+id/quit_view"
-        android:layout_width="600dp"
-        android:layout_height="300dp"
+        android:layout_width="400dp"
+        android:layout_height="240dp"
         android:background="@color/black_overlay"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +23,7 @@
         android:text="@string/quit"
         android:textColor="@color/colorAccent"
         android:textSize="40sp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf ="@+id/quit_view"
         app:layout_constraintStart_toStartOf="@+id/quit_view"
         app:layout_constraintTop_toTopOf="@+id/quit_view" />
@@ -31,13 +31,13 @@
     <ListView
         android:id="@+id/quit_list"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:listSelector="@drawable/item_bg_selector_left"
+        app:layout_constraintBottom_toBottomOf="@+id/quit_view"
         app:layout_constraintEnd_toEndOf="@id/quit_tips"
-        app:layout_constraintStart_toStartOf="@id/quit_tips"
+        app:layout_constraintStart_toStartOf="@id/quit_view"
         app:layout_constraintTop_toBottomOf="@id/quit_tips" />
 
 

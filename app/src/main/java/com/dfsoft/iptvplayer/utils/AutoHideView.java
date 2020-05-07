@@ -19,6 +19,10 @@ public class AutoHideView {
         this.mFocusView = mFocusView;
     }
 
+    public void setAUTO_HIDE_DELAY_MILLIS(int AUTO_HIDE_DELAY_MILLIS) {
+        this.AUTO_HIDE_DELAY_MILLIS = AUTO_HIDE_DELAY_MILLIS;
+    }
+
     private boolean mVisible = false;
 
     private final Runnable mShowPart2Runnable = new Runnable() {
