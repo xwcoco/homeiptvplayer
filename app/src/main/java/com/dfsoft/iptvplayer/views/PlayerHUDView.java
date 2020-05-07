@@ -1,6 +1,7 @@
 package com.dfsoft.iptvplayer.views;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.dfsoft.iptvplayer.manager.IPTVChannel;
 import com.dfsoft.iptvplayer.manager.IPTVConfig;
 import com.dfsoft.iptvplayer.manager.IPTVEpgData;
 import com.dfsoft.iptvplayer.player.IPTVPlayer_HUD;
+import com.dfsoft.iptvplayer.utils.ImageCache;
 
 public class PlayerHUDView extends FrameLayout {
 
@@ -28,6 +30,8 @@ public class PlayerHUDView extends FrameLayout {
     private MarqueeTextView hud_current_program_name;
     private TextView hud_next_program_time;
     private MarqueeTextView hud_next_program_name;
+    private ImageView hud_channel_image;
+    private WeatherView mWeatherView;
 
     private ImageView hud_video_type;
 
@@ -70,17 +74,31 @@ public class PlayerHUDView extends FrameLayout {
         hud_next_program_time = findViewById(R.id.hud_next_program_time);
         hud_next_program_name = findViewById(R.id.hud_next_program_name);
 
+        hud_channel_image = findViewById(R.id.hud_channel_image);
+
         hud_source_text = findViewById(R.id.hud_source_text);
 
         hud_video_type = findViewById(R.id.hud_video_type);
+
+        mWeatherView = findViewById(R.id.hud_weather_view);
     }
 
     private IPTVConfig config = IPTVConfig.getInstance();
+
+    private ImageCache cache = ImageCache.getInstance();
+
     public void updateHud() {
         IPTVChannel channel = config.getPlayingChannal();
         if (channel == null) return;
         hud_channel_num.setText(String.valueOf(channel.num));
         hud_channel_name.setText(channel.name);
+
+        Bitmap image = cache.get(channel.name);
+        if (image != null) {
+            hud_channel_image.setImageBitmap(image);
+        } else {
+            hud_channel_image.setImageDrawable(null);
+        }
 
         String curEPG = "";
         String nextEPG = "";
@@ -113,7 +131,9 @@ public class PlayerHUDView extends FrameLayout {
         String tmp = String.valueOf(channel.playIndex+1) + " / " + String.valueOf(channel.source.size());
         hud_source_text.setText(tmp);
 
-        this.hideVideoHud();
+
+        mWeatherView.updateWeather();
+//        this.hideVideoHud();
     }
 
     private boolean mVisible = false;

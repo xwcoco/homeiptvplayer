@@ -35,6 +35,7 @@ import com.dfsoft.iptvplayer.views.PlayerHUDView;
 import com.dfsoft.iptvplayer.views.QuitView;
 import com.dfsoft.iptvplayer.views.SettingAdapter;
 import com.dfsoft.iptvplayer.views.SettingView;
+import com.dfsoft.iptvplayer.views.WeatherView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -306,6 +307,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     @Override
     public void onPlayChannel() {
         mHudView.updateHud();
+
     }
 
     public void playLastChannel() {

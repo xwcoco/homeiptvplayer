@@ -20,6 +20,9 @@
     <string name="boolean_yes">是</string>
     <string name="boolean_no">否</string>
 
+    <string name="currentProgram">当前节目:</string>
+    <string name="nextProgram">下个节目:</string>
+
     <string name="quit">确认要退出吗?</string>
     <string name="quit_ok">退出</string>
     <string name="Canel">取消</string>

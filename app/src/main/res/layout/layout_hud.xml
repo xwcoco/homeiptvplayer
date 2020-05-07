@@ -3,181 +3,241 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:layout_marginStart="100dp"
-    android:layout_marginEnd="100dp">
+    android:layout_height="@dimen/hud_height"
+    android:layout_gravity="bottom">
 
     <View
         android:id="@+id/view_bg"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="@dimen/hud_view_height"
         android:background="@drawable/bg_bottom_epg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
-    <com.dfsoft.iptvplayer.views.MarqueeTextView
-        android:id="@+id/hud_channel_number"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="-5dp"
-        android:ellipsize="marquee"
-        android:gravity="center"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:shadowColor="#cc000000"
-        android:shadowDx="5.0"
-        android:shadowRadius="5.0"
-        android:singleLine="true"
-        android:text="100"
-        android:textColor="@color/epg"
-        android:textSize="45sp"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.dfsoft.iptvplayer.views.MarqueeTextView
-        android:id="@+id/hud_channel_name"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:ellipsize="marquee"
-        android:gravity="center"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:singleLine="true"
-        android:text="CCTV-1"
-        android:textColor="@color/epg"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/hud_channel_number"
-        app:layout_constraintRight_toRightOf="@id/hud_channel_number" />
-
-    <TextView
-        android:id="@+id/hud_current_program"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/hud_channel_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10sp"
-        android:layout_marginTop="35sp"
-        android:gravity="center"
-        android:text="当前节目："
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintLeft_toRightOf="@id/hud_channel_name"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/hud_channel_view_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/hud_current_program_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/hud_current_program"
-        app:layout_constraintTop_toTopOf="@id/hud_current_program" />
+        <com.dfsoft.iptvplayer.views.MarqueeTextView
+            android:id="@+id/hud_channel_number"
+            android:layout_width="@dimen/hud_channel_number_width"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/hud_channel_number_left"
+            android:layout_marginTop="@dimen/hud_channel_number_top"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:shadowColor="#cc000000"
+            android:shadowDx="5.0"
+            android:shadowRadius="5.0"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textColor="@color/epg"
+            android:textSize="@dimen/hud_channel_number_textsize"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.dfsoft.iptvplayer.views.MarqueeTextView
-        android:id="@+id/hud_current_program_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5sp"
-        android:layout_marginEnd="5dp"
-        android:ellipsize="marquee"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:singleLine="true"
-        android:textColor="@color/white"
-        android:textSize="14sp"
+        <ImageView
+            android:id="@+id/hud_channel_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/hud_channel_space"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hud_channel_number" />
+
+        <com.dfsoft.iptvplayer.views.MarqueeTextView
+            android:id="@+id/hud_channel_name"
+            android:layout_width="@dimen/hud_channel_number_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/hud_channel_space"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:textColor="@color/epg"
+            android:textSize="@dimen/hud_channel_name_textsize"
+            app:layout_constraintLeft_toLeftOf="@id/hud_channel_number"
+            app:layout_constraintRight_toRightOf="@id/hud_channel_number"
+            app:layout_constraintTop_toBottomOf="@id/hud_channel_image" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.dfsoft.iptvplayer.views.WeatherView
+        android:id="@+id/hud_weather_view"
+        android:layout_width="@dimen/hud_weather_view_width"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/view_bg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/hud_current_program_time"
-        app:layout_constraintTop_toTopOf="@id/hud_current_program" />
+        app:layout_constraintTop_toTopOf="@id/view_bg">
 
-    <View
-        android:id="@+id/view_line"
+
+    </com.dfsoft.iptvplayer.views.WeatherView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/hud_epg_view"
         android:layout_width="0dp"
-        android:layout_height="1.0dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="6dp"
-        android:background="@color/epg"
-        app:layout_constraintEnd_toEndOf="@id/hud_current_program_name"
-        app:layout_constraintStart_toStartOf="@+id/hud_current_program"
-        app:layout_constraintTop_toBottomOf="@id/hud_current_program" />
-
-    <TextView
-        android:id="@+id/hud_next_program"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:text="下一节目："
-        android:textColor="@color/epg"
-        android:textSize="14sp"
-        app:layout_constraintLeft_toLeftOf="@id/hud_current_program"
-        app:layout_constraintTop_toBottomOf="@id/view_line" />
-
-    <TextView
-        android:id="@+id/hud_next_program_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/epg"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/hud_next_program"
-        app:layout_constraintTop_toTopOf="@id/hud_next_program" />
-
-    <com.dfsoft.iptvplayer.views.MarqueeTextView
-        android:id="@+id/hud_next_program_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:ellipsize="marquee"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:singleLine="true"
-        android:textColor="@color/epg"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/hud_next_program_time"
-        app:layout_constraintTop_toTopOf="@id/hud_next_program" />
 
-    <ImageView
-        android:id="@+id/hud_source_image"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="5dp"
-        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@id/view_bg"
+        app:layout_constraintEnd_toStartOf="@id/hud_weather_view"
+        app:layout_constraintStart_toEndOf="@id/hud_channel_view"
+        app:layout_constraintTop_toTopOf="@id/view_bg">
 
-        android:src="@mipmap/controls_source"
-        app:layout_constraintStart_toStartOf="@id/hud_current_program"
-        app:layout_constraintTop_toBottomOf="@id/hud_next_program" />
+        <TextView
+            android:id="@+id/hud_current_program"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/hud_channel_space"
+            android:gravity="center"
+            android:text="@string/currentProgram"
+            android:textColor="@color/white"
+            android:textSize="@dimen/hud_epg_textSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/hud_source_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="5dp"
-        android:text="1/1"
-        app:layout_constraintStart_toEndOf="@id/hud_source_image"
+        <TextView
+            android:id="@+id/hud_current_program_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/hud_channel_space"
+            android:textColor="@color/white"
+            android:textSize="@dimen/hud_epg_textSize"
+            app:layout_constraintStart_toEndOf="@id/hud_current_program"
+            app:layout_constraintTop_toTopOf="@id/hud_current_program" />
 
-        app:layout_constraintTop_toTopOf="@id/hud_source_image" />
+        <com.dfsoft.iptvplayer.views.MarqueeTextView
+            android:id="@+id/hud_current_program_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/hud_channel_space"
+            android:layout_marginEnd="@dimen/hud_channel_space"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/hud_epg_textSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/hud_current_program_time"
+            app:layout_constraintTop_toTopOf="@id/hud_current_program" />
 
-    <ImageView
-        android:id="@+id/hud_video_type"
-        android:layout_width="34dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="40dp"
-        android:scaleType="fitCenter"
-        android:src="@mipmap/infobar_1080p"
-        app:layout_constraintStart_toEndOf="@+id/hud_source_text"
-        app:layout_constraintTop_toTopOf="@+id/hud_source_image" />
 
-    <!--        <TextView-->
-    <!--            android:id="@+id/tv_source"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginTop="20px"-->
-    <!--            android:layout_marginRight="20px"-->
-    <!--            android:textColor="@color/white"-->
-    <!--            android:textSize="32px"-->
-    <!--            app:layout_constraintRight_toRightOf="@id/view_bg"-->
-    <!--            app:layout_constraintTop_toTopOf="@id/view_bg" />-->
+        <ProgressBar
+            android:id="@+id/hud_current_program_percent"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/hud_current_program_percent_height"
+            android:layout_marginStart="@dimen/hud_current_program_percent_space"
+            android:layout_marginEnd="@dimen/hud_current_program_percent_space"
+            android:max="100"
+            android:progress="40"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hud_current_program" />
+
+        <TextView
+            android:id="@+id/hud_next_program"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/hud_channel_space"
+            android:text="@string/nextProgram"
+            android:textColor="@color/epg"
+            android:textSize="@dimen/hud_epg_textSize"
+            app:layout_constraintStart_toStartOf="@id/hud_current_program"
+            app:layout_constraintTop_toBottomOf="@id/hud_current_program_percent" />
+
+        <TextView
+            android:id="@+id/hud_next_program_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/epg"
+            android:textSize="@dimen/hud_epg_textSize"
+            app:layout_constraintStart_toEndOf="@id/hud_next_program"
+            app:layout_constraintTop_toTopOf="@id/hud_next_program" />
+
+        <com.dfsoft.iptvplayer.views.MarqueeTextView
+            android:id="@+id/hud_next_program_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/hud_channel_space"
+            android:layout_marginEnd="@dimen/hud_channel_space"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:textColor="@color/epg"
+            android:textSize="@dimen/hud_epg_textSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/hud_next_program_time"
+            app:layout_constraintTop_toTopOf="@id/hud_next_program" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/hud_channel_info_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/hud_channel_space"
+            android:layout_marginEnd="@dimen/hud_channel_space"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toBottomOf="@id/hud_next_program">
+
+            <ImageView
+                android:id="@+id/hud_source_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/controls_source"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/hud_source_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/hud_video_info_space"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/hud_video_info_textSize"
+                app:layout_constraintBottom_toBottomOf="@id/hud_source_image"
+                app:layout_constraintStart_toEndOf="@id/hud_source_image"
+                app:layout_constraintTop_toTopOf="@id/hud_source_image" />
+
+            <ImageView
+                android:id="@+id/hud_video_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/hud_video_info_item_space"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/hud_source_text"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+    <!--    <View-->
+    <!--        android:id="@+id/view_line"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="1.0dp"-->
+    <!--        android:layout_marginTop="6dp"-->
+    <!--        android:layout_marginEnd="6dp"-->
+    <!--        android:background="@color/epg"-->
+    <!--        app:layout_constraintEnd_toEndOf="@id/hud_current_program_name"-->
+    <!--        app:layout_constraintStart_toStartOf="@+id/hud_current_program"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/hud_current_program" />-->
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

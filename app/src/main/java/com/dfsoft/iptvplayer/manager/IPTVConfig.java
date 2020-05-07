@@ -1,10 +1,13 @@
 package com.dfsoft.iptvplayer.manager;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.dfsoft.iptvplayer.manager.settings.IptvSettings;
+import com.dfsoft.iptvplayer.utils.ImageCache;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -27,8 +30,13 @@ import okhttp3.Response;
 
 public class IPTVConfig {
     private final String TAG = "IPTVConfig";
-    private static IPTVConfig _instance = new IPTVConfig();
-
+    private static IPTVConfig _instance = null;
+    public static IPTVConfig getInstance() {
+        if (_instance == null) {
+            _instance = new IPTVConfig();
+        }
+        return _instance;
+    }
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     private IPTVChannel playingChannal = null;
@@ -41,8 +49,17 @@ public class IPTVConfig {
 
     public IptvSettings settings = null;
 
+    public Weather weather = null;
+
 
     private IPTVConfig() {
+        imageCache = ImageCache.getInstance();
+        imageCache.host = this.host;
+
+        weather = new Weather();
+        weather.host = this.host;
+
+        weather.loadWeatherData();
     }
 
     public interface DataEventLister {
@@ -55,6 +72,8 @@ public class IPTVConfig {
         return playingChannal;
     }
 
+    public ImageCache imageCache;
+
 
     private IPTVChannel mLastPlayChannel = null;
 
@@ -62,7 +81,7 @@ public class IPTVConfig {
         return mLastPlayChannel;
     }
 
-    public void setPlayingChannal(IPTVChannel playingChannal) {
+    public void setPlayingChannal(@NonNull IPTVChannel playingChannal) {
         if (this.playingChannal != null)
             mLastPlayChannel = this.playingChannal;
 
@@ -70,6 +89,8 @@ public class IPTVConfig {
 
         if (this.settings != null)
             this.settings.saveLastPlayedChannel();
+
+        this.playingChannal.doLoadChannelIcon();
 
         if (this.dataEventLister != null)
             this.dataEventLister.onPlayChannel();
@@ -109,11 +130,8 @@ public class IPTVConfig {
         this.dataEventLister = dataEventLister;
     }
 
-    public static IPTVConfig getInstance() {
-        return _instance;
-    }
 
-    public String host = "http://192.168.50.8:8080";
+    public String host = "http://192.168.2.11:8080";
 
     public String run(String url) throws IOException {
         Request request = new Request.Builder()
