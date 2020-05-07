@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -105,6 +106,10 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         IptvSettingItem item = config.settings.getItemByTag(IptvSettings.IPTV_SETTING_TAG_SHOWTIME);
         if (item != null && item.getValue() != 0)
             mClockView.setVisibility(View.GONE);
+
+
+        this.getDeviceInfo();
+
 
         mIPTVManager = new IPTVPlayerManager(this);
 
@@ -408,7 +413,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     private boolean ViewIsGone(View view) {
         if (view.getVisibility() != View.VISIBLE) return true;
 
-        ViewParent parent =  view.getParent();
+        ViewParent parent = view.getParent();
         if (parent == null) return false;
         if (parent instanceof View)
             return ViewIsGone((View) parent);
@@ -426,4 +431,18 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
 //            return  true;
 //        return super.dispatchKeyEvent(event);
 //    }
+
+    private void getDeviceInfo() {
+        DisplayMetrics metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+        int width = metric.widthPixels;
+        int height = metric.heightPixels;
+        float density = metric.density;
+        int densityDpi = metric.densityDpi;
+        String info = "机顶盒型号: " + android.os.Build.MODEL + ",\nSDK版本:"
+                + android.os.Build.VERSION.SDK + ",\n系统版本:"
+                + android.os.Build.VERSION.RELEASE + "\n屏幕宽度（像素）: " + width + "\n屏幕高度（像素）: " + height + "\n屏幕密度:  " + density + "\n屏幕密度DPI: " + densityDpi;
+        Log.d(TAG, info);
+    }
+
 }

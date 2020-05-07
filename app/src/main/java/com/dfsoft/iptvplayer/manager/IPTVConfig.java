@@ -1,6 +1,7 @@
 package com.dfsoft.iptvplayer.manager;
 
 import android.provider.ContactsContract;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -302,4 +303,6 @@ public class IPTVConfig {
         String ret = String.valueOf(category.size())+" 个分类 " + String.valueOf(num)+" 个节目";
         return  ret;
     }
+
+
 }
