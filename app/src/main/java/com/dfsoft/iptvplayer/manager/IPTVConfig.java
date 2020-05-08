@@ -61,6 +61,7 @@ public class IPTVConfig {
         weather.host = this.host;
 
         weather.loadWeatherData();
+        weather.addTwoHourTask();
     }
 
     public interface DataEventLister {
@@ -132,7 +133,7 @@ public class IPTVConfig {
     }
 
 
-    public String host = "http://192.168.50.8:8080";
+    public String host = "http://192.168.2.11:8080";
 
     public String run(String url) throws IOException {
         Request request = new Request.Builder()

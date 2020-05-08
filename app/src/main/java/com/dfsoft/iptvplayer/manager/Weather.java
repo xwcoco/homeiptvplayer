@@ -29,6 +29,8 @@ public class Weather {
 
     private OkHttpClient client = new OkHttpClient();
 
+
+
     private Handler mHander = new Handler();
 
     private Runnable mDownloadData = new Runnable() {
@@ -110,6 +112,10 @@ public class Weather {
 
     public void loadWeatherData() {
         mHander.post(mDownloadData);
+    }
+
+    public void addTwoHourTask() {
+        mHander.postDelayed(mDownloadData,1000 * 60 * 60 * 2);
     }
 
 

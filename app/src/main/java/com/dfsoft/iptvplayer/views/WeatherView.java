@@ -57,6 +57,9 @@ public class WeatherView extends FrameLayout {
     public void updateWeather() {
         if (config.weather == null || config.weather.data == null) {
             setVisibility(GONE);
+            if (config.weather != null) {
+                config.weather.loadWeatherData();
+            }
             return;
         }
         setVisibility(VISIBLE);
@@ -76,7 +79,7 @@ public class WeatherView extends FrameLayout {
         }
 
         ArrayList<MyColor> list = new ArrayList<>();
-        list.add(new MyColor(config.weather.getWeatherType(),0));
+        list.add(new MyColor(config.weather.getWeatherType()+" ",0));
         list.add(new MyColor(config.weather.data.wendu+"℃",getWenduColor(config.weather.data.wendu)));
 
         SpannableStringBuilder span = this.getColorString(list);
