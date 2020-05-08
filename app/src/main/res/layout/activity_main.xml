@@ -7,84 +7,91 @@
     tools:context=".MainActivity">
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/main_video_view"
-        />
-
-    <com.dfsoft.iptvplayer.views.CategoryView
-        android:id="@+id/main_category_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@color/black_overlay"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <com.dfsoft.iptvplayer.views.PlayerHUDView
-        android:id="@+id/main_hud_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/hud_bottom"
-        android:layout_marginStart="@dimen/hud_left"
-        android:layout_marginEnd="@dimen/hud_right"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="match_parent" />
 
-        app:layout_constraintBottom_toBottomOf="parent"
- />
-    <TextClock
-        android:id="@+id/main_clock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:format12Hour="H:mm:ss"
-        android:format24Hour="H:mm:ss"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="10dp"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!--    <com.dfsoft.iptvplayer.views.CategoryView-->
+    <!--        android:id="@+id/main_category_view"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_gravity="start"-->
+    <!--        android:background="@color/black_overlay"-->
+    <!--        android:visibility="gone"-->
+    <!--        app:layout_constraintStart_toStartOf="parent" />-->
 
-    <com.dfsoft.iptvplayer.views.InformationView
-        android:id="@+id/main_information"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_clock" />
-
-    <com.dfsoft.iptvplayer.views.SettingView
-        android:id="@+id/main_settings_view"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_view_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="200dp"
-        android:layout_marginEnd="200dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        />
+        <com.dfsoft.iptvplayer.views.PlayerHUDView
+            android:id="@+id/main_hud_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/hud_left"
+            android:layout_marginEnd="@dimen/hud_right"
+            android:layout_marginBottom="@dimen/hud_bottom"
+            android:focusable="false"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
 
-    <com.dfsoft.iptvplayer.views.QuitView
-        android:id="@+id/main_quit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"
-        />
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextClock
+            android:id="@+id/main_clock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:focusable="false"
+            android:format12Hour="H:mm:ss"
+            android:format24Hour="H:mm:ss"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.dfsoft.iptvplayer.views.InformationView
+            android:id="@+id/main_information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:focusable="false"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_clock" />
+
+<!--        <com.dfsoft.iptvplayer.views.SettingView-->
+<!--            android:id="@+id/main_settings_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginStart="200dp"-->
+<!--            android:layout_marginTop="50dp"-->
+<!--            android:layout_marginEnd="200dp"-->
+<!--            android:layout_marginBottom="50dp"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            />-->
+
+<!--        <com.dfsoft.iptvplayer.views.QuitView-->
+<!--            android:id="@+id/main_quit"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
 
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

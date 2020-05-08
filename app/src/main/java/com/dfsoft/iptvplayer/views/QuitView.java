@@ -41,6 +41,7 @@ public class QuitView extends FrameLayout {
         mItem.options.add(context.getResources().getString(R.string.Canel));
 
         mItem.noSetValue = true;
+        mItem.noImage = true;
         mItem.adapter = new SettingItemAdapter(context,mItem);
 
         mListView = findViewById(R.id.quit_list);
@@ -63,8 +64,7 @@ public class QuitView extends FrameLayout {
     private IPTVConfig config = IPTVConfig.getInstance();
 
     public void show() {
-        setVisibility(VISIBLE);
-        mListView.setSelection(0);
+//        setVisibility(VISIBLE);
         mListView.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -84,13 +84,14 @@ public class QuitView extends FrameLayout {
                 return false;
             }
         });
+        mListView.setSelection(0);
         mListView.requestFocus();
     }
 
     public void hide() {
-        setVisibility(GONE);
+//        setVisibility(GONE);
         mListView.setOnKeyListener(null);
-        config.iptvMessage.sendMessage(IPTVMessage.IPTV_FULLSCREEN);
+        config.iptvMessage.sendMessage(IPTVMessage.IPTV_QUIT_QUITASK);
     }
 
 

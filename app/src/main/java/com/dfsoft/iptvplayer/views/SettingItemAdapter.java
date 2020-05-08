@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.dfsoft.iptvplayer.R;
 import com.dfsoft.iptvplayer.manager.settings.IptvSettingItem;
 
@@ -75,6 +77,12 @@ public class SettingItemAdapter extends BaseAdapter {
             holder.mImageView.setVisibility(View.VISIBLE);
         } else
             holder.mImageView.setVisibility(View.GONE);
+
+        if (mSettingItem.noImage) {
+            ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) holder.mTextView.getLayoutParams();
+            lp.setMarginStart(0);
+            holder.mTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        }
 
 //        IptvSettingItem item = iptvSettings.settings.get(position);
 //        String chname = item.name;

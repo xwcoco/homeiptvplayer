@@ -4,7 +4,7 @@
     <item android:id="@android:id/background">
         <shape>
             <!--进度条的圆角-->
-            <corners android:radius="15dip" />
+            <corners android:radius="8dip" />
             <!--未加载的进度区域颜色-->
             <solid android:color="#FFDBDBDB"/>
         </shape>
@@ -14,7 +14,7 @@
         <clip>
             <shape>
                 <!--进度条的圆角-->
-                <corners android:radius="15dip" />
+                <corners android:radius="8dip" />
                 <!--缓冲的进度的颜色，一般视频播放的缓冲进度-->
                 <solid android:color="#80C07AB8"/>
             </shape>
@@ -25,7 +25,7 @@
         <clip>
             <shape>
                 <!--进度条的圆角-->
-                <corners android:radius="15dip" />
+                <corners android:radius="8dip" />
                 <!--已经加载完的进度的颜色-->
                 <solid android:color="#03DAC5"/>
             </shape>

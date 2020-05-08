@@ -18,6 +18,12 @@ public class IPTVMessage {
 
     public final static int IPTV_FULLSCREEN = 20;
 
+    public final static int IPTV_QUIT_CATEGORY = 21;
+
+    public final static int IPTV_QUIT_SETTING = 22;
+
+    public final static int IPTV_QUIT_QUITASK = 23;
+
     public final static int IPTV_HUD_CHANGED = 30;
 
     public final static int IPTV_BUFFERING = 31;
@@ -25,6 +31,8 @@ public class IPTVMessage {
     public final static int IPTV_CONFIG_CHANGED = 32;
 
     public final static int IPTV_IMAGECACHE_UPDATE = 33;
+
+    public final static int IPTV_SHOWMESSAGE= 34;
 
     public final static int IPTV_QUIT = 50;
 

@@ -1,6 +1,7 @@
 package com.dfsoft.iptvplayer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,7 +41,10 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     private final String TAG = "MainActivity";
     private IPTVPlayerManager mIPTVManager = null;
 
-    private CategoryView mCategoryView;
+    private CategoryView mCategoryView = null;
+    private ConstraintLayout.LayoutParams mCategoryViewLayoutParams = null;
+    private Boolean mCategoryViewVisible = false;
+
     private FrameLayout mVideoView;
     private PlayerHUDView mHudView;
 
@@ -52,12 +56,13 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     private InformationView mInfoView = null;
 
     private SettingView mSettingView = null;
+    private ConstraintLayout.LayoutParams mCenterLayoutParams = null;
 
     private TextClock mClockView = null;
 
-    private AutoHideView mQuitHide = null;
+    private QuitView mQuitView = null;
 
-    private QuitView mQuitView;
+    private ConstraintLayout mViewContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +74,9 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
 
         setContentView(R.layout.activity_main);
 
-        mCategoryView = findViewById(R.id.main_category_view);
+//        mCategoryView = findViewById(R.id.main_category_view);
+
+        mViewContainer = findViewById(R.id.main_view_container);
 
         mVideoView = findViewById(R.id.main_video_view);
 
@@ -87,10 +94,16 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
 
         mInfoHide = new AutoHideView(mInfoView, mVideoView);
 
-        mSettingView = findViewById(R.id.main_settings_view);
+        mCenterLayoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        mCenterLayoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        mCenterLayoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        mCenterLayoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+        mCenterLayoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
 
-        mQuitView = findViewById(R.id.main_quit);
-        mQuitHide = new AutoHideView(mQuitView, mVideoView);
+
+//        mSettingView = findViewById(R.id.main_settings_view);
+
+//        mQuitView = findViewById(R.id.main_quit);
 
         if (config.settings == null) {
             config.settings = new IptvSettings(this);
@@ -157,7 +170,8 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         searchChannel = "";
 
         if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_LEFT) {
-            mCategoryView.toggle();
+            showCategoryLayout();
+//            mCategoryView.toggle();
             return true;
         }
 
@@ -178,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                 return true;
             }
             isBackPressed = true;
-            mRunHandler.postDelayed(mPlayLastChannalRunnable,1000);
+            mRunHandler.postDelayed(mPlayLastChannalRunnable, 1000);
             return true;
         }
 
@@ -189,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         }
 
         if (keyCode == KeyEvent.KEYCODE_MENU) {
-            showSettings();
+            showSettingView();
             return true;
         }
 
@@ -206,10 +220,13 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
 //        mInfoHide.show();
 
         View view = getCurrentFocus();
-        if (view != null && view.getId() != R.id.main_video_view && !ViewIsGone(view)) {
+//        if (view != null && view.getId() != R.id.main_video_view && !ViewIsGone(view)) {
+//            return super.onKeyDown(keyCode, event);
+//        }
+        Log.d(TAG, "onKeyDown: " + view);
+        if (hasOtherNeedFocusView()) {
             return super.onKeyDown(keyCode, event);
         }
-        Log.d(TAG, "onKeyDown: " + view);
         boolean ret = dealWithKeyDown(keyCode);
         if (ret)
             return true;
@@ -218,10 +235,11 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
 
     @Override
     public void onBackPressed() {
-        if (this.mCategoryView.isCategoryVisible()) {
-            this.mCategoryView.hide();
-            return;
-        }
+        LogUtils.i(TAG, "Back Pressed!");
+//        if (this.mCategoryView.isCategoryVisible()) {
+//            this.mCategoryView.hide();
+//            return;
+//        }
 
 //        super.onBackPressed();
     }
@@ -237,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                     if (channel == config.getPlayingChannal()) {
                         mHudView.updateHud();
                     }
-                    mCategoryView.updateEpg(channel);
+//                    mCategoryView.updateEpg(channel);
                     break;
                 case IPTVMessage.IPTV_CHANNEL_PLAY:
                     channel = (IPTVChannel) msg.obj;
@@ -280,6 +298,19 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                 case IPTVMessage.IPTV_IMAGECACHE_UPDATE:
                     mHudView.updateHud();
                     break;
+                case IPTVMessage.IPTV_QUIT_CATEGORY:
+                    hideCategoryLayout();
+                    break;
+                case IPTVMessage.IPTV_QUIT_SETTING:
+                    hideSettingView();
+                    break;
+                case IPTVMessage.IPTV_QUIT_QUITASK:
+                    hideQuitView();
+                    break;
+                case IPTVMessage.IPTV_SHOWMESSAGE:
+                    mInfoView.updateInfo((String) msg.obj);
+                    mInfoHide.show();
+                    break;
                 case IPTVMessage.IPTV_QUIT:
                     exit();
                     break;
@@ -300,16 +331,13 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
 
     @Override
     public void onInitData(Boolean isOk) {
+        String msg = "";
         if (isOk) {
-            mInfoView.updateInfo("本次更新：" + config.getCategoryInfo());
-            mInfoHide.show();
-//            config.setFirstRunPlayChannel();
-//            if (config.getPlayingChannal() != null)
-//                this.mIPTVManager.play(config.getPlayingChannal());
+            msg = "本次更新：" + config.getCategoryInfo();
         } else {
-            mInfoView.updateInfo("本次更新失败！");
-            mInfoHide.show();
+            msg = "本次更新失败！";
         }
+        config.iptvMessage.sendMessage(IPTVMessage.IPTV_SHOWMESSAGE, msg);
     }
 
     @Override
@@ -354,11 +382,6 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     }
 
 
-    private void showSettings() {
-        config.settings.addPlayingChannelSetting();
-        mSettingView.show();
-    }
-
     private void applySetting(IptvSettingItem item) {
         if (item == null) return;
         LogUtils.i(TAG, "change config " + item.tag + " -> " + item.getValue());
@@ -368,7 +391,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                 break;
             case IptvSettings.IPTV_SETTING_TAG_PLAYER:
                 mIPTVManager.changePlayer(item.getValue());
-                mSettingView.hide();
+                hideSettingView();
                 break;
             case IptvSettings.IPTV_SETTING_TAG_DISPLAY_MODE:
                 mIPTVManager.setDisplayMode();
@@ -382,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                 break;
             case IptvSettings.IPTV_SETTING_TAG_UPDATEDATA:
                 config.initConfig();
-                mSettingView.hide();
+                hideSettingView();
                 break;
         }
         mSettingView.afterApplySetting();
@@ -412,7 +435,19 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     };
 
     private void askForQuit() {
+        if (mQuitView == null) {
+            mQuitView = new QuitView(this);
+        }
+        if (mViewContainer.indexOfChild(mQuitView) == -1)
+            mViewContainer.addView(mQuitView, mCenterLayoutParams);
         mQuitView.show();
+    }
+
+    private void hideQuitView() {
+        if (mQuitView == null || mViewContainer.indexOfChild(mQuitView) == -1)
+            return;
+        mViewContainer.removeView(mQuitView);
+        mVideoView.requestFocus();
     }
 
     private boolean ViewIsGone(View view) {
@@ -455,6 +490,69 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
 
         showInfo(info);
         Log.d(TAG, info);
+    }
+
+    private void showCategoryLayout() {
+        if (this.mCategoryView == null)
+            this.createCategoryLayout();
+        if (mCategoryView == null) return;
+        if (mViewContainer.indexOfChild(mCategoryView) == -1) {
+            mViewContainer.addView(mCategoryView, mCategoryViewLayoutParams);
+        }
+        mCategoryView.show();
+//        mCategoryView.requestFocus();
+    }
+
+    private void hideCategoryLayout() {
+        if (mCategoryView != null && mViewContainer.indexOfChild(mCategoryView) != -1) {
+            mViewContainer.removeView(mCategoryView);
+        }
+        mVideoView.requestFocus();
+    }
+
+    private boolean hasOtherNeedFocusView() {
+        if (mCategoryView != null && mViewContainer.indexOfChild(mCategoryView) != -1) {
+            return true;
+        }
+        if (mSettingView != null && mViewContainer.indexOfChild(mSettingView) != -1) {
+            return true;
+        }
+        if (mQuitView != null && mViewContainer.indexOfChild(mQuitView) != -1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void createCategoryLayout() {
+        CategoryView view = new CategoryView(this);
+        ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+        lp.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+        lp.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        mCategoryView = view;
+        mCategoryViewLayoutParams = lp;
+
+//        view.setId(R.id.main_category_view);
+//        mViewContainer.addView(view,lp);
+    }
+
+    private void showSettingView() {
+        this.createSettingView();
+        if (mSettingView == null || this.mViewContainer.indexOfChild(mSettingView) != -1) return;
+        mViewContainer.addView(mSettingView, mCenterLayoutParams);
+        config.settings.addPlayingChannelSetting();
+        mSettingView.show();
+    }
+
+    private void hideSettingView() {
+        if (mSettingView == null) return;
+        mViewContainer.removeView(mSettingView);
+        mVideoView.requestFocus();
+    }
+
+    private void createSettingView() {
+        if (this.mSettingView != null) return;
+        mSettingView = new SettingView(this);
     }
 
 }

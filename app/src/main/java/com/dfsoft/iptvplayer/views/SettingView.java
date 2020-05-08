@@ -101,13 +101,7 @@ public class SettingView extends FrameLayout {
             adapter.notifyDataSetChanged();
 
         mSettingList.setSelection(0);
-
-
-
-        this.setVisibility(VISIBLE);
-        this.requestFocus();
-
-
+        mSettingList.requestFocus();
     }
 
     private void activeSettingItem(int index) {
@@ -116,14 +110,14 @@ public class SettingView extends FrameLayout {
             item.adapter = new SettingItemAdapter(mContext,item);
         }
         mOptions.setAdapter(item.adapter);
+        SettingAdapter adapter = (SettingAdapter) mSettingList.getAdapter();
+        adapter.setCurrentItem(index);
+        adapter.notifyDataSetChanged();
     }
 
     private IPTVConfig config = IPTVConfig.getInstance();
     public void hide() {
-        setVisibility(GONE);
-
-        config.iptvMessage.sendMessage(IPTVMessage.IPTV_FULLSCREEN);
-
+        config.iptvMessage.sendMessage(IPTVMessage.IPTV_QUIT_SETTING);
     }
 
     private OnKeyListener mKeyListener = new OnKeyListener() {

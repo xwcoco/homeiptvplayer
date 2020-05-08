@@ -4,17 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/black_overlay"
+    android:padding="@dimen/quit_space"
     android:layout_gravity="center">
-
-    <View
-        android:id="@+id/quit_view"
-        android:layout_width="400dp"
-        android:layout_height="240dp"
-        android:background="@color/black_overlay"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/quit_tips"
@@ -22,22 +14,19 @@
         android:layout_height="wrap_content"
         android:text="@string/quit"
         android:textColor="@color/colorAccent"
-        android:textSize="40sp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf ="@+id/quit_view"
-        app:layout_constraintStart_toStartOf="@+id/quit_view"
-        app:layout_constraintTop_toTopOf="@+id/quit_view" />
+        android:background="@color/black_overlay_light"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/quit_list"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/quit_space"
         android:listSelector="@drawable/item_bg_selector_left"
-        app:layout_constraintBottom_toBottomOf="@+id/quit_view"
         app:layout_constraintEnd_toEndOf="@id/quit_tips"
-        app:layout_constraintStart_toStartOf="@id/quit_view"
+        app:layout_constraintStart_toStartOf="@id/quit_tips"
         app:layout_constraintTop_toBottomOf="@id/quit_tips" />
 
 

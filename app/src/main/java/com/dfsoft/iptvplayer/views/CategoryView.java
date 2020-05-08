@@ -37,6 +37,10 @@ public class CategoryView extends FrameLayout {
 
     private Context mContext;
 
+    public CategoryView(@NonNull Context context) {
+        this(context,null);
+    }
+
     public CategoryView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
@@ -179,28 +183,28 @@ public class CategoryView extends FrameLayout {
     }
 
     public void show() {
-        this.setVisibility(View.VISIBLE);
+//        this.setVisibility(View.VISIBLE);
         this.showCurrentChannel();
         this.mVisible = true;
     }
 
     public void hide() {
-        this.setVisibility(View.GONE);
+//        this.setVisibility(View.GONE);
 //        mChannelList.setFocusable(false);
         this.mVisible = false;
-        config.iptvMessage.sendMessage(IPTVMessage.IPTV_FULLSCREEN);
+        config.iptvMessage.sendMessage(IPTVMessage.IPTV_QUIT_CATEGORY);
     }
 
     public boolean isCategoryVisible() {
         return this.mVisible;
     }
 
-    public void toggle() {
-        if (this.mVisible) {
-            this.hide();
-        } else
-            this.show();
-    }
+//    public void toggle() {
+//        if (this.mVisible) {
+//            this.hide();
+//        } else
+//            this.show();
+//    }
 
     public void updateEpg(IPTVChannel channel) {
         if (channel.epgAdapter != null)

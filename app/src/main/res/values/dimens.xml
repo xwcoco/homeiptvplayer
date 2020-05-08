@@ -8,7 +8,7 @@
     <dimen name="hud_view_height">200dp</dimen>
 
     <dimen name="hud_channel_view_left">10dp</dimen>
-    <dimen name="hud_channel_number_width">132dp</dimen>
+    <dimen name="hud_channel_number_width">140dp</dimen>
     <dimen name="hud_channel_number_left">0dp</dimen>
     <dimen name="hud_channel_number_top">-30dp</dimen>
     <dimen name="hud_channel_number_textsize">80sp</dimen>
@@ -27,8 +27,14 @@
     <dimen name="hud_epg_space">10dp</dimen>
 
     <dimen name="hud_current_program_percent_space">10dp</dimen>
-    <dimen name="hud_current_program_percent_height">20dp</dimen>
+    <dimen name="hud_current_program_percent_height">12dp</dimen>
     <dimen name="hud_video_info_textSize">26sp</dimen>
     <dimen name="hud_video_info_space">10dp</dimen>
     <dimen name="hud_video_info_item_space">40dp</dimen>
+
+    <dimen name="setting_width">500dp</dimen>
+    <dimen name="setting_height">400dp</dimen>
+    <dimen name="setting_space">30dp</dimen>
+
+    <dimen name="quit_space">20dp</dimen>
 </resources>

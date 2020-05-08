@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="40dp"
+    android:layout_width="@dimen/setting_width"
+    android:layout_height="@dimen/setting_height"
     android:background="@color/black_overlay"
     >
     <com.dfsoft.iptvplayer.views.FocusListView
         android:layout_width="0dp"
         android:layout_weight="2"
         android:dividerHeight="1dp"
+        android:layout_marginStart="@dimen/setting_space"
+        android:layout_marginTop="@dimen/setting_space"
+        android:layout_marginBottom="@dimen/setting_space"
         android:id="@+id/setting_list"
         android:divider="@null"
         android:listSelector="@drawable/item_bg_selector_left"
         android:layout_height="match_parent" />
     <com.dfsoft.iptvplayer.views.FocusListView
+        android:layout_marginTop="@dimen/setting_space"
+        android:layout_marginBottom="@dimen/setting_space"
+        android:layout_marginEnd="@dimen/setting_space"
         android:layout_width="0dp"
         android:layout_weight="3"
         android:layout_height="match_parent"

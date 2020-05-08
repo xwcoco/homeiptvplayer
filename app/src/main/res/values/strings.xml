@@ -23,8 +23,8 @@
     <string name="nextProgram">Next Program</string>
 
     <string name="quit">Are you want to Quit?</string>
-    <string name="quit_ok">Quit</string>
-    <string name="Canel">Cancel</string>
+    <string name="quit_ok">Yes</string>
+    <string name="Canel">No</string>
 
 
 

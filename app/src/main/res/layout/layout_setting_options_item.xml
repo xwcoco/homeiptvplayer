@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
     >
 
     <TextView
@@ -14,6 +13,9 @@
         android:layout_marginStart="40dp"
         android:textColor="@color/white"
         android:textSize="20sp"
+        android:singleLine="true"
+        android:layout_marginTop="3sp"
+        android:layout_marginBottom="3sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -41,6 +41,10 @@ public class SettingAdapter extends BaseAdapter {
 
     private int currentItem = 0;
 
+    public void setCurrentItem(int currentItem) {
+        this.currentItem = currentItem;
+    }
+
     private int getResId(String resName) {
         Resources res = mContext.getResources();
         return res.getIdentifier(resName,"string",mContext.getPackageName());
