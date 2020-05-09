@@ -20,6 +20,11 @@
     <string name="boolean_yes">是</string>
     <string name="boolean_no">否</string>
 
+    <string name="hw_auto">自动</string>
+    <string name="hw_force">强制打开</string>
+    <string name="hw_no">关闭</string>
+    <string name="setting_hardware">硬件解码</string>
+
     <string name="currentProgram">当前节目:</string>
     <string name="nextProgram">下个节目:</string>
 

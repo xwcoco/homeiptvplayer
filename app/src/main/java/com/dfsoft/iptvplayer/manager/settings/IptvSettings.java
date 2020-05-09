@@ -15,7 +15,8 @@ public class IptvSettings {
     public final static int IPTV_SETTING_TAG_CHANNEL_SOUCE = 2;
     public final static int IPTV_SETTING_TAG_DISPLAY_MODE = 3;
     public final static int IPTV_SETTING_TAG_SHOWTIME = 4;
-    public final static int IPTV_SETTING_TAG_UPDATEDATA = 5;
+    public final static int IPTV_SETTING_TAG_HARDWARE = 5;
+    public final static int IPTV_SETTING_TAG_UPDATEDATA = 10;
 
     private Context mContext;
 
@@ -74,6 +75,13 @@ public class IptvSettings {
 
         addSetting("setting_player", list,IPTV_SETTING_TAG_PLAYER);
         addSetting("setting_displaymode", getDisplayModeList(),IPTV_SETTING_TAG_DISPLAY_MODE);
+
+        list.clear();
+        list.add("hw_auto");
+        list.add("hw_force");
+        list.add("hw_no");
+        addSetting("setting_hardware",list,IPTV_SETTING_TAG_HARDWARE);
+
         addSetting("setting_showtime",getBooleanList(),IPTV_SETTING_TAG_SHOWTIME);
 
         list.clear();
@@ -89,6 +97,16 @@ public class IptvSettings {
             if (item.tag == tag) return item;
         }
         return null;
+    }
+
+    public int getSettingValue(int tag) {
+        return getSettingValue(tag,0);
+    }
+
+    public int getSettingValue(int tag,int defaultValue) {
+        IptvSettingItem item = getItemByTag(tag);
+        if (item == null) return defaultValue;
+        return item.getValue();
     }
 
     public void addPlayingChannelSetting() {

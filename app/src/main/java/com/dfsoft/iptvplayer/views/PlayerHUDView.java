@@ -164,13 +164,13 @@ public class PlayerHUDView extends FrameLayout {
 
         if (hud.width * hud.height != 0) {
             int resid = -1;
-            if (hud.width == 1920 && hud.height == 1080) {
+            if (hud.width == 1920 || hud.height == 1080) {
                 resid = R.mipmap.infobar_1080p;
-            } else if (hud.width == 1280 && hud.height == 720) {
+            } else if (hud.width == 1280 || hud.height == 720) {
                 resid = R.mipmap.infobar_720p;
-            } else if (hud.width == 3840 && hud.height == 2160) {
+            } else if (hud.width == 3840 || hud.height == 2160) {
                 resid = R.mipmap.infobar_uhd;
-            } else if (hud.width == 720 && hud.height == 576) {
+            } else if (hud.width == 720 || hud.height == 576) {
                 resid = R.mipmap.infobar_sd;
             }
 

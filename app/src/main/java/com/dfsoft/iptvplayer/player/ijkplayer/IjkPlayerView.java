@@ -452,8 +452,8 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
             mMediaPlayer.setOption(4, "framedrop", 1L);
 
 
-            mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1);
-            mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec-hevc", 1);
+            mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", mUseHardwardDecoder);
+            mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec-hevc", mUseHardwardDecoder);
 
 
 
@@ -833,5 +833,14 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
             mRenderView.setAspectRatio(mCurrentAspectRatio);
     }
 
+    private int mUseHardwardDecoder = 1;
 
+
+    public int getUseHardwardDecoder() {
+        return mUseHardwardDecoder;
+    }
+
+    public void setUseHardwardDecoder(int useHardwardDecoder) {
+        this.mUseHardwardDecoder = useHardwardDecoder;
+    }
 }

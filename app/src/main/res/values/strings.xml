@@ -19,6 +19,11 @@
     <string name="boolean_yes">Yes</string>
     <string name="boolean_no">No</string>
 
+    <string name="hw_auto">Auto</string>
+    <string name="hw_force">Force</string>
+    <string name="hw_no">Close</string>
+    <string name="setting_hardware">Hardware Decode</string>
+
     <string name="currentProgram">Current Program</string>
     <string name="nextProgram">Next Program</string>
 

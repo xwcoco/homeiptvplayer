@@ -407,6 +407,9 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                 config.initConfig();
                 hideSettingView();
                 break;
+            case IptvSettings.IPTV_SETTING_TAG_HARDWARE:
+                mIPTVManager.setHardwareMode();
+                break;
         }
         mSettingView.afterApplySetting();
     }

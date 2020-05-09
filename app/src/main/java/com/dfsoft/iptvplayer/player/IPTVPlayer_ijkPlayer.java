@@ -25,8 +25,14 @@ public class IPTVPlayer_ijkPlayer extends IPTVPlayer_Base implements IMediaPlaye
 
     @Override
     public void play(String path) {
+        mPlayerView.setUseHardwardDecoder(getIJKHardwareCode());
         mPlayerView.setVideoPath(path);
         mPlayerView.start();
+    }
+
+    private int getIJKHardwareCode() {
+        if (hardwareMode == 0 || hardwareMode == 1) return 1;
+        return 0;
     }
 
     @Override

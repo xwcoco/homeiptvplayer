@@ -33,7 +33,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.5.0'
     implementation 'com.airbnb.android:lottie:3.4.0'
 
-    implementation 'org.videolan.android:libvlc-all:3.3.0-eap09'
+    implementation 'org.videolan.android:libvlc-all:3.3.0-eap10'
 
     implementation 'com.airbnb.android:lottie:3.4.0'
 

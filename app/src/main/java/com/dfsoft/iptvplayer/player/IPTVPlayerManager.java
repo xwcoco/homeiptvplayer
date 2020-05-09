@@ -20,10 +20,7 @@ public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
 
     public IPTVPlayerManager(Activity main) {
         this.main = main;
-        IptvSettingItem item = config.settings.getItemByTag(IptvSettings.IPTV_SETTING_TAG_PLAYER);
-        if (item != null) {
-            playerid = item.getValue();
-        }
+        playerid = config.settings.getSettingValue(IptvSettings.IPTV_SETTING_TAG_PLAYER,playerid);
         this.createPlayer();
     }
 
@@ -108,5 +105,10 @@ public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
         if (item == null) return;
         int mode = item.getValue();
         mPlayer.setDisplayMode(mode);
+    }
+
+    public void setHardwareMode() {
+        int mode = config.settings.getSettingValue(IptvSettings.IPTV_SETTING_TAG_HARDWARE);
+        mPlayer.setHardwareMode(mode);
     }
 }
