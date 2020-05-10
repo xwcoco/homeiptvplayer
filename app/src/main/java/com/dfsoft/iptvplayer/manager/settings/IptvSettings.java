@@ -69,8 +69,9 @@ public class IptvSettings {
         ArrayList<String> list = new ArrayList<>();
 
         list.clear();
-        list.add("vlcplayer");
-        list.add("ijkplayer");
+        list.add("VlcPlayer");
+        list.add("IjkPlayer");
+        list.add("ExoPlayer");
 
 
         addSetting("setting_player", list,IPTV_SETTING_TAG_PLAYER);

@@ -143,9 +143,9 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
     public static final String AVAPP_EVENT_ERROR = "error";
     public static final String AVAPP_EVENT_HTTP_CODE = "http_code";
 
-    private FrameLayout mBindView;
+    private ViewGroup mBindView;
 
-    public void bindView(FrameLayout view) {
+    public void bindView(ViewGroup view) {
         if (view == null) return;
         mBindView = view;
         mAppContext = view.getContext().getApplicationContext();

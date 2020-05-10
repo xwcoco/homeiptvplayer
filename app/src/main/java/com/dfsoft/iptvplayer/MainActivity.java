@@ -16,6 +16,7 @@ import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextClock;
 
 import com.dfsoft.iptvplayer.manager.IPTVChannel;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     private ConstraintLayout.LayoutParams mCategoryViewLayoutParams = null;
     private Boolean mCategoryViewVisible = false;
 
-    private FrameLayout mVideoView;
+    private LinearLayout mVideoView;
     private PlayerHUDView mHudView;
 
     private IPTVConfig config = IPTVConfig.getInstance();

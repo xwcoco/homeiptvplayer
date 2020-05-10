@@ -32,6 +32,9 @@ public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
             case 1:
                 mPlayer = new IPTVPlayer_ijkPlayer(main);
                 break;
+            case 2:
+                mPlayer = new IPTVPlayer_ExoPlayer(main);
+                break;
         }
         if (mPlayer == null) return;
         mPlayer.setHudInterface(this);

@@ -1,7 +1,9 @@
 package com.dfsoft.iptvplayer.player;
 
 import android.app.Activity;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.dfsoft.iptvplayer.R;
 import com.dfsoft.iptvplayer.manager.IPTVConfig;
@@ -16,7 +18,7 @@ public class IPTVPlayer_Base {
         this.loadCFG();
     }
 
-    protected FrameLayout mVideoLayout = null;
+    protected ViewGroup mVideoLayout = null;
 
     public void initPlayer() {
         mVideoLayout = this.main.findViewById(R.id.main_video_view);

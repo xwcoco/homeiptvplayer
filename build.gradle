@@ -35,6 +35,9 @@ ext {
 
     versionCode = 405001
     versionName = "0.4.5.1"
+
+    androidxAnnotationVersion = '1.1.0'
+    checkerframeworkVersion = '2.5.0'
 }
 
 task clean(type: Delete) {

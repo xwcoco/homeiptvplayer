@@ -27,6 +27,7 @@ public class IPTVPlayer_ijkPlayer extends IPTVPlayer_Base implements IMediaPlaye
     public void play(String path) {
         mPlayerView.setUseHardwardDecoder(getIJKHardwareCode());
         mPlayerView.setVideoPath(path);
+        mPlayerView.setAspectRatio(scaleMode);
         mPlayerView.start();
     }
 
@@ -73,6 +74,7 @@ public class IPTVPlayer_ijkPlayer extends IPTVPlayer_Base implements IMediaPlaye
 
     @Override
     public void setDisplayMode(int mode) {
+        super.setDisplayMode(mode);
         int tmode = mode;
         switch (mode) {
             case 0:

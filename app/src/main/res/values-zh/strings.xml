@@ -4,8 +4,10 @@
 
     <string name="loading">载入</string>
     <string name="set_source">直播源</string>
-    <string name="vlcplayer">VLCPlayer</string>
-    <string name="ijkplayer">IJKPlayer</string>
+    <string name="VlcPlayer">VLCPlayer</string>
+    <string name="IjkPlayer">IJKPlayer</string>
+    <string name="ExoPlayer">ExoPlayer</string>
+
     <string name="setting_player">播放器</string>
     <string name="setting_displaymode">显示模式</string>
     <string name="setting_showtime">显示时间</string>

@@ -19,7 +19,7 @@
         android:singleLine="true"
         android:text="09:00"
         android:textColor="@drawable/item_cate_color"
-        android:textSize="14sp" />
+        android:textSize="@dimen/cate_epg_textSize" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieAnimationView"
@@ -44,7 +44,7 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
         android:textColor="@drawable/item_cate_color"
-        android:textSize="14sp"
+        android:textSize="@dimen/cate_epg_textSize"
  />
 
 

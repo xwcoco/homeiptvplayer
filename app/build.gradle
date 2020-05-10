@@ -22,6 +22,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
@@ -35,9 +40,11 @@ dependencies {
 
     implementation 'org.videolan.android:libvlc-all:3.3.0-eap10'
 
-    implementation 'com.airbnb.android:lottie:3.4.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.11.4'
+    implementation 'com.google.android.exoplayer:extension-rtmp:2.11.4'
 
     implementation project(":ijkplayer-java")
+    implementation project(":exo_ext_ffmpeg")
 
 
     testImplementation 'junit:junit:4.12'

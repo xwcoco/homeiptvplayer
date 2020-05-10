@@ -6,10 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/main_video_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@color/black"
+        android:orientation="horizontal" />
 
     <!--    <com.dfsoft.iptvplayer.views.CategoryView-->
     <!--        android:id="@+id/main_category_view"-->

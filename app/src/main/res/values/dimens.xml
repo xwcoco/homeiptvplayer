@@ -37,4 +37,8 @@
     <dimen name="setting_space">30dp</dimen>
 
     <dimen name="quit_space">20dp</dimen>
+
+    <dimen name="cate_cate_textSize">30sp</dimen>
+    <dimen name="cate_channal_textSize">24sp</dimen>
+    <dimen name="cate_epg_textSize">18sp</dimen>
 </resources>

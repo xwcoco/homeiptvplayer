@@ -83,6 +83,18 @@ public class CategoryView extends FrameLayout {
                     hide();
                     return true;
                 }
+//                if (keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_UP) {
+//                    CategoryAdapter adapter = (CategoryAdapter) mCateList.getAdapter();
+//                    int index = adapter.getCurrentItem();
+//                    if (index == 0)
+//                        index = adapter.getCount() - 1;
+//                    else
+//                        index = index - 1;
+//                    mCateList.setSelection(index);
+//                    activeCategory(index);
+//                    adapter.notifyDataSetChanged();
+//                    return true;
+//                }
 
                 return false;
             }

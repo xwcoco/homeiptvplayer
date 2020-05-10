@@ -3,8 +3,9 @@
 
     <string name="loading">loading</string>
     <string name="set_source">Source</string>
-    <string name="vlcplayer">VLCPlayer</string>
-    <string name="ijkplayer">IJKPlayer</string>
+    <string name="VlcPlayer">VLCPlayer</string>
+    <string name="IjkPlayer">IJKPlayer</string>
+    <string name="ExoPlayer">ExoPlayer</string>
     <string name="setting_player">Player</string>
     <string name="setting_displaymode">Display Mode</string>
     <string name="setting_showtime">Show Time</string>
