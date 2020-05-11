@@ -42,6 +42,7 @@ public class QuitView extends FrameLayout {
 
         mItem.noSetValue = true;
         mItem.noImage = true;
+        mItem.centerText = true;
         mItem.adapter = new SettingItemAdapter(context,mItem);
 
         mListView = findViewById(R.id.quit_list);

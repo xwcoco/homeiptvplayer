@@ -12,6 +12,9 @@
         android:id="@+id/quit_tips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingStart="@dimen/setting_space"
+        android:paddingEnd="@dimen/setting_space"
+
         android:text="@string/quit"
         android:textColor="@color/colorAccent"
         android:background="@color/black_overlay_light"

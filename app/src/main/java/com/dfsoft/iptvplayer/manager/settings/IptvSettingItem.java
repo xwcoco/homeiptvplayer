@@ -26,6 +26,7 @@ public class IptvSettingItem {
 
     public boolean noSetValue = false;
     public boolean noImage = false;
+    public boolean centerText = false;
 
     public SettingItemAdapter adapter = null;
 

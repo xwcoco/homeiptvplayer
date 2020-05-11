@@ -18,6 +18,7 @@ import com.dfsoft.iptvplayer.R;
 import com.dfsoft.iptvplayer.manager.IPTVChannel;
 import com.dfsoft.iptvplayer.manager.IPTVConfig;
 import com.dfsoft.iptvplayer.manager.IPTVEpgData;
+import com.dfsoft.iptvplayer.manager.settings.IptvSettings;
 import com.dfsoft.iptvplayer.player.IPTVPlayer_HUD;
 import com.dfsoft.iptvplayer.utils.ImageCache;
 
@@ -35,6 +36,7 @@ public class PlayerHUDView extends FrameLayout {
     private WeatherView mWeatherView;
 
     private ImageView hud_video_type;
+    private ImageView hud_video_player;
     private ProgressBar hud_current_program_percent;
 
 
@@ -85,6 +87,8 @@ public class PlayerHUDView extends FrameLayout {
         mWeatherView = findViewById(R.id.hud_weather_view);
 
         hud_current_program_percent = findViewById(R.id.hud_current_program_percent);
+
+        hud_video_player = findViewById(R.id.hud_video_player);
     }
 
     private IPTVConfig config = IPTVConfig.getInstance();
@@ -136,6 +140,18 @@ public class PlayerHUDView extends FrameLayout {
 
         String tmp = String.valueOf(channel.playIndex+1) + " / " + String.valueOf(channel.source.size());
         hud_source_text.setText(tmp);
+
+        int playerId = IPTVConfig.getInstance().settings.getSettingValue(IptvSettings.IPTV_SETTING_TAG_PLAYER);
+        switch (playerId) {
+            case 0:
+                hud_video_player.setImageResource(R.mipmap.icon_vlc);
+                break;
+            case 1:
+                hud_video_player.setImageResource(R.mipmap.icon_ijk);
+                break;
+            default:
+                hud_video_player.setImageResource(R.mipmap.icon_exoplayer);
+        }
 
 
         mWeatherView.updateWeather();

@@ -16,6 +16,8 @@ public class IptvSettings {
     public final static int IPTV_SETTING_TAG_DISPLAY_MODE = 3;
     public final static int IPTV_SETTING_TAG_SHOWTIME = 4;
     public final static int IPTV_SETTING_TAG_HARDWARE = 5;
+
+    public final static int IPTV_SETTING_TAG_FAVORITE = 9;
     public final static int IPTV_SETTING_TAG_UPDATEDATA = 10;
 
     private Context mContext;
@@ -25,18 +27,20 @@ public class IptvSettings {
     }
 
 
-    private void addSetting(String name,ArrayList<String> list,int tag) {
-        addSetting(name,list,false,0,tag);
+    private IptvSettingItem addSetting(String name,ArrayList<String> list,int tag) {
+        return addSetting(name,list,false,0,tag);
     }
 
-    private void addSetting(String name,ArrayList<String> list,boolean noValue,int value,int tag) {
+    private IptvSettingItem addSetting(String name,ArrayList<String> list,boolean noImage,int value,int tag) {
         IptvSettingItem item = new IptvSettingItem();
         item.name = name;
         item.options.addAll(list);
-        item.noSetValue = noValue;
+//        item.noSetValue = noValue;
+        item.noImage = noImage;
         item.setValue(value);
         item.tag = tag;
         addToList(item);
+        return item;
     }
 
     private IPTVConfig config = IPTVConfig.getInstance();
@@ -84,6 +88,11 @@ public class IptvSettings {
         addSetting("setting_hardware",list,IPTV_SETTING_TAG_HARDWARE);
 
         addSetting("setting_showtime",getBooleanList(),IPTV_SETTING_TAG_SHOWTIME);
+
+        list.clear();
+        list.add("set_favorite_add");
+        list.add("set_favorite_remove");
+        addSetting("set_favorite_manager", list,true,0,IPTV_SETTING_TAG_FAVORITE);
 
         list.clear();
         list.add("set_updatedata");

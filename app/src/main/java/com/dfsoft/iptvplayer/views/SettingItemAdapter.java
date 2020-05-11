@@ -73,14 +73,22 @@ public class SettingItemAdapter extends BaseAdapter {
         if (resid != 0)
             name = mContext.getResources().getString(resid);
         holder.mTextView.setText(name);
-        if (mSettingItem.getValue() == position) {
-            holder.mImageView.setVisibility(View.VISIBLE);
-        } else
+
+        if (mSettingItem.noImage) {
             holder.mImageView.setVisibility(View.GONE);
+        } else {
+            if (mSettingItem.getValue() == position) {
+                holder.mImageView.setVisibility(View.VISIBLE);
+            } else
+                holder.mImageView.setVisibility(View.GONE);
+        }
 
         if (mSettingItem.noImage) {
             ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) holder.mTextView.getLayoutParams();
             lp.setMarginStart(0);
+        }
+
+        if (mSettingItem.centerText) {
             holder.mTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         }
 

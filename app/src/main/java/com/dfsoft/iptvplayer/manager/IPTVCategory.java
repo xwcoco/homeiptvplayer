@@ -17,4 +17,6 @@ public class IPTVCategory {
     public List<IPTVChannel> data = new ArrayList<IPTVChannel>();
 
     public ChannelAdapter channelAdapter = null;
+
+    public ArrayList<String> favorites = new ArrayList<>();
 }

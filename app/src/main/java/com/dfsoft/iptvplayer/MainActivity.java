@@ -411,6 +411,13 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
             case IptvSettings.IPTV_SETTING_TAG_HARDWARE:
                 mIPTVManager.setHardwareMode();
                 break;
+            case IptvSettings.IPTV_SETTING_TAG_FAVORITE:
+                String msg = config.favortyModify();
+                hideSettingView();
+                if (!msg.equals(""))
+                    this.showInfo(msg);
+                break;
+
         }
         mSettingView.afterApplySetting();
     }

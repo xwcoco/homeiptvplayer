@@ -133,7 +133,7 @@ public class IPTVConfig {
     }
 
 
-    public String host = "http://192.168.50.8:8080";
+    public String host = "http://192.168.2.11:8080";
 
     public String run(String url) throws IOException {
         Request request = new Request.Builder()
@@ -213,6 +213,8 @@ public class IPTVConfig {
 
         Boolean ok = (category != null) && (!category.isEmpty());
 
+        getFavoritesChannel();
+
         if (this.dataEventLister != null)
             this.dataEventLister.onInitData(ok);
     }
@@ -283,6 +285,18 @@ public class IPTVConfig {
         return null;
     }
 
+    public IPTVChannel findChannelByName(String name) {
+        for (int i = 0; i < this.category.size(); i++) {
+            IPTVCategory cate = category.get(i);
+            for (int j = 0; j < cate.data.size(); j++) {
+                IPTVChannel channel = cate.data.get(j);
+                if (channel.name == name)
+                    return channel;
+            }
+        }
+        return null;
+    }
+
     public void setFirstRunPlayChannel() {
         int lastnum = this.settings.getLastPlayedChannel();
         IPTVChannel channel = null;
@@ -303,6 +317,72 @@ public class IPTVConfig {
         }
         String ret = String.valueOf(category.size())+" 个分类 " + String.valueOf(num)+" 个节目";
         return  ret;
+    }
+
+    private void getFavoritesChannel() {
+        if (this.category != null && category.size() > 0) {
+            IPTVCategory cate = category.get(0);
+            for (int i = 0; i < cate.favorites.size(); i++) {
+                IPTVChannel channel = findChannelByName(cate.favorites.get(i));
+                if (channel != null) {
+                    cate.data.add(channel);
+                }
+            }
+        }
+    }
+
+    public String favortyModify() {
+        if (this.category == null || this.category.size() == 0 || this.playingChannal == null) return "发生错误!";
+        int v = this.settings.getSettingValue(IptvSettings.IPTV_SETTING_TAG_FAVORITE);
+        if (v == 0)
+            return this.addFavorityChannel();
+        else
+            return this.deleteFavortyChannel();
+    }
+
+    private String addFavorityChannel() {
+        IPTVCategory cate = this.category.get(0);
+        if (cate.data.indexOf(this.playingChannal) == -1) {
+            cate.data.add(this.playingChannal);
+            String url = "/favorite/add?name="+this.playingChannal.name;
+            sendFavortyMessageToServer(url);
+            return "成功增加 "+this.playingChannal.name;
+        }
+        return "";
+    }
+
+    private String deleteFavortyChannel() {
+        IPTVCategory cate = this.category.get(0);
+        if (cate.data.indexOf(this.playingChannal) != -1) {
+            cate.data.remove(this.playingChannal);
+            String url = "/favorite/delete?name="+this.playingChannal.name;
+            sendFavortyMessageToServer(url);
+            return "成功删除 "+this.playingChannal.name;
+        }
+        return "";
+    }
+
+    private void sendFavortyMessageToServer(String reqUrl) {
+        String url = this.host + reqUrl;
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG, "接口调用失败");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.e(TAG, "接口调用成功");
+            }
+        });
+
     }
 
 

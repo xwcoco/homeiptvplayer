@@ -223,6 +223,15 @@
                 app:layout_constraintStart_toEndOf="@+id/hud_source_text"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageView
+                android:id="@+id/hud_video_player"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="@dimen/hud_video_info_space"
+                android:scaleType="fitCenter"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/hud_source_image" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

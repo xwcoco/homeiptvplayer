@@ -167,14 +167,15 @@ public class IPTVPlayer_VLCPlayer extends IPTVPlayer_Base implements MediaPlayer
                 break;
             case MediaPlayer.Event.Vout:
                 if (this.mInterface != null) {
-
-                    IPTVPlayer_HUD hud = new IPTVPlayer_HUD();
-
                     IMedia media = mMediaPlayer.getMedia();
+                    if (media == null) return;
+//                    debugMediaStaes(media);
+                    IPTVPlayer_HUD hud = new IPTVPlayer_HUD();
                     final int trackCount = media.getTrackCount();
                     for (int i = 0; i < trackCount; ++i) {
                         final IMedia.Track  track = media.getTrack(i);
                         if (track.type == IMedia.Track.Type.Video) {
+
                             IMedia.VideoTrack vt = (IMedia.VideoTrack) track;
                             hud.codec = vt.codec;
                             hud.width = vt.width;
@@ -209,9 +210,22 @@ public class IPTVPlayer_VLCPlayer extends IPTVPlayer_Base implements MediaPlayer
                     mInterface.OnGetHud(hud);
                 }
                 break;
+//            case MediaPlayer.Event.PositionChanged:
+//                IMedia media = mMediaPlayer.getMedia();
+//                debugMediaStaes(media);
+//                break;
 //            default:
 //                LogUtils.i(TAG,"MediaPlayer Event 0x"+Integer.toHexString(event.type));
         }
+    }
+
+    private void debugMediaStaes(IMedia media) {
+        IMedia.Stats stats = media.getStats();
+        LogUtils.i(TAG,"stats inputBitrate = "+stats.inputBitrate);
+        LogUtils.i(TAG,"stats decodedAudio = "+stats.decodedAudio);
+        LogUtils.i(TAG,"stats decodedVideo = "+stats.decodedVideo);
+        LogUtils.i(TAG,"stats demuxBitrate = "+stats.demuxBitrate);
+        LogUtils.i(TAG,"stats string = "+stats.toString());
     }
 
     private class MediaPlayerHack {

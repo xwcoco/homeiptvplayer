@@ -16,8 +16,8 @@
     <string name="DM_BEST_FIT">最佳匹配</string>
     <string name="DM_FIT_SCREEN">匹配屏幕</string>
     <string name="DM_FILL">填充</string>
-    <string name="DM_16_9">16 ：9显示</string>
-    <string name="DM_4_3">4 ：3显示</string>
+    <string name="DM_16_9">16 ：9 显示</string>
+    <string name="DM_4_3">4 ：3 显示</string>
     <string name="DM_ORIGINAL">原始数据</string>
     <string name="boolean_yes">是</string>
     <string name="boolean_no">否</string>
@@ -26,6 +26,11 @@
     <string name="hw_force">强制打开</string>
     <string name="hw_no">关闭</string>
     <string name="setting_hardware">硬件解码</string>
+
+    <string name="set_favorite_manager">我的收藏</string>
+    <string name="set_favorite_add">增加到我的收藏</string>
+    <string name="set_favorite_remove">从我的收藏删除</string>
+
 
     <string name="currentProgram">当前节目:</string>
     <string name="nextProgram">下个节目:</string>
