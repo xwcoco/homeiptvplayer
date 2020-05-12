@@ -233,10 +233,10 @@ public class PlayerHUDView extends FrameLayout {
             MediaFormat mf = MediaFormat.createVideoFormat(hud.codec, hud.width, hud.height);
             MediaCodecList mcl = new MediaCodecList(MediaCodecList.ALL_CODECS);
             String codecName = mcl.findDecoderForFormat(mf);
-            return codecName != null;
+            if (codecName == null) return false;
+            if (codecName.startsWith("OMX.google")) return false;
+            if (codecName.startsWith("OMX.")) return true;
         }
-
-
         return false;
     }
 }

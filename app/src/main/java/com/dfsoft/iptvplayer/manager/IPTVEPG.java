@@ -1,11 +1,16 @@
 package com.dfsoft.iptvplayer.manager;
 
+import android.nfc.Tag;
 import android.util.Log;
 
+import com.dfsoft.iptvplayer.utils.LogUtils;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.security.auth.callback.Callback;
 
@@ -84,6 +89,13 @@ public class IPTVEPG {
         long le = e.getTimeInMillis();
         long ln = n.getTimeInMillis();
 
+//        LogUtils.i("IPTVEPG"," start = "+
+//                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS", Locale.CHINA).format(ld));
+//        LogUtils.i("IPTVEPG"," end = "+
+//                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS", Locale.CHINA).format(le));
+//
+//        LogUtils.i("IPTVEPG"," now = "+
+//                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS", Locale.CHINA).format(ln));
         if (le - ld == 0) return 0;
         double ee =(double)(ln - ld) / (double)(le-ld);
         return (int) Math.round(ee * 100);

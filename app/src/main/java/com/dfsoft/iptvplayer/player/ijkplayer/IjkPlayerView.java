@@ -35,7 +35,7 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
 
     private boolean mRenderWithTextureView = false;
     private IRenderView mRenderView;
-    private IjkMediaPlayer mMediaPlayer = null;
+    public IjkMediaPlayer mMediaPlayer = null;
 
     private Context mAppContext;
     // 用于界面恢复后展示上一次播放的最后一帧画面

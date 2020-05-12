@@ -7,6 +7,10 @@ import com.dfsoft.iptvplayer.player.ijkplayer.IjkPlayerView;
 import com.dfsoft.iptvplayer.utils.LogUtils;
 
 import tv.danmaku.ijk.media.player.IMediaPlayer;
+import tv.danmaku.ijk.media.player.IjkMediaMeta;
+import tv.danmaku.ijk.media.player.misc.IMediaFormat;
+import tv.danmaku.ijk.media.player.misc.ITrackInfo;
+import tv.danmaku.ijk.media.player.misc.IjkTrackInfo;
 
 public class IPTVPlayer_ijkPlayer extends IPTVPlayer_Base implements IMediaPlayer.OnVideoSizeChangedListener,IMediaPlayer.OnBufferingUpdateListener {
     private final String TAG = "IPTVPlayer_ijkPlayer";
@@ -55,10 +59,52 @@ public class IPTVPlayer_ijkPlayer extends IPTVPlayer_Base implements IMediaPlaye
                 IPTVPlayer_HUD hud = new IPTVPlayer_HUD();
                 hud.width = w;
                 hud.height = h;
+
+                IjkTrackInfo[] trackInfos = mPlayerView.mMediaPlayer.getTrackInfo();
+                if (trackInfos != null) {
+                    setHudInfo(trackInfos,hud);
+                }
+
+                LogUtils.i(TAG,"hud = " + hud.toString());
                 mInterface.OnGetHud(hud);
             }
         }
         LogUtils.i(TAG,"video width = "+w+" height = "+h);
+    }
+
+    private void setHudInfo(IjkTrackInfo[] trackInfos,IPTVPlayer_HUD hud) {
+        for (int i = 0; i < trackInfos.length; i++) {
+            IjkTrackInfo ti = trackInfos[i];
+            int type = ti.getTrackType();
+            if (type == ITrackInfo.MEDIA_TRACK_TYPE_VIDEO) {
+                IMediaFormat fm = ti.getFormat();
+                LogUtils.i(TAG, "video track : IJKM_KEY_CODEC_NAME =  " + fm.getString(IjkMediaMeta.IJKM_KEY_CODEC_NAME));
+                hud.codec = ijkCodecToAndroidCodec(fm.getString(IjkMediaMeta.IJKM_KEY_CODEC_NAME));
+//                LogUtils.i(TAG, "video track : IJKM_KEY_BITRATE =  " + fm.getString(IjkMediaMeta.IJKM_KEY_BITRATE));
+//                hud.codec = ti.getFormat()
+            } else if (type == ITrackInfo.MEDIA_TRACK_TYPE_AUDIO) {
+                IMediaFormat fm = ti.getFormat();
+                hud.audio_codec = fm.getString(IjkMediaMeta.IJKM_KEY_CODEC_NAME);
+                hud.audio_rate = fm.getInteger(IjkMediaMeta.IJKM_KEY_SAMPLE_RATE);
+                int audio_layout = fm.getInteger(IjkMediaMeta.IJKM_KEY_CHANNEL_LAYOUT);
+                if (audio_layout == IjkMediaMeta.AV_CH_LAYOUT_MONO)
+                    hud.audio_channels = 1;
+                else if (audio_layout == IjkMediaMeta.AV_CH_LAYOUT_STEREO)
+                    hud.audio_channels = 2;
+                else
+                    hud.audio_channels = audio_layout;
+
+                LogUtils.i(TAG, "audio track : IJKM_KEY_CODEC_NAME =  " + fm.getString(IjkMediaMeta.IJKM_KEY_CODEC_NAME));
+                LogUtils.i(TAG, "audio track : IJKM_KEY_SAMPLE_RATE =  " + fm.getString(IjkMediaMeta.IJKM_KEY_SAMPLE_RATE));
+                LogUtils.i(TAG, "audio track : IJKM_KEY_CHANNEL_LAYOUT =  " + fm.getString(IjkMediaMeta.IJKM_KEY_CHANNEL_LAYOUT));
+            }
+        }
+    }
+
+    private String ijkCodecToAndroidCodec(String name) {
+        if (name.contains("h264")) return "video/avc";
+        if (name.contains("hevc")) return "video/hevc";
+        return name;
     }
 
     @Override

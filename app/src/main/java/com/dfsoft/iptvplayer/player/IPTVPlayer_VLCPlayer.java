@@ -183,7 +183,7 @@ public class IPTVPlayer_VLCPlayer extends IPTVPlayer_Base implements MediaPlayer
                         if (track.type == IMedia.Track.Type.Video) {
 
                             IMedia.VideoTrack vt = (IMedia.VideoTrack) track;
-                            hud.codec = vt.codec;
+                            hud.codec = vlcCodecToAndroidCodec(vt.codec);
                             hud.width = vt.width;
                             hud.height = vt.height;
                             Log.d(TAG, "onVout: v codec = "+vt.codec);
@@ -271,6 +271,16 @@ public class IPTVPlayer_VLCPlayer extends IPTVPlayer_Base implements MediaPlayer
                 e.printStackTrace();
             }
         }
+    }
+
+    private String vlcCodecToAndroidCodec(String name) {
+        if (name.contains("AVC"))
+            return "video/avc";
+
+        if (name.contains("HEVC"))
+            return "video/hevc";
+
+        return name;
     }
 
 }

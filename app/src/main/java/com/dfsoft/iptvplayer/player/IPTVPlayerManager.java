@@ -1,12 +1,16 @@
 package com.dfsoft.iptvplayer.player;
 
 import android.app.Activity;
+import android.media.MediaCodecInfo;
+import android.media.MediaCodecList;
+import android.os.Build;
 
 import com.dfsoft.iptvplayer.manager.IPTVChannel;
 import com.dfsoft.iptvplayer.manager.IPTVConfig;
 import com.dfsoft.iptvplayer.manager.IPTVMessage;
 import com.dfsoft.iptvplayer.manager.settings.IptvSettingItem;
 import com.dfsoft.iptvplayer.manager.settings.IptvSettings;
+import com.dfsoft.iptvplayer.utils.LogUtils;
 
 public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
     private Activity main = null;
@@ -22,6 +26,7 @@ public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
         this.main = main;
         playerid = config.settings.getSettingValue(IptvSettings.IPTV_SETTING_TAG_PLAYER,playerid);
         this.createPlayer();
+        displayDecoders();
     }
 
     private void createPlayer() {
@@ -113,5 +118,17 @@ public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
     public void setHardwareMode() {
         int mode = config.settings.getSettingValue(IptvSettings.IPTV_SETTING_TAG_HARDWARE);
         mPlayer.setHardwareMode(mode);
+    }
+
+    private void displayDecoders() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            MediaCodecList list = new MediaCodecList(MediaCodecList.REGULAR_CODECS);//REGULAR_CODECS参考api说明
+            MediaCodecInfo[] codecs = list.getCodecInfos();
+            for (MediaCodecInfo codec : codecs) {
+                if (codec.isEncoder())
+                    continue;
+                LogUtils.i("IPTVPlayerManager", "displayDecoders: " + codec.getName());
+            }
+        }
     }
 }
