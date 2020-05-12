@@ -41,4 +41,10 @@
     <dimen name="cate_cate_textSize">30sp</dimen>
     <dimen name="cate_channal_textSize">24sp</dimen>
     <dimen name="cate_epg_textSize">18sp</dimen>
+
+    <dimen name="hud_program_desc_width">300dp</dimen>
+    <dimen name="hud_program_desc_top_space">50dp</dimen>
+    <dimen name="hud_program_desc_title_size">26sp</dimen>
+    <dimen name="hud_program_desc_desc_size">20sp</dimen>
+
 </resources>

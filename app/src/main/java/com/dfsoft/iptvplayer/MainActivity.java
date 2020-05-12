@@ -31,9 +31,11 @@ import com.dfsoft.iptvplayer.utils.LogUtils;
 import com.dfsoft.iptvplayer.views.CategoryView;
 import com.dfsoft.iptvplayer.views.InformationView;
 import com.dfsoft.iptvplayer.views.PlayerHUDView;
+import com.dfsoft.iptvplayer.views.ProgramDescView;
 import com.dfsoft.iptvplayer.views.QuitView;
 import com.dfsoft.iptvplayer.views.SettingView;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -62,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     private TextClock mClockView = null;
 
     private QuitView mQuitView = null;
+
+    private ProgramDescView mDescView = null;
+    private ConstraintLayout.LayoutParams mDescViewLayoutParams = null;
 
     private ConstraintLayout mViewContainer;
 
@@ -131,6 +136,11 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     }
 
     public boolean dealWithKeyDown(int keyCode) {
+        if (programDescViewIsVisible()) {
+            hideDescView();
+        }
+
+
         if (keyCode >= KeyEvent.KEYCODE_0 && keyCode <= KeyEvent.KEYCODE_9) {
             ArrayList<String> numList = new ArrayList<>();
             for (int i = 0; i <= 9; i++) {
@@ -173,6 +183,15 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_LEFT) {
             showCategoryLayout();
 //            mCategoryView.toggle();
+            return true;
+        }
+
+        if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_RIGHT) {
+            if (programDescViewIsVisible()) {
+                hideDescView();
+                return true;
+            }
+            showDescView();
             return true;
         }
 
@@ -564,6 +583,30 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     private void createSettingView() {
         if (this.mSettingView != null) return;
         mSettingView = new SettingView(this);
+    }
+
+    private void showDescView() {
+        if (this.mDescView == null) {
+            mDescView = new ProgramDescView(this);
+            mDescViewLayoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+            mDescViewLayoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+            mDescViewLayoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        }
+        if (!mDescView.canShow()) return;
+        if (this.mViewContainer.indexOfChild(mDescView) == -1) {
+            mViewContainer.addView(mDescView,mDescViewLayoutParams);
+            mDescView.show();
+        }
+    }
+
+    private boolean programDescViewIsVisible() {
+        return (this.mDescView != null && mViewContainer.indexOfChild(mDescView) != -1);
+    }
+
+    private void hideDescView() {
+        if (programDescViewIsVisible())
+            mViewContainer.removeView(mDescView);
+        mVideoView.requestFocus();
     }
 
 }

@@ -115,6 +115,17 @@
             app:layout_constraintStart_toEndOf="@id/hud_current_program"
             app:layout_constraintTop_toTopOf="@id/hud_current_program" />
 
+        <ImageView
+            android:id="@+id/hud_current_program_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/hud_channel_space"
+            android:layout_marginEnd="@dimen/hud_channel_space"
+            android:src="@mipmap/controls_right"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/hud_current_program" />
+
         <com.dfsoft.iptvplayer.views.MarqueeTextView
             android:id="@+id/hud_current_program_name"
             android:layout_width="0dp"
@@ -126,7 +137,7 @@
             android:singleLine="true"
             android:textColor="@color/white"
             android:textSize="@dimen/hud_epg_textSize"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/hud_current_program_desc"
             app:layout_constraintStart_toEndOf="@id/hud_current_program_time"
             app:layout_constraintTop_toTopOf="@id/hud_current_program" />
 

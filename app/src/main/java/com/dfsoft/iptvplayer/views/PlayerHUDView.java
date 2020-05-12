@@ -45,6 +45,8 @@ public class PlayerHUDView extends FrameLayout {
 
     private ImageView hud_video_hw;
 
+    private ImageView hud_current_program_desc;
+
 
     private TextView hud_source_text;
 
@@ -96,6 +98,8 @@ public class PlayerHUDView extends FrameLayout {
 
         hud_video_player = findViewById(R.id.hud_video_player);
         hud_video_hw = findViewById(R.id.hud_video_hw);
+
+        hud_current_program_desc = findViewById(R.id.hud_current_program_desc);
     }
 
     private IPTVConfig config = IPTVConfig.getInstance();
@@ -125,12 +129,19 @@ public class PlayerHUDView extends FrameLayout {
             Log.d(TAG, "showPlayingChannelConsole: empty epg");
             channel.loadEPGData();
             hud_current_program_percent.setProgress(0);
+            hud_current_program_desc.setVisibility(GONE);
+
         } else {
             channel.epg.getCurrentTimer();
             if (channel.epg.curTime != -1) {
                 IPTVEpgData data = channel.epg.data.get(channel.epg.curTime);
                 curTime = data.starttime;
                 curEPG = data.name;
+                if (!data.desc.equals("")) {
+                    hud_current_program_desc.setVisibility(VISIBLE);
+                } else
+                    hud_current_program_desc.setVisibility(GONE);
+
                 if (channel.epg.curTime + 1 < channel.epg.data.size()) {
                     data = channel.epg.data.get(channel.epg.curTime + 1);
                     nextTime = data.starttime;
