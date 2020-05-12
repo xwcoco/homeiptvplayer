@@ -2,6 +2,9 @@ package com.dfsoft.iptvplayer.views;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.MediaCodecList;
+import android.media.MediaFormat;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.dfsoft.iptvplayer.R;
 import com.dfsoft.iptvplayer.manager.IPTVChannel;
@@ -38,6 +42,8 @@ public class PlayerHUDView extends FrameLayout {
     private ImageView hud_video_type;
     private ImageView hud_video_player;
     private ProgressBar hud_current_program_percent;
+
+    private ImageView hud_video_hw;
 
 
     private TextView hud_source_text;
@@ -70,7 +76,7 @@ public class PlayerHUDView extends FrameLayout {
     }
 
     private void setupLayout(@NonNull Context context) {
-        inflate(context, R.layout.layout_hud,this);
+        inflate(context, R.layout.layout_hud, this);
         hud_channel_num = findViewById(R.id.hud_channel_number);
         hud_channel_name = findViewById(R.id.hud_channel_name);
         hud_current_program_time = findViewById(R.id.hud_current_program_time);
@@ -89,6 +95,7 @@ public class PlayerHUDView extends FrameLayout {
         hud_current_program_percent = findViewById(R.id.hud_current_program_percent);
 
         hud_video_player = findViewById(R.id.hud_video_player);
+        hud_video_hw = findViewById(R.id.hud_video_hw);
     }
 
     private IPTVConfig config = IPTVConfig.getInstance();
@@ -138,7 +145,7 @@ public class PlayerHUDView extends FrameLayout {
         hud_next_program_time.setText(nextTime);
         hud_next_program_name.setText(nextEPG);
 
-        String tmp = String.valueOf(channel.playIndex+1) + " / " + String.valueOf(channel.source.size());
+        String tmp = String.valueOf(channel.playIndex + 1) + " / " + String.valueOf(channel.source.size());
         hud_source_text.setText(tmp);
 
         int playerId = IPTVConfig.getInstance().settings.getSettingValue(IptvSettings.IPTV_SETTING_TAG_PLAYER);
@@ -159,6 +166,7 @@ public class PlayerHUDView extends FrameLayout {
     }
 
     private boolean mVisible = false;
+
     public void show() {
 
     }
@@ -173,6 +181,7 @@ public class PlayerHUDView extends FrameLayout {
 
     private void hideVideoHud() {
         hud_video_type.setVisibility(View.GONE);
+        hud_video_hw.setVisibility(View.GONE);
     }
 
     public void updateVideoWidthAndHeight(IPTVPlayer_HUD hud) {
@@ -189,12 +198,34 @@ public class PlayerHUDView extends FrameLayout {
             } else if (hud.width == 720 || hud.height == 576) {
                 resid = R.mipmap.infobar_sd;
             }
-
-
             if (resid != -1) {
                 hud_video_type.setVisibility(VISIBLE);
                 hud_video_type.setImageResource(resid);
             }
         }
+
+        if (this.checkHWDecoder(hud)) {
+            hud_video_hw.setVisibility(VISIBLE);
+        }
+
+
+    }
+
+//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
+    private boolean checkHWDecoder(IPTVPlayer_HUD hud) {
+        int v = config.settings.getSettingValue(IptvSettings.IPTV_SETTING_TAG_HARDWARE);
+        if (v == 2) return false;
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            MediaFormat mf = MediaFormat.createVideoFormat(hud.codec, hud.width, hud.height);
+            MediaCodecList mcl = new MediaCodecList(MediaCodecList.ALL_CODECS);
+            String codecName = mcl.findDecoderForFormat(mf);
+            return codecName != null;
+        }
+
+
+        return false;
     }
 }

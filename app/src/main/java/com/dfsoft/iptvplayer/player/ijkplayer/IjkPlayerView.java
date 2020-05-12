@@ -683,7 +683,10 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
                             dismissLastFrame();
                             break;
                         case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
-                            Log.e(TAG, "卡顿时间：" + bufferTime);
+                            Log.e(TAG, "卡顿时间：" + bufferTime+ " arg2= "+arg2);
+                            if (mPlayerBufferingUpdateListener != null)
+                                mPlayerBufferingUpdateListener.onBufferingUpdate(mp,0);
+
                             startbufferTime = System.currentTimeMillis();
                             if (bufferTime > PURSUETIME && isAutoPursue) {
                                 bufferTime = 0;
@@ -698,7 +701,7 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
                             Log.d(TAG, "MEDIA_INFO_BUFFERING_START:");
                             break;
                         case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
-                            Log.i(TAG, "结束缓冲：" + bufferTime);
+                            Log.i(TAG, "结束缓冲：" + bufferTime+ " arg2 = "+arg2);
                             if (startbufferTime != 0 && isAutoPursue) {
                                 bufferTime = System.currentTimeMillis() - startbufferTime;
                                 if (bufferTime > 2000) {
@@ -709,7 +712,11 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
                             cancelReport();
 //                            monitorRecorder.BufferEnd();
                             Log.d(TAG, "MEDIA_INFO_BUFFERING_END:");
+                            if (mPlayerBufferingUpdateListener != null)
+                                mPlayerBufferingUpdateListener.onBufferingUpdate(mp,100);
                             break;
+//                        case IMediaPlayer.MEDIA_BUFFERING_UPDATE:
+//                            break;
                         case IMediaPlayer.MEDIA_INFO_NETWORK_BANDWIDTH:
 //                            recorder.setBandwidth(arg2);
                             Log.d(TAG, "MEDIA_INFO_NETWORK_BANDWIDTH: " + arg2);
@@ -753,8 +760,6 @@ public class IjkPlayerView implements MediaController.MediaPlayerControl {
             new IMediaPlayer.OnBufferingUpdateListener() {
                 public void onBufferingUpdate(IMediaPlayer mp, int percent) {
                     mCurrentBufferPercentage = percent;
-                    if (mPlayerBufferingUpdateListener != null)
-                        mPlayerBufferingUpdateListener.onBufferingUpdate(mp,percent);
                 }
             };
 

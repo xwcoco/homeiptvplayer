@@ -220,7 +220,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/hud_video_info_item_space"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/hud_source_text"
+                app:layout_constraintStart_toEndOf="@id/hud_source_text"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
@@ -231,6 +231,16 @@
                 android:scaleType="fitCenter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/hud_source_image" />
+
+            <ImageView
+                android:id="@+id/hud_video_hw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/hud_video_info_space"
+                android:src="@mipmap/infobar_hw"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/hud_video_player"
+                app:layout_constraintTop_toTopOf="@id/hud_video_player" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

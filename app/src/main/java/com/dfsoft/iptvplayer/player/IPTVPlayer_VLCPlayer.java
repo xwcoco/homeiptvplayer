@@ -1,9 +1,14 @@
 package com.dfsoft.iptvplayer.player;
 
 import android.app.Activity;
+import android.media.MediaCodecList;
+import android.media.MediaFormat;
 import android.net.Uri;
 import android.nfc.Tag;
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.dfsoft.iptvplayer.utils.LogUtils;
 
@@ -155,6 +160,7 @@ public class IPTVPlayer_VLCPlayer extends IPTVPlayer_Base implements MediaPlayer
         super.close();
     }
 
+
     @Override
     public void onEvent(MediaPlayer.Event event) {
         switch (event.type) {
@@ -183,6 +189,8 @@ public class IPTVPlayer_VLCPlayer extends IPTVPlayer_Base implements MediaPlayer
                             Log.d(TAG, "onVout: v codec = "+vt.codec);
                             Log.d(TAG, "onVout: v height = "+vt.height);
                             Log.d(TAG, "onVout: v width = "+vt.width);
+
+
                         } else if (track.type == IMedia.Track.Type.Audio) {
                             IMedia.AudioTrack at = (IMedia.AudioTrack) track;
                             hud.audio_codec = at.codec;
@@ -227,6 +235,15 @@ public class IPTVPlayer_VLCPlayer extends IPTVPlayer_Base implements MediaPlayer
         LogUtils.i(TAG,"stats demuxBitrate = "+stats.demuxBitrate);
         LogUtils.i(TAG,"stats string = "+stats.toString());
     }
+
+//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//    private void debugMediaFormat(IMedia.VideoTrack vt) {
+//        MediaFormat mf = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_MPEG4,1920,1080);
+//        LogUtils.i(TAG,"mf = "+mf.toString());
+//        MediaCodecList mcl = new MediaCodecList(MediaCodecList.ALL_CODECS);
+//        String codecName = mcl.findDecoderForFormat(mf);
+//        LogUtils.i(TAG,"codecName = "+codecName);
+//    }
 
     private class MediaPlayerHack {
         int width = 0;

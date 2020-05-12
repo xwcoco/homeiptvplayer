@@ -64,6 +64,10 @@ public class IPTVPlayer_ijkPlayer extends IPTVPlayer_Base implements IMediaPlaye
     @Override
     public void onBufferingUpdate(IMediaPlayer mp, int percent) {
         LogUtils.i(TAG,"buffer ... "+percent);
+        if (this.mInterface != null) {
+//            float percent = event.getBuffering();
+            mInterface.onBuffering(percent);
+        }
     }
 
     @Override

@@ -80,6 +80,7 @@ public class IPTVPlayer_ExoPlayer extends IPTVPlayer_Base implements Player.Even
             mRendererFactory.setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
             mPlayer = new SimpleExoPlayer.Builder(mAppContext, mRendererFactory).build();
             mPlayer.addAnalyticsListener(this);
+
             mPlayer.addListener(this);
         }
 //        @Nullable Player.VideoComponent newVideoComponent = mPlayer.getVideoComponent();
@@ -171,6 +172,19 @@ public class IPTVPlayer_ExoPlayer extends IPTVPlayer_Base implements Player.Even
             hud.width = width;
             mInterface.OnGetHud(hud);
         }
+    }
+
+    @Override
+    public void onLoadingChanged(boolean isLoading) {
+//        if (isLoading) {
+//
+//        }
+        if (isLoading && this.mInterface != null) {
+            mInterface.onBuffering(mPlayer.getBufferedPercentage());
+        }
+        LogUtils.i(TAG,"loading = "+ isLoading);
+        LogUtils.i(TAG,"loading .... getBufferedPosition = " +  String.valueOf(mPlayer.getBufferedPosition()));
+        LogUtils.i(TAG,"loading .... getBufferedPercentage = " +  String.valueOf(mPlayer.getBufferedPercentage()));
     }
 
     @Override
