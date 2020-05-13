@@ -28,6 +28,7 @@ import com.dfsoft.iptvplayer.player.IPTVPlayerManager;
 import com.dfsoft.iptvplayer.player.IPTVPlayer_HUD;
 import com.dfsoft.iptvplayer.utils.AutoHideView;
 import com.dfsoft.iptvplayer.utils.LogUtils;
+import com.dfsoft.iptvplayer.views.CategoryTwoView;
 import com.dfsoft.iptvplayer.views.CategoryView;
 import com.dfsoft.iptvplayer.views.InformationView;
 import com.dfsoft.iptvplayer.views.PlayerHUDView;
@@ -136,10 +137,22 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     }
 
     public boolean dealWithKeyDown(int keyCode) {
+
+
+        if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_RIGHT) {
+            if (programDescViewIsVisible()) {
+                hideDescView();
+                return true;
+            }
+            if (mHudHide.isVisble()) {
+                showDescView();
+                return true;
+            }
+        }
+
         if (programDescViewIsVisible()) {
             hideDescView();
         }
-
 
         if (keyCode >= KeyEvent.KEYCODE_0 && keyCode <= KeyEvent.KEYCODE_9) {
             ArrayList<String> numList = new ArrayList<>();
@@ -186,14 +199,6 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
             return true;
         }
 
-        if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_RIGHT) {
-            if (programDescViewIsVisible()) {
-                hideDescView();
-                return true;
-            }
-            showDescView();
-            return true;
-        }
 
         if (keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_UP) {
             playNextChannel();
@@ -236,6 +241,8 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
+//        if (event.getAction() == KeyEvent.ACTION_DOWN) return super.onKeyDown(keyCode, event);
+
 //        mInfoView.updateInfo(" pressed : " + String.valueOf(keyCode));
 //        mInfoHide.show();
 
@@ -245,11 +252,13 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
 //        }
         Log.d(TAG, "onKeyDown: " + view);
         if (hasOtherNeedFocusView()) {
+//            return false;
             return super.onKeyDown(keyCode, event);
         }
         boolean ret = dealWithKeyDown(keyCode);
         if (ret)
             return true;
+//        return false;
         return super.onKeyDown(keyCode, event);
     }
 
@@ -436,6 +445,10 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                 if (!msg.equals(""))
                     this.showInfo(msg);
                 break;
+            case IptvSettings.IPtV_SETTING_TAG_CATEGORY:
+                if (this.mCategoryView != null)
+                    this.mCategoryView = null;
+                break;
 
         }
         mSettingView.afterApplySetting();
@@ -555,15 +568,18 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     }
 
     private void createCategoryLayout() {
-        CategoryView view = new CategoryView(this);
-        ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
-        lp.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
-        lp.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
-        mCategoryView = view;
-        mCategoryViewLayoutParams = lp;
 
-//        view.setId(R.id.main_category_view);
-//        mViewContainer.addView(view,lp);
+        int mode = config.settings.getSettingValue(IptvSettings.IPtV_SETTING_TAG_CATEGORY);
+        if (mode == 0) {
+            mCategoryView = new CategoryTwoView(this);
+        } else {
+            mCategoryView = new CategoryView(this);
+        }
+        if (mCategoryViewLayoutParams == null) {
+            mCategoryViewLayoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+            mCategoryViewLayoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+            mCategoryViewLayoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        }
     }
 
     private void showSettingView() {
@@ -594,7 +610,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         }
         if (!mDescView.canShow()) return;
         if (this.mViewContainer.indexOfChild(mDescView) == -1) {
-            mViewContainer.addView(mDescView,mDescViewLayoutParams);
+            mViewContainer.addView(mDescView, mDescViewLayoutParams);
             mDescView.show();
         }
     }
@@ -602,6 +618,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     private boolean programDescViewIsVisible() {
         return (this.mDescView != null && mViewContainer.indexOfChild(mDescView) != -1);
     }
+
 
     private void hideDescView() {
         if (programDescViewIsVisible())

@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.dfsoft.iptvplayer.R;
 import com.dfsoft.iptvplayer.manager.IPTVCategory;
 import com.dfsoft.iptvplayer.manager.IPTVChannel;
@@ -14,20 +16,24 @@ import com.dfsoft.iptvplayer.manager.IPTVChannel;
 import java.util.List;
 
 public class ChannelAdapter extends BaseAdapter {
-    private List<IPTVCategory> mCategory = null;
+    private IPTVCategory mCategory = null;
     private Context mContext;
-    private Integer cateIndex = 0;
+//    private Integer cateIndex = 0;
 
     private int currentItem = 0;
 
-    public ChannelAdapter(Context context, List<IPTVCategory> mCategory , Integer cateIndex) {
+    public IPTVCategory getCategory() {
+        return mCategory;
+    }
+
+    public ChannelAdapter(Context context, @NonNull IPTVCategory category) {
         this.mContext = context;
-        this.mCategory = mCategory;
-        this.cateIndex = cateIndex;
+        this.mCategory = category;
+//        this.cateIndex = cateIndex;
     }
 
     public IPTVChannel getChannel() {
-        return this.mCategory.get(cateIndex).data.get(currentItem);
+        return this.mCategory.data.get(currentItem);
     }
 
     public void setCurrentItem(int currentItem) {
@@ -40,12 +46,12 @@ public class ChannelAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mCategory.get(cateIndex).data.size();
+        return mCategory.data.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mCategory.get(cateIndex).data.get(position);
+        return mCategory.data.get(position);
     }
 
     @Override
@@ -64,8 +70,8 @@ public class ChannelAdapter extends BaseAdapter {
             holder = (ChannelAdapter.ViewHolder) convertView.getTag();
         }
         //设置文字 内容
-        IPTVCategory cate = mCategory.get(this.cateIndex);
-        IPTVChannel channel = cate.data.get(position);
+
+        IPTVChannel channel = mCategory.data.get(position);
         String chname = String.valueOf(channel.num) + "  "+channel.name;
         holder.mTextView.setText(chname);
 

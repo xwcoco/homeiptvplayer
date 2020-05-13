@@ -17,6 +17,8 @@ public class IptvSettings {
     public final static int IPTV_SETTING_TAG_SHOWTIME = 4;
     public final static int IPTV_SETTING_TAG_HARDWARE = 5;
 
+    public final static int IPtV_SETTING_TAG_CATEGORY = 6;
+
     public final static int IPTV_SETTING_TAG_FAVORITE = 9;
     public final static int IPTV_SETTING_TAG_UPDATEDATA = 10;
 
@@ -93,6 +95,11 @@ public class IptvSettings {
         list.add("set_favorite_add");
         list.add("set_favorite_remove");
         addSetting("set_favorite_manager", list,true,0,IPTV_SETTING_TAG_FAVORITE);
+
+        list.clear();
+        list.add("set_category_style_1");
+        list.add("set_category_style_2");
+        addSetting("setting_category_style",list,IPtV_SETTING_TAG_CATEGORY);
 
         list.clear();
         list.add("set_updatedata");

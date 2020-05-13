@@ -1,5 +1,6 @@
 package com.dfsoft.iptvplayer.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +46,6 @@ public class EPGAdapter extends BaseAdapter {
         return position;
     }
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         EPGAdapter.ViewHolder holder = null;
@@ -68,6 +68,8 @@ public class EPGAdapter extends BaseAdapter {
         if (channel.epg.curTime == position) {
             holder.mLottieAnimationView.setVisibility(View.VISIBLE);
             holder.mLottieAnimationView.playAnimation();
+            holder.mTextView.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+            holder.mTimeView.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
         } else {
             holder.mLottieAnimationView.setVisibility(View.GONE);
         }

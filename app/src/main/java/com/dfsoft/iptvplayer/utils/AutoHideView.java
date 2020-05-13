@@ -92,6 +92,10 @@ public class AutoHideView {
         }
     }
 
+    public boolean isVisble() {
+        return  this.mVisible;
+    }
+
     public void show() {
         mVisible = true;
 

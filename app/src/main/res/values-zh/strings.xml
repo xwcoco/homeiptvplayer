@@ -31,6 +31,11 @@
     <string name="set_favorite_add">增加到我的收藏</string>
     <string name="set_favorite_remove">从我的收藏删除</string>
 
+    <string name="set_category_style_1">样式一 (二栏)</string>
+    <string name="set_category_style_2">样式二 (三栏)</string>
+    <string name="setting_category_style">节目表样式</string>
+
+
 
     <string name="currentProgram">当前节目:</string>
     <string name="nextProgram">下个节目:</string>

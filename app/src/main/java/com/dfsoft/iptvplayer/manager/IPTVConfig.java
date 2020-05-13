@@ -133,7 +133,7 @@ public class IPTVConfig {
     }
 
 
-    public String host = "http://192.168.50.8:8080";
+    public String host = "http://192.168.2.11:8080";
 
     public String run(String url) throws IOException {
         Request request = new Request.Builder()
@@ -290,7 +290,7 @@ public class IPTVConfig {
             IPTVCategory cate = category.get(i);
             for (int j = 0; j < cate.data.size(); j++) {
                 IPTVChannel channel = cate.data.get(j);
-                if (channel.name == name)
+                if (channel.name.equals(name))
                     return channel;
             }
         }

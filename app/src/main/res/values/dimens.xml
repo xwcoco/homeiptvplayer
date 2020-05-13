@@ -33,7 +33,7 @@
     <dimen name="hud_video_info_item_space">40dp</dimen>
 
     <dimen name="setting_width">500dp</dimen>
-    <dimen name="setting_height">400dp</dimen>
+    <dimen name="setting_height">450dp</dimen>
     <dimen name="setting_space">30dp</dimen>
 
     <dimen name="quit_space">20dp</dimen>
@@ -41,6 +41,12 @@
     <dimen name="cate_cate_textSize">30sp</dimen>
     <dimen name="cate_channal_textSize">24sp</dimen>
     <dimen name="cate_epg_textSize">18sp</dimen>
+
+    <dimen name="cate_top_space">20dp</dimen>
+    <dimen name="cate_bottom_space">100dp</dimen>
+    <dimen name="cate_cate_width">240dp</dimen>
+    <dimen name="cate_channel_width">230dp</dimen>
+    <dimen name="cate_epg_wdith">300dp</dimen>
 
     <dimen name="hud_program_desc_width">300dp</dimen>
     <dimen name="hud_program_desc_top_space">50dp</dimen>

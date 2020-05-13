@@ -1,33 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-
-    
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tv_epg_time"
-        android:layout_width="51dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="2dp"
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingStart="2dp"
         android:paddingEnd="2dp"
         android:singleLine="true"
-        android:text="09:00"
         android:textColor="@drawable/item_cate_color"
-        android:textSize="@dimen/cate_epg_textSize" />
+        android:textSize="@dimen/cate_epg_textSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieAnimationView"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_epg_time"
         app:lottie_autoPlay="false"
         app:lottie_fileName="epg_playing.json"
         app:lottie_loop="true" />
@@ -36,16 +33,26 @@
         android:id="@+id/tv_epg_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
         android:ellipsize="marquee"
-        android:layout_marginTop="26dp"
-        android:gravity="center|start"
         android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
         android:textColor="@drawable/item_cate_color"
         android:textSize="@dimen/cate_epg_textSize"
- />
+        app:layout_constraintEnd_toStartOf="@id/lottieAnimationView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_epg_time" />
 
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    android:layout_width="200dp"-->
+    <!--    android:layout_height="wrap_content"-->
+
+    <!--    -->
+    <!--    >-->
+
+
+    <!--</FrameLayout>-->

@@ -45,10 +45,10 @@ public class IPTVMessage {
     }
 
     public void sendMessage(int msgId, Object msgData) {
-        Message msg = new Message();
-        msg.what = msgId;
-        msg.obj = msgData;
         for (int i = 0; i < this.mHandlerList.size(); i++) {
+            Message msg = new Message();
+            msg.what = msgId;
+            msg.obj = msgData;
             Handler handler = mHandlerList.get(i);
             handler.sendMessage(msg);
         }
