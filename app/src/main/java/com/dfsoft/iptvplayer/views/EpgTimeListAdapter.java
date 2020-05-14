@@ -1,6 +1,7 @@
 package com.dfsoft.iptvplayer.views;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,9 @@ import androidx.annotation.NonNull;
 
 import com.dfsoft.iptvplayer.R;
 import com.dfsoft.iptvplayer.manager.IPTVCategory;
+import com.dfsoft.iptvplayer.utils.LogUtils;
+
+import java.util.HashMap;
 
 public class EpgTimeListAdapter extends BaseAdapter {
 
@@ -39,6 +43,8 @@ public class EpgTimeListAdapter extends BaseAdapter {
         return position;
     }
 
+    private HashMap<Integer,EPGTimeDetailView> mViewList = new HashMap();
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
@@ -51,8 +57,22 @@ public class EpgTimeListAdapter extends BaseAdapter {
             EPGTimeDetailView view = new EPGTimeDetailView(mContext);
             view.showEPG(category.data.get(position));
             convertView = view;
+            view.invalidate();
+            view.showTime(12);
+            mViewList.put(position,view);
 //            }
         }
         return convertView;
+    }
+    
+    public void showTime(int time) {
+
+        LogUtils.i("EPGTimeDetailView","lenth = "+this.getCount());
+        for (int i = 0; i < this.getCount(); i++) {
+            EPGTimeDetailView view = mViewList.get(i);
+            LogUtils.i("EPGTimeDetailView","view = "+view);
+            if (view != null)
+                view.showTime(time);
+        }
     }
 }

@@ -7,11 +7,13 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.dfsoft.iptvplayer.R;
 import com.dfsoft.iptvplayer.manager.IPTVCategory;
 
-public class EPGTimeListView extends FrameLayout {
+public class EPGTimeListView extends ConstraintLayout {
 
     private Context mContext;
 
@@ -24,6 +26,7 @@ public class EPGTimeListView extends FrameLayout {
     }
 
     private ListView mEpgList;
+    private EPGTimeHeader mHeader;
 
     public EPGTimeListView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -34,11 +37,19 @@ public class EPGTimeListView extends FrameLayout {
         if (isInEditMode()) return;
 
         mEpgList = findViewById(R.id.epg_list_list);
+        mHeader = findViewById(R.id.epg_list_header);
+
+
+//        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) mHeader.getLayoutParams();
+//        lp.bottomToBottom =
     }
 
     public void showCategoryEPG(IPTVCategory category) {
         EpgTimeListAdapter adapter = new EpgTimeListAdapter(mContext,category);
         mEpgList.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+        mHeader.showTime(12);
+        adapter.showTime(12);
     }
 }
