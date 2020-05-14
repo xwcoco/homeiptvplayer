@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:background="@color/black_overlay"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginStart="@dimen/cate_top_space"
     android:layout_marginTop="@dimen/cate_top_space"
-    android:layout_marginBottom="@dimen/cate_bottom_space">
+    android:layout_marginEnd="@dimen/cate_top_space"
+    android:layout_marginBottom="@dimen/cate_bottom_space"
+    android:background="@color/black_overlay">
 
 
-<ImageView
+    <ImageView
         android:id="@+id/cate_two_left_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,10 +26,12 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
         android:textAlignment="center"
-        android:textSize="@dimen/cate_cate_textSize"
         android:textColor="@color/colorAccent"
+        android:textSize="@dimen/cate_cate_textSize"
         app:layout_constraintStart_toEndOf="@id/cate_two_left_image"
         app:layout_constraintTop_toTopOf="@id/cate_two_left_image" />
+
+
 
     <ImageView
         android:id="@+id/cate_two_right_image"
@@ -36,8 +39,7 @@
         android:layout_height="wrap_content"
         android:src="@mipmap/controls_right"
         app:layout_constraintStart_toEndOf="@id/cate_two_category_name"
-        app:layout_constraintTop_toTopOf="@id/cate_two_left_image"
-         />
+        app:layout_constraintTop_toTopOf="@id/cate_two_left_image" />
 
     <com.dfsoft.iptvplayer.views.FocusListView
         android:id="@+id/cate_two_channel_list"
@@ -56,22 +58,32 @@
         android:layout_width="1.0dip"
         android:layout_height="match_parent"
         android:background="#ff333333"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/cate_two_right_image"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.dfsoft.iptvplayer.views.FocusListView
-        android:focusable="false"
         android:id="@+id/cate_two_epg_list"
         android:layout_width="@dimen/cate_epg_wdith"
         android:layout_height="match_parent"
         android:dividerHeight="1dp"
+        android:focusable="false"
         android:listSelector="@drawable/item_bg_selector_right"
-        android:padding="3dp"
+        android:padding="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/cate_two_sep"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.dfsoft.iptvplayer.views.EPGTimeListView
+        android:id="@+id/cate_two_epg_time"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cate_two_epg_list"
+        app:layout_constraintTop_toBottomOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

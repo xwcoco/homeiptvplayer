@@ -27,6 +27,8 @@ public class CategoryTwoView extends CategoryView {
 
     MarqueeTextView cate_two_category_name;
 
+    private EPGTimeListView mEpgTimeList;
+
     private IPTVCategory mShowCategory = null;
 
     @Override
@@ -36,6 +38,8 @@ public class CategoryTwoView extends CategoryView {
         cate_two_category_name = findViewById(R.id.cate_two_category_name);
         mChannelList = findViewById(R.id.cate_two_channel_list);
         mEpgList = findViewById(R.id.cate_two_epg_list);
+
+        mEpgTimeList = findViewById(R.id.cate_two_epg_time);
 
         mChannelList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -149,6 +153,10 @@ public class CategoryTwoView extends CategoryView {
         int h = mChannelList.getMeasuredHeight() / 2;
         mChannelList.setSelectionFromTop(cIndex,h);
 
+        mEpgTimeList.showCategoryEPG(category);
+
+//        EpgTimeListAdapter adapter = new EpgTimeListAdapter(mContext,category);
+//        mEpgTimeList.setAdapter(adapter);
     }
 
 }

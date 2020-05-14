@@ -576,7 +576,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
             mCategoryView = new CategoryView(this);
         }
         if (mCategoryViewLayoutParams == null) {
-            mCategoryViewLayoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+            mCategoryViewLayoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
             mCategoryViewLayoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
             mCategoryViewLayoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
         }
