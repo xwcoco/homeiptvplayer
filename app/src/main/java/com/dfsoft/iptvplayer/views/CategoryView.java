@@ -89,7 +89,12 @@ public class CategoryView extends FrameLayout {
         mCateList.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_MENU || keyCode == KeyEvent.KEYCODE_BACK) {
+                if (keyCode == KeyEvent.KEYCODE_MENU) {
+                    config.iptvMessage.sendMessage(IPTVMessage.IPTV_SWITCH_CATEGORY);
+                    return true;
+                }
+
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
                     hide();
                     return true;
                 }
@@ -137,7 +142,12 @@ public class CategoryView extends FrameLayout {
         mEpgList.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_MENU || keyCode == KeyEvent.KEYCODE_BACK) {
+                if (keyCode == KeyEvent.KEYCODE_MENU) {
+                    config.iptvMessage.sendMessage(IPTVMessage.IPTV_SWITCH_CATEGORY);
+                    return true;
+                }
+
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
                     hide();
                     return true;
                 }
@@ -177,15 +187,15 @@ public class CategoryView extends FrameLayout {
         }
 
         adapter.notifyDataSetChanged();
+
+        afterActiveChannel(channel);
+
+        mChannelList.requestFocus();
+    }
+
+    protected void afterActiveChannel(IPTVChannel channel) {
         mEpgList.setAdapter(channel.epgAdapter);
         setEPGCurrentProgramToCenter(channel);
-//        channel.epg.getCurrentTimer();
-//        int curtime = channel.epg.curTime;
-//        mEpgList.setAdapter(channel.epgAdapter);
-//        if (curtime != -1) {
-//            int h = mEpgList.getMeasuredHeight() / 2;
-//            mEpgList.setSelectionFromTop(curtime, h);
-//        }
     }
 
     protected IPTVCategory mLastCategory = null;
@@ -276,15 +286,18 @@ public class CategoryView extends FrameLayout {
             switch (msg.what) {
                 case IPTVMessage.IPTV_EPG_LOADED:
                     IPTVChannel channel = (IPTVChannel) msg.obj;
-                    ChannelAdapter adapter = (ChannelAdapter) mChannelList.getAdapter();
-                    if (adapter != null && adapter.getChannel() == channel) {
-                        setEPGCurrentProgramToCenter(channel);
-
-                    }
+                    onEPGLoaded(channel);
                     break;
             }
         }
     };
+
+    protected void onEPGLoaded(IPTVChannel channel) {
+        ChannelAdapter adapter = (ChannelAdapter) mChannelList.getAdapter();
+        if (adapter != null && adapter.getChannel() == channel) {
+            setEPGCurrentProgramToCenter(channel);
+        }
+    }
 
     private OnKeyListener mKeyListener = new OnKeyListener() {
         @Override
@@ -306,7 +319,12 @@ public class CategoryView extends FrameLayout {
 //
                 return true;
             }
-            if (keyCode == KeyEvent.KEYCODE_ESCAPE || keyCode == KeyEvent.KEYCODE_DEL || keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU) {
+
+            if (keyCode == KeyEvent.KEYCODE_MENU) {
+                config.iptvMessage.sendMessage(IPTVMessage.IPTV_SWITCH_CATEGORY);
+                return true;
+            }
+            if (keyCode == KeyEvent.KEYCODE_ESCAPE || keyCode == KeyEvent.KEYCODE_DEL || keyCode == KeyEvent.KEYCODE_BACK) {
                 hide();
                 return true;
             }

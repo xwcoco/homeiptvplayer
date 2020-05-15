@@ -8,57 +8,95 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.dfsoft.iptvplayer.R;
 import com.dfsoft.iptvplayer.manager.IPTVChannel;
+import com.dfsoft.iptvplayer.manager.IPTVEpgData;
 import com.dfsoft.iptvplayer.utils.LogUtils;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class EPGTimeDetailView extends LinearLayout {
     private Context mContext;
 
-    private LinearLayout mContainer;
+    public IPTVChannel channel = null;
 
-    HorizontalScrollView mScrollView;
+    private int startHour = 0;
 
-    public EPGTimeDetailView(Context context) {
+    private int lastHightlightIndex = -1;
+
+
+    public EPGTimeDetailView(Context context,@NonNull IPTVChannel channel,int startHour) {
         super(context);
         mContext = context;
+        this.channel = channel;
+        this.startHour = startHour;
+        showEPG();
+    }
 
-        inflate(context,R.layout.layout_hscroll,this);
+    public void hightLightEPG() {
+        unHightLightEPG();
+        if (epgData == null) return;
+        int index = channel.epg.getEPGTimeIndex(epgData);
+        if (index == -1) return;
+        setHightLightColor(index,R.drawable.epg_timelist_highlight);
+        lastHightlightIndex = index;
+    }
 
-        dpPerHour = (int) mContext.getResources().getDimension(R.dimen.cate_epg_timelist_width_perhour);
+    public void unHightLightEPG() {
+        if (this.lastHightlightIndex != -1) {
+            setHightLightColor(lastHightlightIndex,R.drawable.epg_timelist_bg);
+            lastHightlightIndex= -1;
+        }
+    }
 
-        mContainer = findViewById(R.id.hscroll_container);
-
-        mScrollView = findViewById(R.id.hscroll_scroll);
-
+    private void setHightLightColor(int index,int color) {
+        if (epgData == null) return;
+        if (index < 0 || index >= epgData.size()) return;
+        LinearLayout layout = (LinearLayout) this.getChildAt(index);
+        if (layout == null) return;
+        layout.setBackground(mContext.getResources().getDrawable(color));
 
     }
 
-    private int dpPerHour = 200;
+    private ArrayList<IPTVEpgData> epgData = null;
 
-    public void showEPG(IPTVChannel channel) {
+    private void addEmptyItem() {
+        int height = (int) mContext.getResources().getDimension(R.dimen.cate_channel_item_height);
+        LinearLayout layout = new LinearLayout(mContext);
+        layout.setGravity(Gravity.CENTER);
+        layout.setBackground(mContext.getResources().getDrawable(R.drawable.epg_timelist_bg));
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+        addView(layout,layoutParams);
+    }
+
+    public void showEPG() {
         if (channel.epg.isEmpty()) {
             channel.loadEPGData();
+            addEmptyItem();
             return;
         }
 
-        int totalWidth = 0;
-        int width = 0;
-        for (int i = 0; i < channel.epg.data.size(); i++) {
-            width = (int) Math.ceil(channel.epg.getProgramHours(i) * dpPerHour);
+        epgData = channel.epg.getDataInHours(startHour,startHour+2);
 
+        this.removeAllViews();
+
+        for (int i = 0; i < epgData.size(); i++) {
+            IPTVEpgData epg = epgData.get(i);
             LinearLayout layout = new LinearLayout(mContext);
             layout.setGravity(Gravity.CENTER);
             layout.setBackground(mContext.getResources().getDrawable(R.drawable.epg_timelist_bg));
-            LayoutParams layoutParams = new LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT);
-            mContainer.addView(layout,layoutParams);
+            LayoutParams layoutParams = new LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,epg.minutes);
+            addView(layout,layoutParams);
 
             TextView view = new TextView(mContext);
             LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            view.setText(channel.epg.data.get(i).name);
+            view.setText(epg.name);
             view.setTextSize(16);
             view.setTextColor(mContext.getResources().getColor(R.color.white));
-            view.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            view.setEllipsize(TextUtils.TruncateAt.END);
             view.setTextAlignment(TEXT_ALIGNMENT_CENTER);
             view.setGravity(Gravity.CENTER);
             view.setSingleLine();
@@ -66,13 +104,6 @@ public class EPGTimeDetailView extends LinearLayout {
             layout.addView(view,lp);
 
         }
-    }
-
-    public void showTime(int time) {
-        int hsvWidth = mScrollView.getWidth();
-        LogUtils.i("EPGTimeDetailView","scroll width = "+hsvWidth);
-        mScrollView.scrollTo(dpPerHour * time,0);
-
     }
 
 }

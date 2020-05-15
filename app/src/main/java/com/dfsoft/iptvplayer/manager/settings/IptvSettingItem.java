@@ -36,4 +36,12 @@ public class IptvSettingItem {
         mOwner.save();
         config.iptvMessage.sendMessage(IPTVMessage.IPTV_CONFIG_CHANGED,this);
     }
+
+    public void nextValue() {
+        if (value == options.size() - 1) {
+            value = 0;
+        } else
+            value = value + 1;
+        mOwner.save();
+    }
 }

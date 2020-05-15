@@ -22,4 +22,8 @@
     <color name="lightwhite">#e6ffffff</color>
 
     <color name="epg">#ffa7abac</color>
+
+    <color name="epg_time_line">#EEff33cc</color>
+
+
 </resources>

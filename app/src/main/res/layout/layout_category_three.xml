@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/cate_top_space"
+    android:layout_marginTop="@dimen/cate_top_space"
+    android:layout_marginEnd="@dimen/cate_top_space"
+    android:layout_marginBottom="@dimen/cate_bottom_space"
+    android:background="@color/black_overlay">
+
+
+    <ImageView
+        android:id="@+id/cate_three_left_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/controls_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.dfsoft.iptvplayer.views.MarqueeTextView
+        android:id="@+id/cate_three_category_name"
+        android:layout_width="@dimen/cate_cate_width"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/cate_cate_textSize"
+        app:layout_constraintStart_toEndOf="@id/cate_three_left_image"
+        app:layout_constraintTop_toTopOf="@id/cate_three_left_image" />
+
+
+    <ImageView
+        android:id="@+id/cate_three_right_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/controls_right"
+        app:layout_constraintStart_toEndOf="@id/cate_three_category_name"
+        app:layout_constraintTop_toTopOf="@id/cate_three_left_image" />
+
+    <ListView
+        android:id="@+id/cate_three_channel_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:dividerHeight="1dp"
+        android:padding="@dimen/cate_three_channel_list_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/cate_three_left_image"
+        app:layout_constraintTop_toBottomOf="@id/cate_three_left_image" />
+
+    <com.dfsoft.iptvplayer.views.EPGTimeHeader
+        android:id="@+id/cate_three_epg_header"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="@id/cate_three_category_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cate_three_right_image"
+        app:layout_constraintTop_toTopOf="@id/cate_three_category_name" />
+
+    <LinearLayout
+        android:id="@+id/cate_three_epg_timeline"
+        android:layout_width="2.0dip"
+        android:layout_height="0dp"
+        android:layout_marginStart="0dp"
+        android:background="@color/epg_time_line"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/cate_three_epg_header"
+        app:layout_constraintTop_toBottomOf="@+id/cate_three_epg_header" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

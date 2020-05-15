@@ -25,11 +25,10 @@ public class CategoryTwoView extends CategoryView {
         super(context, attrs);
     }
 
-    MarqueeTextView cate_two_category_name;
+    protected MarqueeTextView cate_two_category_name;
 
-    private EPGTimeListView mEpgTimeList;
 
-    private IPTVCategory mShowCategory = null;
+    protected IPTVCategory mShowCategory = null;
 
     @Override
     protected void initLayer() {
@@ -38,8 +37,6 @@ public class CategoryTwoView extends CategoryView {
         cate_two_category_name = findViewById(R.id.cate_two_category_name);
         mChannelList = findViewById(R.id.cate_two_channel_list);
         mEpgList = findViewById(R.id.cate_two_epg_list);
-
-        mEpgTimeList = findViewById(R.id.cate_two_epg_time);
 
         mChannelList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -53,6 +50,11 @@ public class CategoryTwoView extends CategoryView {
             }
         });
 
+        initKeyListener();
+
+    }
+
+    protected void initKeyListener() {
         mChannelList.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -98,6 +100,11 @@ public class CategoryTwoView extends CategoryView {
                     return true;
                 }
 
+                if (keyCode == KeyEvent.KEYCODE_MENU) {
+                    config.iptvMessage.sendMessage(IPTVMessage.IPTV_SWITCH_CATEGORY);
+                    return true;
+                }
+
 //                if (keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_UP) {
 //                    ChannelAdapter adapter = (ChannelAdapter) mChannelList.getAdapter();
 //                    if (adapter != null) {
@@ -111,7 +118,7 @@ public class CategoryTwoView extends CategoryView {
 //                    }
 //                }
 
-                if (keyCode == KeyEvent.KEYCODE_ESCAPE || keyCode == KeyEvent.KEYCODE_DEL || keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU) {
+                if (keyCode == KeyEvent.KEYCODE_ESCAPE || keyCode == KeyEvent.KEYCODE_DEL || keyCode == KeyEvent.KEYCODE_BACK ) {
                     hide();
                     return true;
                 }
@@ -119,6 +126,7 @@ public class CategoryTwoView extends CategoryView {
 
             }
         });
+
     }
 
     @Override
@@ -130,17 +138,24 @@ public class CategoryTwoView extends CategoryView {
 
 
         showCategoryChannel(cate);
-//        int index = cate.data.indexOf(channel);
-//        this.activeChannel(index);
-//        int h = mChannelList.getMeasuredHeight() / 2;
-//        mChannelList.setSelectionFromTop(index,h);
-//        mChannelList.setFocusable(true);
         mChannelList.requestFocus();
 
     }
 
-    private void showCategoryChannel(IPTVCategory category) {
+
+//    @Override
+//    protected void afterActiveChannel(IPTVChannel channel) {
+//        if (mode == 1)
+//            super.afterActiveChannel(channel);
+//        else {
+//            mEpgTimeList.afterOnActiveChannel(channel,mChannelList);
+//        }
+//
+//    }
+
+    protected void showCategoryChannel(IPTVCategory category) {
         if (category == null) return;
+
         if (category.channelAdapter == null) {
             category.channelAdapter = new ChannelAdapter(this.mContext,category);
         }
@@ -153,10 +168,37 @@ public class CategoryTwoView extends CategoryView {
         int h = mChannelList.getMeasuredHeight() / 2;
         mChannelList.setSelectionFromTop(cIndex,h);
 
-        mEpgTimeList.showCategoryEPG(category);
+//        mEpgTimeList.showCategoryEPG(mShowCategory);
 
 //        EpgTimeListAdapter adapter = new EpgTimeListAdapter(mContext,category);
 //        mEpgTimeList.setAdapter(adapter);
     }
 
+//    @Override
+//    protected void onEPGLoaded(IPTVChannel channel) {
+//        if (mode == 1) {
+//            super.onEPGLoaded(channel);
+//            return;
+//        }
+//
+//        mEpgTimeList.doEPGLoaded(channel);
+//
+//    }
+
+//    private void doShowEpgListTime() {
+//        mEpgTimeList.showCategoryEPG(mShowCategory,mEpgTimeListWidth);
+//    }
+
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//        if (mEpgTimeListWidth == 0) {
+//            int width = mEpgTimeList.getWidth();
+//            if (width != 0) {
+//                mEpgTimeListWidth = width;
+//                doShowEpgListTime();
+//            }
+//        }
+//        LogUtils.i("CategoryTwoView","on Measure width = "+mEpgTimeList.getWidth());
+//    }
 }

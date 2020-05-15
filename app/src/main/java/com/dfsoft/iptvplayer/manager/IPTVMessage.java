@@ -34,6 +34,8 @@ public class IPTVMessage {
 
     public final static int IPTV_SHOWMESSAGE= 34;
 
+    public final static int IPTV_SWITCH_CATEGORY = 35;
+
     public final static int IPTV_QUIT = 50;
 
     public void addMessageListener(Handler handler) {

@@ -99,6 +99,7 @@ public class IptvSettings {
         list.clear();
         list.add("set_category_style_1");
         list.add("set_category_style_2");
+        list.add("set_category_style_3");
         addSetting("setting_category_style",list,IPtV_SETTING_TAG_CATEGORY);
 
         list.clear();

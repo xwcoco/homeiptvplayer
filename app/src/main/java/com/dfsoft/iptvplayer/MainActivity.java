@@ -28,6 +28,7 @@ import com.dfsoft.iptvplayer.player.IPTVPlayerManager;
 import com.dfsoft.iptvplayer.player.IPTVPlayer_HUD;
 import com.dfsoft.iptvplayer.utils.AutoHideView;
 import com.dfsoft.iptvplayer.utils.LogUtils;
+import com.dfsoft.iptvplayer.views.CategoryThreeView;
 import com.dfsoft.iptvplayer.views.CategoryTwoView;
 import com.dfsoft.iptvplayer.views.CategoryView;
 import com.dfsoft.iptvplayer.views.InformationView;
@@ -340,6 +341,13 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
                     mInfoView.updateInfo((String) msg.obj);
                     mInfoHide.show();
                     break;
+                case IPTVMessage.IPTV_SWITCH_CATEGORY:
+                    hideCategoryLayout();
+                    mCategoryView = null;
+                    IptvSettingItem set = config.settings.getItemByTag(IptvSettings.IPtV_SETTING_TAG_CATEGORY);
+                    set.nextValue();
+                    showCategoryLayout();
+                    break;
                 case IPTVMessage.IPTV_QUIT:
                     exit();
                     break;
@@ -571,10 +579,13 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
 
         int mode = config.settings.getSettingValue(IptvSettings.IPtV_SETTING_TAG_CATEGORY);
         if (mode == 0) {
-            mCategoryView = new CategoryTwoView(this);
-        } else {
             mCategoryView = new CategoryView(this);
-        }
+
+        } else if (mode == 1) {
+            mCategoryView = new CategoryTwoView(this);
+        } else
+            mCategoryView = new CategoryThreeView(this);
+
         if (mCategoryViewLayoutParams == null) {
             mCategoryViewLayoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
             mCategoryViewLayoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;

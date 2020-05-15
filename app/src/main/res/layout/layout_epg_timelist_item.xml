@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="@dimen/cate_channel_item_height"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="488"
+        android:padding="@dimen/cate_three_channel_list_padding"
+        android:layout_height="match_parent" >
+    <TextView
+        android:id="@+id/epg_timelist_channel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:ellipsize="marquee"
+        android:layout_gravity="center"
+        android:gravity="center_vertical|start"
+
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:textColor="@drawable/item_cate_color"
+        android:textSize="@dimen/cate_channal_textSize" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/epg_timelist_root"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1432"
+        android:padding="@dimen/cate_three_channel_list_padding"
+        android:orientation="horizontal" />
+
+</LinearLayout>

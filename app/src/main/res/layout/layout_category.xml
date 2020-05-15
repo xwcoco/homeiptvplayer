@@ -41,6 +41,7 @@
     <com.dfsoft.iptvplayer.views.FocusListView
         android:id="@+id/category_epg_list"
         android:layout_width="@dimen/cate_epg_wdith"
+        android:focusable="false"
         android:layout_height="match_parent"
         android:background="@color/black_overlay"
         android:dividerHeight="1dp"

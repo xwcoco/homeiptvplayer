@@ -51,6 +51,8 @@
     <dimen name="cate_epg_timelist_width_perhour">300dp</dimen>
     <dimen name="cate_channel_item_height">50dp</dimen>
 
+    <dimen name="cate_three_channel_list_padding">3dp</dimen>
+
     <dimen name="hud_program_desc_width">300dp</dimen>
     <dimen name="hud_program_desc_top_space">50dp</dimen>
     <dimen name="hud_program_desc_title_size">26sp</dimen>

@@ -31,6 +31,7 @@
 
     <string name="set_category_style_1">Style One</string>
     <string name="set_category_style_2">Style Two</string>
+    <string name="set_category_style_3">Style Three</string>
     <string name="setting_category_style">Category Style</string>
 
     <string name="currentProgram">Current Program</string>

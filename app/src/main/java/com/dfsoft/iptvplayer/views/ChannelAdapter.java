@@ -16,8 +16,8 @@ import com.dfsoft.iptvplayer.manager.IPTVChannel;
 import java.util.List;
 
 public class ChannelAdapter extends BaseAdapter {
-    private IPTVCategory mCategory = null;
-    private Context mContext;
+    protected IPTVCategory mCategory = null;
+    protected Context mContext;
 //    private Integer cateIndex = 0;
 
     private int currentItem = 0;
