@@ -132,8 +132,10 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         if (config.getPlayingChannal() == null) {
             config.setFirstRunPlayChannel();
         }
-        if (config.getPlayingChannal() != null) {
-            mIPTVManager.play(config.getPlayingChannal());
+
+        IPTVChannel channel = config.getPlayingChannal();
+        if (channel != null) {
+            mIPTVManager.play(channel,channel.playIndex);
         }
     }
 
@@ -356,7 +358,10 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
     };
 
     public void playChannal(IPTVChannel channel) {
-        playChannal(channel, 0);
+        if (channel.playIndex == -1)
+            playChannal(channel, 0);
+        else
+            playChannal(channel,channel.playIndex);
     }
 
     public void playChannal(IPTVChannel channel, int index) {

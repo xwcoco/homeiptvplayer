@@ -153,12 +153,21 @@ public class IptvSettings {
         IPTVChannel channel = config.getPlayingChannal();
         if (channel == null) return;
         SharedPreferences sp = mContext.getSharedPreferences("user",Context.MODE_PRIVATE);
-        sp.edit().putInt("lastPlayedChannel",channel.num).apply();
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt("lastPlayedChannel",channel.num);
+        editor.putInt("lastPlayedSource",channel.playIndex);
+        editor.apply();
+//        sp.edit().putInt("lastPlayedChannel",channel.num).apply();
     }
 
     public int getLastPlayedChannel() {
         SharedPreferences sp = mContext.getSharedPreferences("user",Context.MODE_PRIVATE);
         return sp.getInt("lastPlayedChannel",-1);
+    }
+
+    public int getLastPlayedSouce() {
+        SharedPreferences sp = mContext.getSharedPreferences("user",Context.MODE_PRIVATE);
+        return sp.getInt("lastPlayedSource",-1);
     }
 
     public void load() {

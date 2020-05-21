@@ -302,6 +302,12 @@ public class IPTVConfig {
         IPTVChannel channel = null;
         if (lastnum != -1) {
             channel = findChannelByNum(lastnum);
+            if (channel != null) {
+                int sourceIndex = settings.getLastPlayedSouce();
+                if (sourceIndex != -1)
+                    channel.playIndex = sourceIndex;
+            }
+
         }
         if (channel == null)
             channel = getFirstCanPlayChannel();

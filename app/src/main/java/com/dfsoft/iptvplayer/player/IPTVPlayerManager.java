@@ -49,7 +49,9 @@ public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
 
     public void play(IPTVChannel channel,int index) {
         if (mPlayer == null || channel == null) return;
-        if (index < 0 || channel.source.size() == 0 || index >= channel.source.size()) return;
+        if (channel.source.size() == 0) return;
+        if (index < 0 || index >= channel.source.size())
+            index = 0;
 
         this.hud = new IPTVPlayer_HUD();
 
