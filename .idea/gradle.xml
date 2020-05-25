@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/exo_ext_ffmpeg" />
             <option value="$PROJECT_DIR$/ijkplayer-java" />
+            <option value="$PROJECT_DIR$/tvbus" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

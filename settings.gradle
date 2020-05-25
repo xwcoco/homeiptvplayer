@@ -1,3 +1,3 @@
 rootProject.name='homeiptvplayer'
-include ':app', ':ijkplayer-java'
+include ':app', ':ijkplayer-java', ':tvbus'
 include ':exo_ext_ffmpeg'
