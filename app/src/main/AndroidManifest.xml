@@ -34,6 +34,7 @@
         </activity>
         <service android:name="com.tvbus.engine.TVService" >
         </service>
+        <service android:enabled="true" android:name="com.forcetech.service.P2p_AService" android:process=":P2p_A"/>
 <!--        <activity android:name=".MainActivity">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->

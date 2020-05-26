@@ -12,6 +12,7 @@ import com.dfsoft.iptvplayer.manager.IPTVMessage;
 import com.dfsoft.iptvplayer.manager.settings.IptvSettingItem;
 import com.dfsoft.iptvplayer.manager.settings.IptvSettings;
 import com.dfsoft.iptvplayer.utils.LogUtils;
+import com.forcetech.android.P2PManager;
 import com.tvbus.engine.TVCore;
 import com.tvbus.engine.TVListener;
 import com.tvbus.engine.TVService;
@@ -33,9 +34,14 @@ public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
 
     public IPTVPlayer_HUD hud = new IPTVPlayer_HUD();
 
+    private P2PManager p2PManager = P2PManager.getInstance();
+
     public IPTVPlayerManager(Activity main) {
         this.main = main;
         playerid = config.settings.getSettingValue(IptvSettings.IPTV_SETTING_TAG_PLAYER,playerid);
+
+        p2PManager.setContext(main);
+
         this.createPlayer();
         displayDecoders();
     }
@@ -75,7 +81,11 @@ public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
 
             mTVCore.start(source);
 
-        } else {
+        } else if (source.startsWith("P2p")) {
+            String tmpUrl = p2PManager.getUrl(source,9001);
+            mPlayer.play(tmpUrl);
+        }
+        else {
             if (mTVCore != null) {
                 mTVCore.stop();
             }
