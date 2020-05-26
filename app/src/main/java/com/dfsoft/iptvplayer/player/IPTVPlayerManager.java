@@ -40,7 +40,7 @@ public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
         this.main = main;
         playerid = config.settings.getSettingValue(IptvSettings.IPTV_SETTING_TAG_PLAYER,playerid);
 
-        p2PManager.setContext(main);
+//        p2PManager.setContext(main);
 
         this.createPlayer();
         displayDecoders();
@@ -81,8 +81,11 @@ public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
 
             mTVCore.start(source);
 
-        } else if (source.startsWith("P2p")) {
+        } else if (source.startsWith("P2p") || source.startsWith("p2p")) {
             String tmpUrl = p2PManager.getUrl(source,9001);
+            mPlayer.play(tmpUrl);
+        } else if (source.startsWith("p8p")) {
+            String tmpUrl = p2PManager.getUrl(source,9002);
             mPlayer.play(tmpUrl);
         }
         else {

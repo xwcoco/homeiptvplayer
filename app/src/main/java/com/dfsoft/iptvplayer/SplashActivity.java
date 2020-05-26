@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dfsoft.iptvplayer.manager.IPTVConfig;
+import com.forcetech.android.P2PManager;
 
 public class SplashActivity extends AppCompatActivity implements IPTVConfig.DataEventLister {
     @Override
@@ -13,6 +14,10 @@ public class SplashActivity extends AppCompatActivity implements IPTVConfig.Data
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.layout_splash);
+
+        P2PManager p2PManager = P2PManager.getInstance();
+        p2PManager.setContext(this.getApplicationContext());
+        p2PManager.initServices();
 
         IPTVConfig config = IPTVConfig.getInstance();
         config.setDataEventLister(this);

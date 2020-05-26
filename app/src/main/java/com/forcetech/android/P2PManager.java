@@ -10,6 +10,7 @@ import android.os.IBinder;
 
 import com.dfsoft.iptvplayer.utils.LogUtils;
 import com.forcetech.service.P2p_AService;
+import com.forcetech.service.P8PService;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -46,10 +47,16 @@ public class P2PManager {
     public void setContext(Context context) {
 
         this.mContext = context;
-
-        mContext.bindService(new Intent(mContext,P2p_AService.class),mConnection,Context.BIND_AUTO_CREATE);
     }
 
+    public void initServices() {
+        mContext.bindService(new Intent(mContext,P2p_AService.class),mConnection,Context.BIND_AUTO_CREATE);
+        mContext.bindService(new Intent(mContext, P8PService.class),mConnection,Context.BIND_AUTO_CREATE);
+    }
+
+//    public void initServices() {
+//
+//    }
     ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -90,13 +97,13 @@ public class P2PManager {
 
         cmd = cmd + "&" + uri.getQuery();
 
-        StringBuilder builder = new StringBuilder();
-        builder.append("http://127.0.0.1:");
-        builder.append(port);
-        builder.append("/");
-        builder.append(uri.getLastPathSegment());
-
-        String retValue = builder.toString();
+//        StringBuilder builder = new StringBuilder();
+//        builder.append("http://127.0.0.1:");
+//        builder.append(port);
+//        builder.append("/");
+//        builder.append(uri.getLastPathSegment());
+//
+//        String retValue = builder.toString();
 //
 //        builder.append("/cmd.xml?cmd=switch_chan&server=");
 //        builder.append(uri.getHost());
@@ -120,7 +127,7 @@ public class P2PManager {
 
         doGetP2PUrl(cmd);
 
-        return retValue;
+        return "http://127.0.0.1:"+port+uri.getPath();
 
     }
 
