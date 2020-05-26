@@ -32,6 +32,8 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/AppTheme.Main">
         </activity>
+        <service android:name="com.tvbus.engine.TVService" >
+        </service>
 <!--        <activity android:name=".MainActivity">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->

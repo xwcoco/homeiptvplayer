@@ -3,6 +3,7 @@ package com.dfsoft.iptvplayer;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -36,6 +37,12 @@ import com.dfsoft.iptvplayer.views.PlayerHUDView;
 import com.dfsoft.iptvplayer.views.ProgramDescView;
 import com.dfsoft.iptvplayer.views.QuitView;
 import com.dfsoft.iptvplayer.views.SettingView;
+import com.tvbus.engine.TVCore;
+import com.tvbus.engine.TVListener;
+import com.tvbus.engine.TVService;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.security.Key;
 import java.util.ArrayList;
@@ -124,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
             mClockView.setVisibility(View.GONE);
 
 
+//        this.startTVBusService();
 //        this.getDeviceInfo();
 
 
@@ -641,5 +649,6 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
             mViewContainer.removeView(mDescView);
         mVideoView.requestFocus();
     }
+
 
 }
