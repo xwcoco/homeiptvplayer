@@ -13,6 +13,10 @@ android {
 //        ndkVersion "21.1.6352462"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters "armeabi-v7a" // 保留这三种架构的CPU
+        }
     }
 
     buildTypes {
