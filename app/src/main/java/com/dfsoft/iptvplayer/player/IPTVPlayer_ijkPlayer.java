@@ -63,6 +63,8 @@ public class IPTVPlayer_ijkPlayer extends IPTVPlayer_Base implements IMediaPlaye
                 IjkTrackInfo[] trackInfos = mPlayerView.mMediaPlayer.getTrackInfo();
                 if (trackInfos != null) {
                     setHudInfo(trackInfos,hud);
+                    long speed = mPlayerView.mMediaPlayer.getTcpSpeed();
+                    LogUtils.i(TAG," tcp speed = " + speed);
                 }
 
                 LogUtils.i(TAG,"hud = " + hud.toString());
@@ -80,6 +82,7 @@ public class IPTVPlayer_ijkPlayer extends IPTVPlayer_Base implements IMediaPlaye
                 IMediaFormat fm = ti.getFormat();
                 LogUtils.i(TAG, "video track : IJKM_KEY_CODEC_NAME =  " + fm.getString(IjkMediaMeta.IJKM_KEY_CODEC_NAME));
                 hud.codec = ijkCodecToAndroidCodec(fm.getString(IjkMediaMeta.IJKM_KEY_CODEC_NAME));
+
 //                LogUtils.i(TAG, "video track : IJKM_KEY_BITRATE =  " + fm.getString(IjkMediaMeta.IJKM_KEY_BITRATE));
 //                hud.codec = ti.getFormat()
             } else if (type == ITrackInfo.MEDIA_TRACK_TYPE_AUDIO) {
@@ -148,4 +151,9 @@ public class IPTVPlayer_ijkPlayer extends IPTVPlayer_Base implements IMediaPlaye
         mPlayerView.setAspectRatio(tmode);
     }
 
+    @Override
+    public int getNeedSpeed() {
+        float tmp = (float) mPlayerView.mMediaPlayer.getTcpSpeed() / 1024;
+        return Math.round(tmp);
+    }
 }

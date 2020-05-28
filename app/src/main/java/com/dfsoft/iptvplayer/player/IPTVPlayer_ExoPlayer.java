@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
+import android.net.TrafficStats;
 import android.net.Uri;
 import android.os.Build;
 import android.view.Gravity;
@@ -239,5 +240,24 @@ public class IPTVPlayer_ExoPlayer extends IPTVPlayer_Base implements Player.Even
     @Override
     public void onDecoderInitialized(EventTime eventTime, int trackType, String decoderName, long initializationDurationMs) {
         LogUtils.i(TAG,"trackType: "+trackType+" decoderName = "+decoderName);
+    }
+
+    private long lastTotalRxBytes = 0;
+
+    private long lastTimeStamp = 0;
+
+    @Override
+    public int getNeedSpeed() {
+        long nowTotalRxBytes = TrafficStats.getUidRxBytes(main.getApplicationInfo().uid) == TrafficStats.UNSUPPORTED ? 0 : (TrafficStats.getTotalRxBytes() / 1024);//转为KB
+        long nowTimeStamp = System.currentTimeMillis();
+        long calculationTime = (nowTimeStamp - lastTimeStamp);
+        if (calculationTime == 0) {
+            return 0;
+        }
+        //毫秒转换
+        long speed = ((nowTotalRxBytes - lastTotalRxBytes) * 1000 / calculationTime);
+        lastTimeStamp = nowTimeStamp;
+        lastTotalRxBytes = nowTotalRxBytes;
+        return Math.round(speed);
     }
 }

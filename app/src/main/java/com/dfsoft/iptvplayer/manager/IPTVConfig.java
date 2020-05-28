@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.dfsoft.iptvplayer.manager.settings.IptvSettings;
+import com.dfsoft.iptvplayer.player.IPTVPlayerManager;
 import com.dfsoft.iptvplayer.utils.ImageCache;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -133,7 +134,7 @@ public class IPTVConfig {
     }
 
 
-    public String host = "http://192.168.50.8:8080";
+    public String host = "http://192.168.0.69:8080";
 
     public String run(String url) throws IOException {
         Request request = new Request.Builder()
@@ -390,6 +391,5 @@ public class IPTVConfig {
         });
 
     }
-
 
 }

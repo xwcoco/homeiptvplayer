@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.media.MediaCodecList;
 import android.media.MediaFormat;
 import android.os.Build;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -23,10 +24,12 @@ import com.dfsoft.iptvplayer.manager.IPTVChannel;
 import com.dfsoft.iptvplayer.manager.IPTVConfig;
 import com.dfsoft.iptvplayer.manager.IPTVEpgData;
 import com.dfsoft.iptvplayer.manager.settings.IptvSettings;
+import com.dfsoft.iptvplayer.player.IPTVPlayerManager;
 import com.dfsoft.iptvplayer.player.IPTVPlayer_HUD;
+import com.dfsoft.iptvplayer.utils.AutoHideInterface;
 import com.dfsoft.iptvplayer.utils.ImageCache;
 
-public class PlayerHUDView extends FrameLayout {
+public class PlayerHUDView extends FrameLayout implements AutoHideInterface {
 
     private final String TAG = "PlayerHUDView";
 
@@ -49,6 +52,8 @@ public class PlayerHUDView extends FrameLayout {
 
 
     private TextView hud_source_text;
+
+    private TextView hud_net_speed;
 
     public PlayerHUDView(@NonNull Context context) {
         super(context);
@@ -98,6 +103,8 @@ public class PlayerHUDView extends FrameLayout {
 
         hud_video_player = findViewById(R.id.hud_video_player);
         hud_video_hw = findViewById(R.id.hud_video_hw);
+
+        hud_net_speed = findViewById(R.id.hud_net_speed);
 
         hud_current_program_desc = findViewById(R.id.hud_current_program_desc);
     }
@@ -173,17 +180,19 @@ public class PlayerHUDView extends FrameLayout {
 
 
         mWeatherView.updateWeather();
+
+        showNetSpeed();
 //        this.hideVideoHud();
     }
 
     private boolean mVisible = false;
 
     public void show() {
-
+        mHander.postDelayed(mShowSpeedRun,1000);
     }
 
     public void hide() {
-
+        mHander.removeCallbacks(mShowSpeedRun);
     }
 
     public void toggle() {
@@ -239,4 +248,23 @@ public class PlayerHUDView extends FrameLayout {
         }
         return false;
     }
+
+    private Handler mHander = new Handler();
+
+    public IPTVPlayerManager playerManager = null;
+
+    private void showNetSpeed() {
+        int speed = playerManager.getNetSpeed();
+        String tmp = speed + " KB/S";
+        hud_net_speed.setText(tmp);
+    }
+
+    private Runnable mShowSpeedRun = new Runnable() {
+        @Override
+        public void run() {
+            showNetSpeed();
+            mHander.removeCallbacks(mShowSpeedRun);
+            mHander.postDelayed(mShowSpeedRun,1000);
+        }
+    };
 }

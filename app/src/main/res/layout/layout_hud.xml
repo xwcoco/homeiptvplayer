@@ -225,14 +225,7 @@
                 app:layout_constraintStart_toEndOf="@id/hud_source_image"
                 app:layout_constraintTop_toTopOf="@id/hud_source_image" />
 
-            <ImageView
-                android:id="@+id/hud_video_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/hud_video_info_item_space"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/hud_source_text"
-                app:layout_constraintTop_toTopOf="parent" />
+
 
             <ImageView
                 android:id="@+id/hud_video_player"
@@ -252,6 +245,29 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@id/hud_video_player"
                 app:layout_constraintTop_toTopOf="@id/hud_video_player" />
+
+            <ImageView
+                android:id="@+id/hud_video_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/hud_video_info_item_space"
+                android:layout_marginStart="@dimen/hud_video_info_space"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/hud_video_hw"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/hud_net_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/hud_video_info_space"
+                android:layout_marginEnd="@dimen/hud_video_info_space"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/hud_video_info_textSize"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/hud_video_type"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

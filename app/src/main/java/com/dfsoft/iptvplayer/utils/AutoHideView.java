@@ -7,6 +7,9 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AutoHideView {
+
+
+
     private View mHideView = null;
     private View mFocusView = null;
 
@@ -70,6 +73,11 @@ public class AutoHideView {
         // Schedule a runnable to remove the status and navigation bar after a delay
         mHideHandler.removeCallbacks(mShowPart2Runnable);
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
+
+        if (mHideView instanceof AutoHideInterface) {
+            ((AutoHideInterface) mHideView).hide();
+        }
+
     }
 
     private final Runnable mHideRunnable = new Runnable() {
@@ -102,5 +110,10 @@ public class AutoHideView {
         // Schedule a runnable to display UI elements after a delay
         mHideHandler.removeCallbacks(mHidePart2Runnable);
         mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
+
+        if (mHideView instanceof AutoHideInterface) {
+            ((AutoHideInterface) mHideView).show();
+        }
+
     }
 }

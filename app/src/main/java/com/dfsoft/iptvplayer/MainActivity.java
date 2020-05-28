@@ -137,6 +137,10 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
 
         mIPTVManager = new IPTVPlayerManager(this);
 
+        mHudView.playerManager = mIPTVManager;
+
+//        config.playerManager = mIPTVManager;
+
         if (config.getPlayingChannal() == null) {
             config.setFirstRunPlayChannel();
         }

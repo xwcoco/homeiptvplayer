@@ -290,4 +290,8 @@ public class IPTVPlayerManager implements IPTVPlayer_Base.IPTV_HUD_INTERFACE {
             }
         });
     };
+
+    public int getNetSpeed() {
+        return mPlayer.getNeedSpeed();
+    }
 }

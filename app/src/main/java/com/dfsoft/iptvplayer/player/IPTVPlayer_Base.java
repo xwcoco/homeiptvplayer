@@ -79,4 +79,8 @@ public class IPTVPlayer_Base {
     public void setHardwareMode(int hardwareMode) {
         this.hardwareMode = hardwareMode;
     }
+
+    public int getNeedSpeed() {
+        return 0;
+    }
 }
