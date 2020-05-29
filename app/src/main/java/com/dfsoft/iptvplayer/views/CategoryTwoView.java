@@ -16,9 +16,9 @@ import com.dfsoft.iptvplayer.manager.IPTVChannel;
 import com.dfsoft.iptvplayer.manager.IPTVMessage;
 import com.dfsoft.iptvplayer.utils.LogUtils;
 
-public class CategoryTwoView extends CategoryView {
+public class CategoryTwoView extends CategoryView implements SubViewKeyEvent {
     public CategoryTwoView(@NonNull Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public CategoryTwoView(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -32,7 +32,7 @@ public class CategoryTwoView extends CategoryView {
 
     @Override
     protected void initLayer() {
-        inflate(mContext, R.layout.layout_category_two,this);
+        inflate(mContext, R.layout.layout_category_two, this);
 
         cate_two_category_name = findViewById(R.id.cate_two_category_name);
         mChannelList = findViewById(R.id.cate_two_channel_list);
@@ -54,13 +54,16 @@ public class CategoryTwoView extends CategoryView {
 
     }
 
+    protected OnKeyListener mOnKeyListener;
+
     protected void initKeyListener() {
-        mChannelList.setOnKeyListener(new OnKeyListener() {
+
+        mOnKeyListener = new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_UP) return true;
 
-                LogUtils.i("CategoryTwoView","keyCode = "+keyCode);
+                LogUtils.i("CategoryTwoView", "keyCode = " + keyCode);
                 if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_LEFT) {
                     IPTVCategory cate = mShowCategory;
                     if (cate == null) return false;
@@ -93,7 +96,7 @@ public class CategoryTwoView extends CategoryView {
                         IPTVChannel channel = adapter.getChannel();
                         if (channel != playingChanel) {
                             mLastCategory = adapter.getCategory();
-                            config.iptvMessage.sendMessage(IPTVMessage.IPTV_CHANNEL_PLAY,channel);
+                            config.iptvMessage.sendMessage(IPTVMessage.IPTV_CHANNEL_PLAY, channel);
                         }
 
                     }
@@ -105,27 +108,27 @@ public class CategoryTwoView extends CategoryView {
                     return true;
                 }
 
-//                if (keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_UP) {
-//                    ChannelAdapter adapter = (ChannelAdapter) mChannelList.getAdapter();
-//                    if (adapter != null) {
-//                        int index = adapter.getCurrentItem();
-//                        if (index == 0) index = adapter.getCount() - 1;
-//                        else
-//                            index = index - 1;
-//                        mChannelList.setSelection(index);
-//                        activeChannel(index);
-////                        mChannelList.setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
-//                    }
-//                }
-
-                if (keyCode == KeyEvent.KEYCODE_ESCAPE || keyCode == KeyEvent.KEYCODE_DEL || keyCode == KeyEvent.KEYCODE_BACK ) {
+                if (keyCode == KeyEvent.KEYCODE_ESCAPE || keyCode == KeyEvent.KEYCODE_DEL || keyCode == KeyEvent.KEYCODE_BACK) {
                     hide();
                     return true;
+                }
+
+                if (keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_UP) {
+                    return moveChannelDelta(-1);
+//                    return true;
+                }
+                if (keyCode ==  KeyEvent.KEYCODE_DPAD_DOWN || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_DOWN) {
+                    return moveChannelDelta(1);
+//                    return true;
                 }
                 return false;
 
             }
-        });
+        };
+
+        mChannelList.setOnKeyListener(mOnKeyListener);
+        cate_two_category_name.setOnKeyListener(mOnKeyListener);
+//        mEpgList.setOnKeyListener(mOnKeyListener);
 
     }
 
@@ -138,67 +141,42 @@ public class CategoryTwoView extends CategoryView {
 
 
         showCategoryChannel(cate);
+
+//        if (cate.data.size() == 0)
+//            cate_two_category_name.requestFocus();
+//        else
         mChannelList.requestFocus();
 
     }
 
 
-//    @Override
-//    protected void afterActiveChannel(IPTVChannel channel) {
-//        if (mode == 1)
-//            super.afterActiveChannel(channel);
-//        else {
-//            mEpgTimeList.afterOnActiveChannel(channel,mChannelList);
-//        }
-//
-//    }
-
     protected void showCategoryChannel(IPTVCategory category) {
         if (category == null) return;
 
         if (category.channelAdapter == null) {
-            category.channelAdapter = new ChannelAdapter(this.mContext,category);
+            category.channelAdapter = new ChannelAdapter(this.mContext, category);
         }
         mShowCategory = category;
+        category.channelAdapter.setListViewIsFocused(true);
         mChannelList.setAdapter(category.channelAdapter);
         cate_two_category_name.setText(category.name);
-//        category.channelAdapter.notifyDataSetChanged();
         int cIndex = category.channelAdapter.getCurrentItem();
+        if (cIndex == -1) return;
         this.activeChannel(cIndex);
         int h = mChannelList.getMeasuredHeight() / 2;
-        mChannelList.setSelectionFromTop(cIndex,h);
+        mChannelList.setSelectionFromTop(cIndex, h);
 
-//        mEpgTimeList.showCategoryEPG(mShowCategory);
-
-//        EpgTimeListAdapter adapter = new EpgTimeListAdapter(mContext,category);
-//        mEpgTimeList.setAdapter(adapter);
     }
 
-//    @Override
-//    protected void onEPGLoaded(IPTVChannel channel) {
-//        if (mode == 1) {
-//            super.onEPGLoaded(channel);
-//            return;
-//        }
-//
-//        mEpgTimeList.doEPGLoaded(channel);
-//
-//    }
+    @Override
+    public void onKey(int keyCode, KeyEvent event) {
+        LogUtils.i("SubViewKeyEvent", "onKeyDown : interface");
+        mOnKeyListener.onKey(this, keyCode, event);
+    }
 
-//    private void doShowEpgListTime() {
-//        mEpgTimeList.showCategoryEPG(mShowCategory,mEpgTimeListWidth);
-//    }
-
-//    @Override
-//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        if (mEpgTimeListWidth == 0) {
-//            int width = mEpgTimeList.getWidth();
-//            if (width != 0) {
-//                mEpgTimeListWidth = width;
-//                doShowEpgListTime();
-//            }
-//        }
-//        LogUtils.i("CategoryTwoView","on Measure width = "+mEpgTimeList.getWidth());
-//    }
+    @Override
+    protected void afterActiveChannel(IPTVChannel channel) {
+        super.afterActiveChannel(channel);
+        mChannelList.requestFocus();
+    }
 }

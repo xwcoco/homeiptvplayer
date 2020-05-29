@@ -37,6 +37,7 @@ import com.dfsoft.iptvplayer.views.PlayerHUDView;
 import com.dfsoft.iptvplayer.views.ProgramDescView;
 import com.dfsoft.iptvplayer.views.QuitView;
 import com.dfsoft.iptvplayer.views.SettingView;
+import com.dfsoft.iptvplayer.views.SubViewKeyEvent;
 import com.tvbus.engine.TVCore;
 import com.tvbus.engine.TVListener;
 import com.tvbus.engine.TVService;
@@ -268,6 +269,8 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         Log.d(TAG, "onKeyDown: " + view);
         if (hasOtherNeedFocusView()) {
 //            return false;
+            if (view == null)
+                sendKeyEvnetToSubView(keyCode,event);
             return super.onKeyDown(keyCode, event);
         }
         boolean ret = dealWithKeyDown(keyCode);
@@ -652,6 +655,15 @@ public class MainActivity extends AppCompatActivity implements IPTVConfig.DataEv
         if (programDescViewIsVisible())
             mViewContainer.removeView(mDescView);
         mVideoView.requestFocus();
+    }
+
+    private void sendKeyEvnetToSubView(int keyCode,KeyEvent event) {
+        if (mCategoryView != null && mViewContainer.indexOfChild(mCategoryView) != -1) {
+            if (mCategoryView instanceof SubViewKeyEvent) {
+                ((SubViewKeyEvent) mCategoryView).onKey(keyCode,event);
+            }
+        }
+
     }
 
 

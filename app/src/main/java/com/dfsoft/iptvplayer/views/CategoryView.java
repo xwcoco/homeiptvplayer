@@ -21,6 +21,7 @@ import com.dfsoft.iptvplayer.manager.IPTVChannel;
 import com.dfsoft.iptvplayer.manager.IPTVConfig;
 import com.dfsoft.iptvplayer.manager.IPTVMessage;
 import com.dfsoft.iptvplayer.R;
+import com.dfsoft.iptvplayer.utils.LogUtils;
 
 public class CategoryView extends FrameLayout {
 
@@ -89,6 +90,7 @@ public class CategoryView extends FrameLayout {
         mCateList.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP) return true;
                 if (keyCode == KeyEvent.KEYCODE_MENU) {
                     config.iptvMessage.sendMessage(IPTVMessage.IPTV_SWITCH_CATEGORY);
                     return true;
@@ -98,18 +100,34 @@ public class CategoryView extends FrameLayout {
                     hide();
                     return true;
                 }
-//                if (keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_UP) {
-//                    CategoryAdapter adapter = (CategoryAdapter) mCateList.getAdapter();
-//                    int index = adapter.getCurrentItem();
-//                    if (index == 0)
-//                        index = adapter.getCount() - 1;
-//                    else
-//                        index = index - 1;
-//                    mCateList.setSelection(index);
-//                    activeCategory(index);
-//                    adapter.notifyDataSetChanged();
-//                    return true;
-//                }
+                if (keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_UP || keyCode ==  KeyEvent.KEYCODE_DPAD_DOWN || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_DOWN) {
+                    CategoryAdapter adapter = (CategoryAdapter) mCateList.getAdapter();
+                    int index = adapter.getCurrentItem();
+
+                    boolean needScrool = false;
+
+                    if (keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_UP) {
+                        if (index == 0) {
+                            index = adapter.getCount() - 1;
+                            needScrool = true;
+                        }
+                    }
+                    else {
+                        if (index == adapter.getCount() - 1) {
+                            index = 0;
+                            needScrool = true;
+                        }
+                    }
+
+                    if (needScrool) {
+                        activeCategory(index);
+                        adapter.notifyDataSetChanged();
+                        mCateList.setSelection(index);
+                        return true;
+
+                    }
+                    return false;
+                }
 
                 return false;
             }
@@ -138,6 +156,7 @@ public class CategoryView extends FrameLayout {
         mCateList.setOnFocusChangeListener(this.mCateFocusChangeListener);
 
         mChannelList.setOnKeyListener(mKeyListener);
+        mChannelList.setOnFocusChangeListener(this.mChannelListFocusChangeListener);
 
         mEpgList.setOnKeyListener(new OnKeyListener() {
             @Override
@@ -166,9 +185,12 @@ public class CategoryView extends FrameLayout {
         mChannelList.setAdapter(cate.channelAdapter);
         mCategoryAdapter.notifyDataSetChanged();
         int cIndex = cate.channelAdapter.getCurrentItem();
+        if (cIndex == -1) return;
 //        this.activeChannel(cIndex);
         int h = mChannelList.getMeasuredHeight() / 2;
         mChannelList.setSelectionFromTop(cIndex, h);
+//        mCateList.requestFocus();
+
     }
 
     public void activeChannel(int index) {
@@ -190,7 +212,7 @@ public class CategoryView extends FrameLayout {
 
         afterActiveChannel(channel);
 
-        mChannelList.requestFocus();
+//        mChannelList.requestFocus();
     }
 
     protected void afterActiveChannel(IPTVChannel channel) {
@@ -231,6 +253,7 @@ public class CategoryView extends FrameLayout {
         config.iptvMessage.addMessageListener(mMessageHandler);
         this.showCurrentChannel();
         this.mVisible = true;
+        mChannelList.requestFocus();
     }
 
     public void hide() {
@@ -303,6 +326,7 @@ public class CategoryView extends FrameLayout {
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
             if (!mVisible) return false;
+            if (event.getAction() == KeyEvent.ACTION_UP) return true;
             if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
                 hide();
                 ChannelAdapter adapter = (ChannelAdapter) mChannelList.getAdapter();
@@ -328,6 +352,18 @@ public class CategoryView extends FrameLayout {
                 hide();
                 return true;
             }
+
+
+            if (keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_UP) {
+                return moveChannelDelta(-1);
+//                return true;
+            }
+            if (keyCode ==  KeyEvent.KEYCODE_DPAD_DOWN || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_DOWN) {
+                return moveChannelDelta(1);
+//                return true;
+            }
+
+
             return false;
         }
     };
@@ -336,13 +372,61 @@ public class CategoryView extends FrameLayout {
     private OnFocusChangeListener mCateFocusChangeListener = new OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
+
+            CategoryAdapter adapter = (CategoryAdapter) mCateList.getAdapter();
             if (hasFocus) {
                 mEpgList.setVisibility(View.GONE);
+                if (adapter != null) adapter.setListViewIsFocused(true);
+//                LogUtils.i(TAG,"onKeyDown category focus");
             } else {
                 mEpgList.setVisibility(View.VISIBLE);
+                if (adapter != null) adapter.setListViewIsFocused(false);
+//                LogUtils.i(TAG,"onKeyDown category unfocus");
+//                Log.d(TAG, Log.getStackTraceString(new Throwable()));
             }
+            if (adapter != null)
+                adapter.notifyDataSetChanged();
+        }
+    };
+
+    protected OnFocusChangeListener mChannelListFocusChangeListener = new OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            ChannelAdapter adapter = (ChannelAdapter) mChannelList.getAdapter();
+            if (adapter == null) return;
+            adapter.setListViewIsFocused(hasFocus);
+            adapter.notifyDataSetChanged();
         }
     };
 
 
+    protected boolean moveChannelDelta(int delta) {
+        ChannelAdapter adapter = (ChannelAdapter) mChannelList.getAdapter();
+        if (adapter == null) return false;
+        int index = adapter.getCurrentItem();
+        if (index == 0 && delta < 0) {
+            LogUtils.i(TAG,"up to bottom");
+            index = adapter.getCount() - 1;
+            activeChannel(index);
+            mChannelList.setSelection(index);
+            return true;
+        }
+
+        if (index == adapter.getCount() - 1 && delta > 0) {
+            LogUtils.i(TAG,"down to top");
+            index = 0;
+            activeChannel(index);
+            mChannelList.setSelection(index);
+            return true;
+        }
+//        if (((index == 0) && (delta < 0)) || ((index == adapter.getCount() - 1) && (delta > 0))) {
+//            index = index + delta;
+//            if (index < 0) index = adapter.getCount() - 1;
+//            if (index >= adapter.getCount()) index = 0;
+//            activeChannel(index);
+//            mChannelList.smoothScrollToPosition(index);
+//            return true;
+//        }
+        return false;
+    }
 }

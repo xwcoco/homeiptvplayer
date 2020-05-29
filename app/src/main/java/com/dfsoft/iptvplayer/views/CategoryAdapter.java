@@ -28,6 +28,12 @@ public class CategoryAdapter extends BaseAdapter {
         this.currentItem = currentItem;
     }
 
+    private boolean listViewIsFocused = false;
+
+    public void setListViewIsFocused(boolean listViewIsFocused) {
+        this.listViewIsFocused = listViewIsFocused;
+    }
+
     public int getCurrentItem() {
         return  this.currentItem;
     }
@@ -64,11 +70,16 @@ public class CategoryAdapter extends BaseAdapter {
             //如果被点击，设置当前TextView被选中
             holder.mTextView.setSelected(true);
             holder.mTextView.setPressed(true);
+//            if (listViewIsFocused)
+//                holder.mTextView.setBackground(mContext.getResources().getDrawable(R.drawable.item_left_bg));
+//            else
+//                holder.mTextView.setBackground(null);
             holder.mTextView.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
         } else {
             //如果没有被点击，设置当前TextView未被选中
             holder.mTextView.setSelected(false);
             holder.mTextView.setPressed(false);
+//            holder.mTextView.setBackground(null);
             holder.mTextView.setTextColor(mContext.getResources().getColor(R.color.white));
         }
 

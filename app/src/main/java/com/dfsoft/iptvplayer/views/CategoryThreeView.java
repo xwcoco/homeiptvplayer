@@ -83,6 +83,7 @@ public class CategoryThreeView extends CategoryTwoView {
         cate_two_category_name.setText(category.name);
 //        category.channelAdapter.notifyDataSetChanged();
         int cIndex = adapter.getCurrentItem();
+        if (cIndex == -1) return;
         this.activeChannel(cIndex);
         int h = mChannelList.getMeasuredHeight() / 2;
         mChannelList.setSelectionFromTop(cIndex, h);
